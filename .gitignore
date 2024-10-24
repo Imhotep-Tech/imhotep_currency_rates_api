@@ -1,1 +1,5 @@
 wsgi.py
+imhotep_exchange_rate_api.db
+__pycache__/
+instance/
+flask_session/
