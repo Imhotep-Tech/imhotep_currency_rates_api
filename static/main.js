@@ -266,3 +266,13 @@ function initializeDropdown(searchInputId, selectElementId, serverValue, formId)
         autoSubmitOnChange(selectElement, formId);
     }
 }
+
+    // Function to copy API key to clipboard
+    function copyApiKey() {
+        const apiKey = document.getElementById("apiKey").textContent;
+        navigator.clipboard.writeText(apiKey).then(() => {
+            alert('API Key copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy API Key: ', err);
+        });
+    }

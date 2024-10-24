@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+{% include 'nav.html' %}
+
+<main>
+    <h1>Welcome to Currency API</h1>
+    
+    <p class="instructions">Your unique API key with the full URL is displayed below. Use it to access real-time currency exchange rates.</p>
+    
+    <div class="api-key" id="apiKey">
+        http://127.0.0.1:5000/latest_rates/{{api_key}}/USD
+    </div>
+    <button class="copy-button" onclick="copyApiKey()">Copy API with The Key</button>
+
+    <h2>How to Use the API</h2>
+    <p class="instructions">
+        Follow these steps to start using the Currency API:
+        <ol>
+            <li>Make sure you have your API key. You can copy it from the box above.</li>
+            <li>To get the latest currency exchange rates, make a GET request to the following URL:
+                <br><code>https://yourapi.com/latest_rates/YOUR_API_KEY/USD</code></li>
+            <li>You can change the base currency by replacing <code>USD</code> with any supported currency code, for example:
+                <br><code>https://yourapi.com/latest_rates/YOUR_API_KEY/EUR</code></li>
+            <li>In the response, you'll receive real-time exchange rates relative to the base currency you specified.</li>
+        </ol>
+    </p>
+
+    <h2>Example Response</h2>
+    <p class="instructions">
+        Here's what a typical response might look like when you query the API:
+        <pre><code>{
+    "meta": {
+        "base_currency": "USD",
+        "last_updated_at": "2024-10-24T18:00:00Z"
+    },
+    "data": {
+        "EUR": 0.85,
+        "GBP": 0.74,
+        "JPY": 110.25
+    }
+}</code></pre>
+    </p>
+</main>
+
+{% endblock %}
+

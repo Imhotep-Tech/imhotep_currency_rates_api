@@ -470,3 +470,62 @@
     width: 29%;
   }
   
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+header {
+    background-color: #007BFF;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+header img {
+    max-width: 150px;
+}
+main {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+h1 {
+    color: #007BFF;
+    font-size: 24px;
+    text-align: center;
+}
+.api-key {
+    background-color: #e9ecef;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 5px;
+    word-wrap: break-word;
+}
+.instructions {
+    font-size: 16px;
+    line-height: 1.5;
+}
+.instructions code {
+    background-color: #f8f9fa;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+.copy-button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.copy-button:hover {
+    background-color: #0056b3;
+}
