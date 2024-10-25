@@ -267,12 +267,19 @@ function initializeDropdown(searchInputId, selectElementId, serverValue, formId)
     }
 }
 
-    // Function to copy API key to clipboard
     function copyApiKey() {
-        const apiKey = document.getElementById("apiKey").textContent;
-        navigator.clipboard.writeText(apiKey).then(() => {
-            alert('API Key copied to clipboard!');
-        }).catch(err => {
-            console.error('Failed to copy API Key: ', err);
-        });
+        const apiKeyElement = document.getElementById('apiKey');
+        const apiKeyText = apiKeyElement.textContent; // Get the full URL text
+    
+        // Create a temporary textarea element to hold the text for copying
+        const textarea = document.createElement('textarea');
+        textarea.value = apiKeyText; // Set the textarea value to the URL
+        document.body.appendChild(textarea); // Append the textarea to the body
+    
+        textarea.select(); // Select the text in the textarea
+        document.execCommand('copy'); // Copy the selected text to the clipboard
+        document.body.removeChild(textarea); // Remove the textarea from the DOM
+    
+        alert('API key copied to clipboard!'); // Optional: Alert the user
     }
+    

@@ -4,37 +4,41 @@
 
 {% include 'nav.html' %}
 
-<main>
+<main class="container my-4">
     {% if success %}
-        <div class="done-message">
+        <div class="alert alert-success text-center done-message">
             {{ success }}
         </div>
     {% endif %}
-    <h1>Welcome to Imhotep Exchange Rate API</h1>
     
-    <p class="instructions">Your unique API key with the full URL is displayed below. Use it to access real-time currency exchange rates.</p>
+    <h1 class="text-center">Welcome to Imhotep Exchange Rate API</h1>
     
-    <div class="api-key" id="apiKey">
-        https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/{{api_key}}/USD
+    <p class="text-center instructions">Your unique API key with the full URL is displayed below. Use it to access real-time currency exchange rates.</p>
+    
+    <div class="api-key-box text-center">
+        <code class="api-key" id="apiKey">
+            https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/{{api_key}}/USD
+        </code>
+    </div>    
+    
+    <div class="text-center my-3">
+        <button class="copy-button" onclick="copyApiKey()">Copy API with The Key</button>
     </div>
-    <button class="copy-button" onclick="copyApiKey()">Copy API with The Key</button>
 
-    <h2>How to Use the API</h2>
-    <p class="instructions">
-        Follow these steps to start using the Imhotep Exchange Rate API:
-        <ol>
-            <li>Make sure you have your API key. You can copy it from the box above.</li>
-            <li>To get the latest currency exchange rates, make a GET request to the following URL:
+    <h2 class="text-center mt-5">How to Use the API</h2>
+    <div class="instructions mx-auto" style="max-width: 700px;">
+        <ol class="list-unstyled">
+            <li><strong>Step 1:</strong> Make sure you have your API key. You can copy it from the box above.</li>
+            <li><strong>Step 2:</strong> To get the latest currency exchange rates, make a GET request to the following URL:
                 <br><code>https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/YOUR_API_KEY/USD</code></li>
-            <li>You can change the base currency by replacing <code>USD</code> with any supported currency code, for example:
+            <li><strong>Step 3:</strong> You can change the base currency by replacing <code>USD</code> with any supported currency code, for example:
                 <br><code>https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/YOUR_API_KEY/EUR</code></li>
-            <li>In the response, you'll receive real-time exchange rates relative to the base currency you specified.</li>
+            <li><strong>Step 4:</strong> In the response, you'll receive real-time exchange rates relative to the base currency you specified.</li>
         </ol>
-    </p>
+    </div>
 
-    <h2>Example Response</h2>
-    <p class="instructions">
-        Here's what a typical response might look like when you query the API:
+    <h2 class="text-center mt-5">Example Response</h2>
+    <div class="example-response mx-auto" style="max-width: 700px;">
         <pre><code>{
     "meta": {
         "base_currency": "USD",
@@ -46,8 +50,7 @@
         "JPY": 110.25
     }
 }</code></pre>
-    </p>
+    </div>
 </main>
 
 {% endblock %}
-

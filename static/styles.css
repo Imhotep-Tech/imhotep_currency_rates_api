@@ -499,15 +499,15 @@ h1 {
     text-align: center;
 }
 .api-key {
-    background-color: #e9ecef;
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin: 20px 0;
-    font-size: 18px;
-    text-align: center;
-    border-radius: 5px;
-    word-wrap: break-word;
+  display: inline-block; /* Allows width to be applied */
+  max-width: 100%; /* Set max width for the element */
+  overflow: hidden; /* Hide overflow */
+  white-space: nowrap; /* Prevent wrapping */
+  text-overflow: ellipsis; /* Display ellipsis for overflow text */
+  border: 1px solid #ccc; /* Optional: Add border for visibility */
+  padding: 5px; /* Optional: Add padding for better appearance */
 }
+
 .instructions {
     font-size: 16px;
     line-height: 1.5;
