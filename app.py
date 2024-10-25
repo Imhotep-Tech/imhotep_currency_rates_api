@@ -170,12 +170,79 @@ def logout():
 
 def security_check(user_id, check_pass):
     password_db = db.execute("SELECT user_password FROM users WHERE user_id = ?", user_id)
+    
+    if password_db:
+        password_db = password_db[0]["user_password"]
 
     if check_password_hash(password_db, check_pass):
         return True
     else:
         return False
-    
+
+def select_user_data(user_id):
+        user_info = db.execute("SELECT user_username, user_mail FROM users WHERE user_id = ?",user_id)
+
+        if user_info:
+            user_username = user_info[0]["user_username"]
+            user_mail = user_info[0]["user_mail"]
+        else:
+            user_username = " "
+            user_mail = " "
+
+        return user_username, user_mail
+
+# Function to fetch and save new currency data from the external API
+def fetch_currency_data():
+    response = requests.get(CURRENCY_API_URL)
+    if response.status_code == 200:
+        data = response.json()
+        timestamp = datetime.now()
+        
+        api_data_db = db.execute("SELECT * FROM api_data")
+
+        if api_data_db:
+            db.execute("UPDATE api_data SET base_currency = ?, last_updated_at = ?, json_data = ?",
+                "USD", timestamp, json.dumps(data))
+        else:
+            # Insert the API data into the 'api_data' table
+            db.execute("INSERT INTO api_data (base_currency, last_updated_at, json_data) VALUES (?, ?, ?)",
+                    "USD", timestamp, json.dumps(data))
+
+        # Get the last inserted API data ID
+        api_data_id = db.execute("SELECT id FROM api_data ORDER BY id DESC LIMIT 1")[0]["id"]
+
+        # Clear the currencies table to avoid duplicates
+        db.execute("DELETE FROM currencies")
+
+        # Save each currency rate in the 'currencies' table
+        for currency_code, details in data["data"].items():
+            db.execute("INSERT INTO currencies (api_data_id, currency_code, rate) VALUES (?, ?, ?)",
+                       api_data_id, currency_code, details["value"])
+
+        print(f"Currency data successfully fetched and saved at {timestamp}")
+        return True
+    return False
+
+# Helper function to get the latest rates from the database
+def get_latest_rates():
+    # Get the most recent API data from the 'api_data' table
+    latest_data = db.execute("SELECT * FROM api_data ORDER BY last_updated_at DESC LIMIT 1")
+
+    if not latest_data:
+        print("No data found in the 'api_data' table.")
+        return None, None
+
+    latest_data = latest_data[0]  # Get the first result
+
+    # Fetch the related currency rates from the 'currencies' table
+    currencies = db.execute("SELECT currency_code, rate FROM currencies WHERE api_data_id = ?", latest_data["id"])
+
+    if not currencies:
+        print(f"No currency data found for api_data_id {latest_data['id']}.")
+        return latest_data, None
+
+    return latest_data, currencies
+
 @app.route("/", methods=["GET"])
 def index():
     if session.get("logged_in"):
@@ -213,19 +280,16 @@ def register():
         error_existing = "Mail is already in use. Please choose another one. or "
         return render_template("register.html", error=error_existing, form=CSRFForm())
 
-    try:
-        last_user_id = db.execute("SELECT MAX(user_id) FROM users")
-        user_id = last_user_id + 1
-    except:
-        user_id = 1
-
-    session["user_id"] = user_id
     hashed_password = generate_password_hash(user_password)
 
     send_verification_mail_code(user_mail)
 
-    db.execute("INSERT INTO users (user_id, user_username, user_password, user_mail, user_mail_verify, api_key) VALUES (?, ?, ?, ?, ?, ?)",
-                user_id ,user_username, hashed_password,user_mail, "not_verified")
+    db.execute("INSERT INTO users (user_username, user_password, user_mail, user_mail_verify, api_key) VALUES (?, ?, ?, ?, ?)",
+                 user_username, hashed_password ,user_mail, "not_verified", api_key)
+    
+    user_id = db.execute("SELECT user_id FROM users WHERE user_username = ?", user_username)[0]["user_id"]
+
+    session["user_id"] = user_id
 
     return render_template("mail_verify.html", user_mail=user_mail, user_username=user_username, form=CSRFForm())
 
@@ -329,15 +393,10 @@ def add_password_google_login():
 
     api_key = str(uuid.uuid4())
 
-    try:
-        last_user_id = db.execute("SELECT MAX(user_id) FROM users")
+    db.execute("INSERT INTO users (user_username, user_password, user_mail, user_mail_verify, api_key) VALUES ( ?, ?, ?, ?, ?)",
+                user_username,hashed_password,user_mail, "verified", api_key)
 
-        user_id = last_user_id + 1
-    except:
-        user_id = 1
-
-    db.execute("INSERT INTO users (user_id, user_username, user_password, user_mail, user_mail_verify, api_key) VALUES (?, ?, ?, ?, ?, ?)",
-               user_id , user_username,hashed_password,user_mail, "verified", api_key)
+    user_id = db.execute("SELECT user_id FROM users WHERE user_username = ?", user_username)
 
     smtp_server = 'smtp.gmail.com'
     smtp_port = 465
@@ -499,14 +558,19 @@ def forget_password():
 @app.route("/logout", methods=["GET", "POST"])
 def logout_route():
         logout()
-        return redirect("/login")
+        return redirect("/")
 
 @app.route('/home')
 def home():
     if not session.get("logged_in"):
         return redirect("/login")
     
-    user_id = session.get("user_id")[0]["user_id"]
+    try:
+        user_id = session.get("user_id")[0]["user_id"]
+        print("user_id = ",user_id)
+    except OperationalError:
+            error = "Welcome Back"
+            return render_template('error.html', error=error, form=CSRFForm())
     
     api_key_db = db.execute("SELECT api_key, user_username FROM users WHERE user_id = ?", user_id)
     
@@ -518,58 +582,167 @@ def home():
         user_username = " "
     return render_template('home.html', api_key=api_key, user_username=user_username)
 
-# Function to fetch and save new currency data from the external API
-def fetch_currency_data():
-    response = requests.get(CURRENCY_API_URL)
-    if response.status_code == 200:
-        data = response.json()
-        timestamp = datetime.now()
+@app.route("/settings/personal_info", methods=["GET", "POST"])
+def personal_info():
+    if not session.get("logged_in"):
+        return redirect("/login_page")
+
+    try:
+        user_id = session.get("user_id")[0]["user_id"]
+    except OperationalError:
+            error = "Welcome Back"
+            return render_template('error.html', error=error, form=CSRFForm())
+
+    user_username_db = db.execute("SELECT user_username FROM users WHERE user_id = ?", user_id)
+    
+    if user_username_db:
+        user_username = user_username_db[0]["user_username"]
+    else:
+        user_username = " "
+    
+    if request.method == "GET":
+        user_username, user_mail = select_user_data(user_id)
+        return render_template("personal_info.html", user_username=user_username, user_mail=user_mail, form=CSRFForm())
+    else:
+
+        user_username = request.form.get("user_username")
+        user_mail = request.form.get("user_mail")
+
+        if "@" in user_username:
+            error_existing = "username should not have @"
+            user_username, user_mail = select_user_data(user_id)
+            return render_template("personal_info.html", user_username=user_username, user_mail=user_mail, error=error_existing, form=CSRFForm())
+
+        if "@" not in user_mail:
+            error_existing = "mail should have @"
+            user_username, user_mail = select_user_data(user_id)
+            return render_template("personal_info.html", user_username=user_username, user_mail=user_mail, error=error_existing, form=CSRFForm())
+
+        user_username_mail_db = db.execute("SELECT user_mail, user_username FROM users WHERE user_id = ?",user_id)
         
-        api_data_db = db.execute("SELECT * FROM api_data")
+        user_mail_db = user_username_mail_db[0]["user_mail"]
+        user_username_db = user_username_mail_db[0]["user_username"]
 
-        if api_data_db:
-            db.execute("UPDATE api_data SET base_currency = ?, last_updated_at = ?, json_data = ?",
-                "USD", timestamp, json.dumps(data))
+        if user_mail != user_mail_db and user_username != user_username_db:
+
+            existing_mail = db.execute("SELECT user_mail FROM users WHERE LOWER(user_mail) = ?",user_mail)
+
+            existing_username = db.execute("SELECT user_username FROM users WHERE LOWER(user_username) = :user_username" ,user_username)
+
+            if existing_mail:
+                error_existing = "Mail is already in use. Please choose another one."
+                user_username, user_mail = select_user_data(user_id)
+                return render_template("personal_info.html", user_username=user_username, user_mail=user_mail, error=error_existing, form=CSRFForm())
+
+            if existing_username:
+                error_existing = "Username is already in use. Please choose another one."
+                user_username, user_mail = select_user_data(user_id)
+                return render_template("personal_info.html", user_username=user_username, user_mail=user_mail , error=error_existing, form=CSRFForm())
+
+            send_verification_mail_code(user_mail)
+            return render_template("mail_verify_change_mail.html", user_mail=user_mail, user_username=user_username, user_mail_db=user_mail_db, form=CSRFForm())
+
+        if user_mail != user_mail_db:
+            existing_mail = db.execute("SELECT user_mail FROM users WHERE LOWER(user_mail) = ?", user_mail)
+
+            if existing_mail:
+                error_existing = "Mail is already in use. Please choose another one. or "
+                user_username, user_mail = select_user_data(user_id)
+                return render_template("personal_info.html", user_username=user_username, user_mail=user_mail, error=error_existing, form=CSRFForm())
+
+            send_verification_mail_code(user_mail)
+            return render_template("mail_verify_change_mail.html", user_mail=user_mail, user_username=user_username, user_mail_db=user_mail_db, form=CSRFForm())
+
+        if user_username != user_username_db:
+            existing_username = db.execute("SELECT user_username FROM users WHERE LOWER(user_username) = ?", user_username)
+
+            if existing_username:
+                error_existing = "Username is already in use. Please choose another one. or "
+                user_username, user_mail = select_user_data(user_id)
+                return render_template("personal_info.html", user_username=user_username, user_mail=user_mail, error=error_existing, form=CSRFForm())
+
+            db.execute("UPDATE users SET user_username = ? WHERE user_id = ?",user_username, user_id)
+ 
+            done = "User Name Changed Successfully!"
+            user_username, user_mail = select_user_data(user_id)
+            return render_template("personal_info.html", user_username=user_username, user_mail=user_mail, done = done, form=CSRFForm())
+
+    user_username, user_mail = select_user_data(user_id)
+    return render_template("personal_info.html", user_username=user_username, user_mail=user_mail, form=CSRFForm())
+
+@app.route("/settings/personal_info/mail_verification", methods=["POST"])
+def mail_verification_change_mail():
+    if not session.get("logged_in"):
+        return redirect("/login_page")
+    
+    try:
+        user_id = session.get("user_id")[0]["user_id"]
+    except OperationalError:
+            error = "Welcome Back"
+            return render_template('error.html', error=error, form=CSRFForm())
+
+    verification_code = request.form.get("verification_code").strip()
+    user_mail = request.form.get("user_mail")
+    user_username = request.form.get("user_username")
+    user_mail_db = request.form.get("user_mail_db")
+
+    if verification_code == session.get("verification_code"):
+        db.execute("UPDATE users SET user_mail_verify = ?, user_mail = ?, user_username = ? WHERE user_id = ?", "verified", user_mail, user_username, user_id)
+
+        done = "User Mail Changed Successfully!"
+        user_username, user_mail = select_user_data(user_id)
+        return render_template("personal_info.html", user_username=user_username, user_mail=user_mail, done = done, form=CSRFForm())
+    else:
+        error="Invalid verification code."
+        return render_template("mail_verify_change_mail.html", error=error,user_username=user_username, form=CSRFForm())
+
+
+@app.route("/settings/security_check", methods=["POST", "GET"])
+def security_check_password():
+    if not session.get("logged_in"):
+        return redirect("/login_page")
+
+    try:
+        user_id = session.get("user_id")[0]["user_id"]
+    except OperationalError:
+            error = "Welcome Back"
+            return render_template('error.html', error=error, form=CSRFForm())
+
+    if request.method == "GET":
+        return render_template("check_pass.html", form=CSRFForm())
+    else:
+
+        check_pass = request.form.get("check_pass")
+        security = security_check(user_id, check_pass)
+
+        if security:
+            return render_template("change_pass.html", user_id = user_id, form=CSRFForm())
         else:
-            # Insert the API data into the 'api_data' table
-            db.execute("INSERT INTO api_data (base_currency, last_updated_at, json_data) VALUES (?, ?, ?)",
-                    "USD", timestamp, json.dumps(data))
+            error = "This password is incorrect!"
+            return render_template("check_pass.html", error = error, form=CSRFForm())
 
-        # Get the last inserted API data ID
-        api_data_id = db.execute("SELECT id FROM api_data ORDER BY id DESC LIMIT 1")[0]["id"]
+@app.route("/settings/security", methods=["POST"])
+def security():
+    if not session.get("logged_in"):
+        return redirect("/login_page")
+    else:
 
-        # Clear the currencies table to avoid duplicates
-        db.execute("DELETE FROM currencies")
+        try:
+            user_id = session.get("user_id")[0]["user_id"]
+        except OperationalError:
+                error = "Welcome Back"
+                return render_template('error.html', error=error, form=CSRFForm())
+        
+        new_password = request.form.get("new_password")
 
-        # Save each currency rate in the 'currencies' table
-        for currency_code, details in data["data"].items():
-            db.execute("INSERT INTO currencies (api_data_id, currency_code, rate) VALUES (?, ?, ?)",
-                       api_data_id, currency_code, details["value"])
+        user_mail = db.execute("SELECT user_mail FROM users WHERE user_id = ?",user_id)
 
-        print(f"Currency data successfully fetched and saved at {timestamp}")
-        return True
-    return False
+        hashed_password = generate_password_hash(new_password)
+        
+        db.execute("UPDATE users SET user_password = ? WHERE user_id = ?", hashed_password, user_id)
 
-
-# Helper function to get the latest rates from the database
-def get_latest_rates():
-    # Get the most recent API data from the 'api_data' table
-    latest_data = db.execute("SELECT * FROM api_data ORDER BY last_updated_at DESC LIMIT 1")
-
-    if not latest_data:
-        print("No data found in the 'api_data' table.")
-        return None, None
-
-    latest_data = latest_data[0]  # Get the first result
-
-    # Fetch the related currency rates from the 'currencies' table
-    currencies = db.execute("SELECT currency_code, rate FROM currencies WHERE api_data_id = ?", latest_data["id"])
-
-    if not currencies:
-        print(f"No currency data found for api_data_id {latest_data['id']}.")
-        return latest_data, None
-
-    return latest_data, currencies
+        success = "You password has been changed successfully!"
+        return render_template("home.html", success = success, form=CSRFForm())
 
 # Route to fetch the latest currency rates
 @app.route('/latest_rates/<string:api_key>/<string:base_currency>', methods=['GET'])
@@ -616,3 +789,24 @@ def latest_rates(api_key, base_currency='USD'):
         },
         "data": rates
     })
+
+@app.route("/version")
+def version():
+    return render_template("version.html", form=CSRFForm())
+
+@app.route('/sitemap.xml')
+def sitemap():
+    pages = []
+
+    ten_days_ago = (datetime.datetime.now() - datetime.timedelta(days=10)).date().isoformat()
+    for rule in app.url_map.iter_rules():
+        if "GET" in rule.methods and len(rule.arguments) == 0:
+            pages.append(
+                ["https://imhotep.pythonanywhere.com" + str(rule.rule), ten_days_ago]
+            )
+
+    sitemap_xml = render_template('sitemap.xml', pages=pages)
+    response = make_response(sitemap_xml)
+    response.headers["Content-Type"] = "application/xml"
+
+    return response

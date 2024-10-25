@@ -5,7 +5,12 @@
 {% include 'nav.html' %}
 
 <main>
-    <h1>Welcome to Currency API</h1>
+    {% if success %}
+        <div class="done-message">
+            {{ success }}
+        </div>
+    {% endif %}
+    <h1>Welcome to Imhotep Exchange Rate API</h1>
     
     <p class="instructions">Your unique API key with the full URL is displayed below. Use it to access real-time currency exchange rates.</p>
     
@@ -16,7 +21,7 @@
 
     <h2>How to Use the API</h2>
     <p class="instructions">
-        Follow these steps to start using the Currency API:
+        Follow these steps to start using the Imhotep Exchange Rate API:
         <ol>
             <li>Make sure you have your API key. You can copy it from the box above.</li>
             <li>To get the latest currency exchange rates, make a GET request to the following URL:

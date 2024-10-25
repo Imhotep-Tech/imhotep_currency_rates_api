@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+{% include 'nav.html' %}
+    <div class="form-container">
+
+        <div class="message-container">
+            {% if error %}
+            <div class="error-message">{{ error }}</div>
+            {% elif done %}
+            <div class="done-message">{{ done }}</div>
+            {% endif %}
+        </div>
+
+        <form action="/settings/personal_info" method="post" class="form">
+            {{ form.hidden_tag() }}
+            <label>Username</label>
+            <input type="text" class="input" placeholder="Username" value="{{ user_username }}" name="user_username" required="">
+            <label>E-mail</label>
+            <input type="email" class="input" placeholder="E-Mail" value="{{ user_mail }}" name="user_mail" required="">
+            <p class="page-link"></p>
+            <button class="form-btn" title="Submit">
+                <i class="fas fa-check"></i>
+            </button>
+        </form>
+    </div>
+
+{% endblock %}
