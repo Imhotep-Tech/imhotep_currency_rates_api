@@ -1,9 +1,7 @@
 from flask import render_template, redirect, Flask, session, request, make_response, url_for, jsonify
 from imhotep_mail import send_mail
-from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
-from sqlalchemy import text
 import requests
 from datetime import date, timedelta, datetime
 from sqlalchemy.exc import OperationalError
@@ -798,11 +796,11 @@ def version():
 def sitemap():
     pages = []
 
-    ten_days_ago = (datetime.datetime.now() - datetime.timedelta(days=10)).date().isoformat()
+    ten_days_ago = (datetime.now() - timedelta(days=10)).date().isoformat()
     for rule in app.url_map.iter_rules():
         if "GET" in rule.methods and len(rule.arguments) == 0:
             pages.append(
-                ["https://imhotep.pythonanywhere.com" + str(rule.rule), ten_days_ago]
+                ["https://imhotepexchangeratesapi.pythonanywhere.com/" + str(rule.rule), ten_days_ago]
             )
 
     sitemap_xml = render_template('sitemap.xml', pages=pages)

@@ -15,7 +15,7 @@
     <p class="instructions">Your unique API key with the full URL is displayed below. Use it to access real-time currency exchange rates.</p>
     
     <div class="api-key" id="apiKey">
-        http://127.0.0.1:5000/latest_rates/{{api_key}}/USD
+        https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/{{api_key}}/USD
     </div>
     <button class="copy-button" onclick="copyApiKey()">Copy API with The Key</button>
 
@@ -25,9 +25,9 @@
         <ol>
             <li>Make sure you have your API key. You can copy it from the box above.</li>
             <li>To get the latest currency exchange rates, make a GET request to the following URL:
-                <br><code>https://yourapi.com/latest_rates/YOUR_API_KEY/USD</code></li>
+                <br><code>https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/YOUR_API_KEY/USD</code></li>
             <li>You can change the base currency by replacing <code>USD</code> with any supported currency code, for example:
-                <br><code>https://yourapi.com/latest_rates/YOUR_API_KEY/EUR</code></li>
+                <br><code>https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/YOUR_API_KEY/EUR</code></li>
             <li>In the response, you'll receive real-time exchange rates relative to the base currency you specified.</li>
         </ol>
     </p>
