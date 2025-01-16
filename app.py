@@ -134,13 +134,13 @@ def request_amount_exceed(error):
 def page_not_found(error):
     return render_template('error_handle.html', error_code = "405", error_description = "Method Not Allowed."), 405
 
-'''@app.errorhandler(Exception)
+@app.errorhandler(Exception)
 def server_error(error):
     return render_template('error_handle.html', error_code = "500", error_description = "Something went wrong."), 500
 
 @app.errorhandler(500)
 def internal_server_error(error):
-    return render_template('error_handle.html', error_code = "500", error_description="Something Went Wrong."), 500'''
+    return render_template('error_handle.html', error_code = "500", error_description="Something Went Wrong."), 500
 
 def send_verification_mail_code(user_mail):
     verification_code = secrets.token_hex(4)
@@ -192,19 +192,14 @@ def select_user_data(user_id):
 # Function to fetch and save new currency data from the external API
 def fetch_currency_data():
     response = requests.get(CURRENCY_API_URL)
+    print(response)
     if response.status_code == 200:
         data = response.json()
         timestamp = datetime.now()
         
-        api_data_db = db.execute("SELECT * FROM api_data")
-
-        if api_data_db:
-            db.execute("UPDATE api_data SET base_currency = ?, last_updated_at = ?, json_data = ?",
-                "USD", timestamp, json.dumps(data))
-        else:
-            # Insert the API data into the 'api_data' table
-            db.execute("INSERT INTO api_data (base_currency, last_updated_at, json_data) VALUES (?, ?, ?)",
-                    "USD", timestamp, json.dumps(data))
+        # Insert the API data into the 'api_data' table
+        db.execute("INSERT INTO api_data (base_currency, last_updated_at, json_data) VALUES (?, ?, ?)",
+                   "USD", timestamp, json.dumps(data))
 
         # Get the last inserted API data ID
         api_data_id = db.execute("SELECT id FROM api_data ORDER BY id DESC LIMIT 1")[0]["id"]
@@ -213,9 +208,9 @@ def fetch_currency_data():
         db.execute("DELETE FROM currencies")
 
         # Save each currency rate in the 'currencies' table
-        for currency_code, details in data["data"].items():
+        for currency_code, rate in data["usd"].items():
             db.execute("INSERT INTO currencies (api_data_id, currency_code, rate) VALUES (?, ?, ?)",
-                       api_data_id, currency_code, details["value"])
+                       api_data_id, currency_code.upper(), rate)
 
         print(f"Currency data successfully fetched and saved at {timestamp}")
         return True
@@ -233,13 +228,21 @@ def get_latest_rates():
     latest_data = latest_data[0]  # Get the first result
 
     # Fetch the related currency rates from the 'currencies' table
-    currencies = db.execute("SELECT currency_code, rate FROM currencies WHERE api_data_id = ?", latest_data["id"])
-
+    currencies = db.execute("SELECT currency_code, rate FROM currencies")
+    
     if not currencies:
         print(f"No currency data found for api_data_id {latest_data['id']}.")
         return latest_data, None
+    
+    formatted_rates = {
+        currency["currency_code"]: {
+            "code": currency["currency_code"],
+            "value": currency["rate"]
+        }
+        for currency in currencies
+    }
 
-    return latest_data, currencies
+    return formatted_rates, currencies, latest_data["last_updated_at"]
 
 @app.route("/", methods=["GET"])
 def index():
@@ -755,10 +758,10 @@ def latest_rates(api_key, base_currency='USD'):
 
     # Get the current time and the latest data from the database
     current_time = datetime.now()
-    latest_data, currencies = get_latest_rates()
+    latest_data, currencies, last_updated_at = get_latest_rates()
 
-    # If no data exists or the last update was more than 3 hours ago, fetch new data
-    if latest_data is None or (current_time - datetime.fromisoformat(latest_data["last_updated_at"])) > timedelta(hours=3):
+    # If no data exists or the last update was more than 24 hours ago, fetch new data
+    if latest_data is None or (current_time - datetime.fromisoformat(last_updated_at)) > timedelta(hours=24):
         fetch_success = fetch_currency_data()
         if fetch_success:
             latest_data, currencies = get_latest_rates()
@@ -783,7 +786,7 @@ def latest_rates(api_key, base_currency='USD'):
     return jsonify({
         "meta": {
             "base_currency": base_currency,
-            "last_updated_at": latest_data["last_updated_at"]
+            "last_updated_at": last_updated_at
         },
         "data": rates
     })
