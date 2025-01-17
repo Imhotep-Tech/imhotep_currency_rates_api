@@ -27,7 +27,7 @@ The Currency Exchange API allows users to retrieve real-time foreign exchange ra
     
     ```
     
-    GET https://<your-domain>/latest_rates/USD?api_key=YOUR_API_KEY
+    GET https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/<your api key>/USD
     
     ```
   - **Response**: Returns a JSON object containing:
@@ -56,14 +56,14 @@ The Currency Exchange API allows users to retrieve real-time foreign exchange ra
 
 ```
 
-GET https://<your-domain>/latest_rates/EUR?api_key=YOUR_API_KEY
+GET https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/<your api key>/EUR
 
 ```
 
 ### 2. Change Base Currency to EGP:
 ```
 
-GET https://<your-domain>/latest_rates/GBP?api_key=YOUR_API_KEY
+GET https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/<your api key>/EGP
 
 ```
 
