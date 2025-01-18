@@ -91,6 +91,14 @@ def index():
 def version():
     return render_template("version.html",form=CSRFForm())
 
+@app.route("/terms")
+def terms():
+    return render_template("terms.html",form=CSRFForm())
+
+@app.route("/privacy")
+def privacy():
+    return render_template("privacy.html",form=CSRFForm())
+
 @app.route('/sitemap.xml')
 def sitemap():
     pages = []
