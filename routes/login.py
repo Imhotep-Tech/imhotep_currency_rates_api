@@ -1,119 +1,136 @@
-from flask import Blueprint, request, render_template, redirect, session
+from flask import Blueprint, request, render_template, redirect, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from extensions import db
 from config import Config, CSRFForm
 from imhotep_mail import send_mail
 import secrets
-from config import CSRFForm
 
 login_bp = Blueprint('login', __name__)
 
 def logout():
-        session.permanent = False
-        session["logged_in"] = False
-        session.clear()
+    """Clear the session and log the user out."""
+    session.permanent = False
+    session["logged_in"] = False
+    session.clear()
 
 @login_bp.route("/login", methods=["POST", "GET"])
-#@limiter.limit("5 per minute")
 def login():
+    """Handle user login."""
     if request.method == "GET":
         return render_template("login.html", form=CSRFForm())
+
+    # Get form data
     user_username_mail = (request.form.get("user_username_mail").strip()).lower()
     user_password = request.form.get("user_password")
 
-    if "@" in user_username_mail:
-        try:
-            login_db = db.execute("SELECT user_password, user_mail_verify FROM users WHERE LOWER(user_mail) = ?",user_username_mail)
+    # Determine if the input is an email or username
+    is_email = "@" in user_username_mail
 
-            password_db = login_db[0]["user_password"]
-            user_mail_verify = login_db[0]["user_mail_verify"]
+    try:
+        # Query the database based on email or username
+        if is_email:
+            login_db = db.execute(
+                "SELECT user_password, user_mail_verify FROM users WHERE LOWER(user_mail) = ?",
+                user_username_mail
+            )
+        else:
+            login_db = db.execute(
+                "SELECT user_password, user_mail_verify FROM users WHERE LOWER(user_username) = ?",
+                user_username_mail
+            )
 
-            if check_password_hash(password_db, user_password):
+        if not login_db:
+            raise ValueError("User not found")
 
-                if user_mail_verify == "verified":
-                    user = db.execute("SELECT user_id FROM users WHERE LOWER(user_mail) = ? AND user_password = ?"
-                                        ,user_username_mail, password_db)
+        password_db = login_db[0]["user_password"]
+        user_mail_verify = login_db[0]["user_mail_verify"]
 
-                    session["logged_in"] = True
-                    session["user_id"] = user
-                    session.permanent = True
-                    return redirect("/home")
-                else:
-        
-                    error_verify = "Your mail isn't verified"
-                    return render_template("login.html", error_verify=error_verify,form = CSRFForm())
-            else:
+        # Check if the password is correct
+        if not check_password_hash(password_db, user_password):
+            raise ValueError("Incorrect password")
 
-                print("password_db: ", password_db)
-                print("user_password: ",user_password)
+        # Check if the email is verified
+        if user_mail_verify != "verified":
+            error_verify = "Your email isn't verified"
+            return render_template("login.html", error_verify=error_verify, form=CSRFForm())
 
-                error = "Your username or password are incorrect!"
-                return render_template("login.html", error=error,form = CSRFForm())
-        except:
-            error = "Your E-mail or password are incorrect!"
-            return render_template("login.html", error=error,form = CSRFForm())
-    else:
-        try:
-            login_db = db.execute("SELECT user_password, user_mail_verify FROM users WHERE LOWER(user_username) = ?", user_username_mail)
+        # Fetch the user ID
+        if is_email:
+            user = db.execute(
+                "SELECT user_id FROM users WHERE LOWER(user_mail) = ? AND user_password = ?",
+                user_username_mail, password_db
+            )
+        else:
+            user = db.execute(
+                "SELECT user_id FROM users WHERE LOWER(user_username) = ? AND user_password = ?",
+                user_username_mail, password_db
+            )
 
-            password_db = login_db[0]["user_password"]
-            user_mail_verify = login_db[0]["user_mail_verify"]
+        # Set session variables
+        session["logged_in"] = True
+        session["user_id"] = user[0]["user_id"]
+        session.permanent = True
 
-            if check_password_hash(password_db, user_password):
-                if user_mail_verify == "verified":
-                    user = db.execute("SELECT user_id FROM users WHERE LOWER(user_username) = ? AND user_password = ?",
-                        user_username_mail, password_db)
+        # Redirect to the home page
+        return redirect("/home")
 
-                    session["logged_in"] = True
-                    session["user_id"] = user
-                    session.permanent = True
-                    return redirect("/home")
-                else:
-                    error_verify = "Your mail isn't verified"
-            else:
-                error = "Your username or password are incorrect!"
-                return render_template("login.html", error=error,form = CSRFForm())
-        except:
-            error = "Your username or password are incorrect!"
-            return render_template("login.html", error=error,form = CSRFForm())
-        
-@login_bp.route("/forget_password",methods=["POST", "GET"])
+    except ValueError as e:
+        # Handle specific errors
+        error = str(e)
+        return render_template("login.html", error=error, form=CSRFForm())
+
+    except Exception as e:
+        # Handle unexpected errors
+        print(f"Unexpected error: {e}")
+        error = "An unexpected error occurred. Please try again later."
+        return render_template("login.html", error=error, form=CSRFForm())
+
+@login_bp.route("/forget_password", methods=["POST", "GET"])
 def forget_password():
+    """Handle password reset requests."""
     if request.method == "GET":
-        return render_template("forget_password.html",form = CSRFForm())
-    else:
+        return render_template("forget_password.html", form=CSRFForm())
 
-        user_mail = request.form.get("user_mail")
-        try:
-            db.execute("SELECT user_mail FROM users WHERE user_mail = ?", user_mail)
+    user_mail = request.form.get("user_mail")
+    try:
+        # Check if the email exists in the database
+        db.execute("SELECT user_mail FROM users WHERE user_mail = ?", user_mail)
 
-            temp_password = secrets.token_hex(4)
+        # Generate a temporary password
+        temp_password = secrets.token_hex(4)
+        hashed_password = generate_password_hash(temp_password)
 
-            smtp_server = 'smtp.gmail.com'
-            smtp_port = 465
-            username = 'imhotepfinance@gmail.com'  # Replace with your Gmail email address
-            password =  Config.MAIL_PASSWORD    # Replace with the app password generated from Google account settings
+        # Update the user's password in the database
+        db.execute("UPDATE users SET user_password = ? WHERE user_mail = ?", hashed_password, user_mail)
 
-            # Sending an email to a Gmail address
-            to_email = user_mail
-            subject = 'Reset Password'
-            body = f'Your temporary Password is: {temp_password}'
-            is_html = False
+        # Send the temporary password via email
+        smtp_server = 'smtp.gmail.com'
+        smtp_port = 465
+        username = 'imhotepfinance@gmail.com'  # Replace with your Gmail email address
+        password = Config.MAIL_PASSWORD  # Replace with the app password generated from Google account settings
 
-            success, error = send_mail(smtp_server, smtp_port, username, password, to_email, subject, body, is_html)
-            if error:
-                print("Error on sending the code ",error)
+        to_email = user_mail
+        subject = 'Reset Password'
+        body = f'Your temporary Password is: {temp_password}'
+        is_html = False
 
-            hashed_password = generate_password_hash(temp_password)
-            db.execute("UPDATE users SET user_password = ? WHERE user_mail = ?",hashed_password, user_mail)
+        success, error = send_mail(smtp_server, smtp_port, username, password, to_email, subject, body, is_html)
+        if error:
+            print("Error on sending the code:", error)
+            raise Exception("Failed to send email")
 
-            success="The Mail is sent check Your mail for your new password"
-            return render_template("login.html", success=success,form = CSRFForm())
-        except:
-            error = "This Email isn't saved"
-            return render_template("forget_password.html", error = error,form = CSRFForm())
-        
+        # Notify the user that the email has been sent
+        success = "The email has been sent. Check your inbox for your new password."
+        return render_template("login.html", success=success, form=CSRFForm())
+
+    except Exception as e:
+        # Handle errors
+        print(f"Error in forget_password: {e}")
+        error = "This email isn't registered."
+        return render_template("forget_password.html", error=error, form=CSRFForm())
+
 @login_bp.route("/logout", methods=["GET", "POST"])
 def logout_route():
-        logout()
-        return redirect("/")
+    """Handle user logout."""
+    logout()
+    return redirect("/")
