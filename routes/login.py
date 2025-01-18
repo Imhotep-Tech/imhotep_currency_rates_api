@@ -4,6 +4,7 @@ from extensions import db
 from config import Config, CSRFForm
 from imhotep_mail import send_mail
 import secrets
+from config import CSRFForm
 
 login_bp = Blueprint('login', __name__)
 
@@ -12,9 +13,11 @@ def logout():
         session["logged_in"] = False
         session.clear()
 
-@login_bp.route("/login", methods=["POST"])
+@login_bp.route("/login", methods=["POST", "GET"])
 #@limiter.limit("5 per minute")
 def login():
+    if request.method == "GET":
+        return render_template("login.html", form=CSRFForm())
     user_username_mail = (request.form.get("user_username_mail").strip()).lower()
     user_password = request.form.get("user_password")
 

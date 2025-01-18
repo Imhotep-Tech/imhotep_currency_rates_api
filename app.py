@@ -9,6 +9,7 @@ from routes.login import login_bp
 from routes.register import register_bp
 from routes.settings import settings_bp
 from routes.user import user_bp
+from routes.before_sign import before_sign_bp
 from flask_talisman import Talisman
 
 def create_app():
@@ -25,6 +26,7 @@ def create_app():
     app.register_blueprint(register_bp)
     app.register_blueprint(settings_bp)
     app.register_blueprint(user_bp)
+    app.register_blueprint(before_sign_bp)
 
     return app
 
@@ -83,11 +85,11 @@ def index():
     if session.get("logged_in"):
         return redirect("/home")
     else:
-        return render_template("login.html", form = CSRFForm())
+        return redirect("/before_sign")
 
 @app.route("/version")
 def version():
-    return render_template("version.html", form = CSRFForm())
+    return render_template("version.html",form=CSRFForm())
 
 @app.route('/sitemap.xml')
 def sitemap():
