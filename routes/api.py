@@ -79,8 +79,10 @@ def latest_rates(api_key, base_currency='USD'):
     current_time = datetime.now()
     latest_data, currencies, last_updated_at = get_latest_rates()
 
+    last_updated_at = datetime.fromisoformat(last_updated_at)
+
     # If no data exists or the last update was more than 24 hours ago, fetch new data
-    if latest_data is None :#or (current_time - datetime.fromisoformat(last_updated_at)) > timedelta(hours=24):
+    if latest_data is None or last_updated_at.date() != current_time.date():
         fetch_success = fetch_currency_data()
         if fetch_success:
             latest_data, currencies, last_updated_at = get_latest_rates()
