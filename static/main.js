@@ -288,3 +288,275 @@ function copyApiKey() {
         alert('API key copied to clipboard!'); // Optional: Alert the user
     }
 }
+
+// Landing Page Initialization
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize AOS (Animate on Scroll)
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+    }
+
+    // Update currency symbol based on selected currency
+    const fromCurrencySelect = document.getElementById('from_currency');
+    if (fromCurrencySelect) {
+        fromCurrencySelect.addEventListener('change', function() {
+            const currencySymbol = document.getElementById('currency-symbol');
+            if (currencySymbol) {
+                switch(this.value) {
+                    case 'USD': currencySymbol.textContent = '$'; break;
+                    case 'EUR': currencySymbol.textContent = '€'; break;
+                    case 'GBP': currencySymbol.textContent = '£'; break;
+                    case 'JPY': currencySymbol.textContent = '¥'; break;
+                    case 'CAD': currencySymbol.textContent = 'CA$'; break;
+                    case 'AUD': currencySymbol.textContent = 'A$'; break;
+                    case 'CHF': currencySymbol.textContent = 'CHF'; break;
+                    case 'CNY': currencySymbol.textContent = '¥'; break;
+                    default: currencySymbol.textContent = '$'; break;
+                }
+            }
+        });
+    }
+
+    // Language tabs for code examples
+    const languageTabs = document.querySelectorAll('.language-tab');
+    if (languageTabs.length) {
+        languageTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const lang = tab.getAttribute('data-lang');
+                
+                // Update active tab
+                document.querySelectorAll('.language-tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+                tab.classList.add('active');
+                
+                // Show the selected code example
+                document.querySelectorAll('.code-example').forEach(example => {
+                    example.classList.remove('active');
+                });
+                const activeExample = document.querySelector(`.code-example[data-lang="${lang}"]`);
+                if (activeExample) {
+                    activeExample.classList.add('active');
+                }
+            });
+        });
+    }
+
+    // Copy code example
+    const codeCopyBtn = document.querySelector('.code-copy-btn');
+    if (codeCopyBtn) {
+        codeCopyBtn.addEventListener('click', function() {
+            const activeExample = document.querySelector('.code-example.active code');
+            if (activeExample) {
+                navigator.clipboard.writeText(activeExample.innerText).then(() => {
+                    const originalHtml = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        this.innerHTML = originalHtml;
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+            }
+        });
+    }
+
+    // Copy API response
+    const copyResponseBtn = document.getElementById('copy-response');
+    if (copyResponseBtn) {
+        copyResponseBtn.addEventListener('click', function() {
+            const response = document.getElementById('api-response');
+            if (response) {
+                navigator.clipboard.writeText(response.innerText).then(() => {
+                    const originalHtml = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check"></i>';
+                    setTimeout(() => {
+                        this.innerHTML = originalHtml;
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy response: ', err);
+                });
+            }
+        });
+    }
+
+    // Back to top button visibility
+    const backToTopBtn = document.getElementById('back-to-top');
+    if (backToTopBtn) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+
+        // Smooth scroll for back to top
+        backToTopBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // Counter animation
+    const counterElements = document.querySelectorAll('.counter');
+    if (counterElements.length) {
+        const observerOptions = {
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const targetValue = parseInt(counter.textContent);
+                    let currentValue = 0;
+                    const increment = Math.ceil(targetValue / 50);
+                    const timer = setInterval(() => {
+                        currentValue += increment;
+                        if (currentValue >= targetValue) {
+                            counter.textContent = targetValue;
+                            clearInterval(timer);
+                        } else {
+                            counter.textContent = currentValue;
+                        }
+                    }, 30);
+                    observer.unobserve(counter);
+                }
+            });
+        }, observerOptions);
+
+        counterElements.forEach(counter => {
+            observer.observe(counter);
+        });
+    }
+
+    // API Demo Form Submission
+    const apiDemoForm = document.getElementById('api-demo-form');
+    if (apiDemoForm) {
+        apiDemoForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const fromCurrency = document.getElementById('from_currency').value.toUpperCase();
+            const toCurrency = document.getElementById('to_currency').value.toUpperCase();
+            const amount = parseFloat(document.getElementById('amount').value);
+            const spinner = document.getElementById('convert-spinner');
+            const responseEl = document.getElementById('api-response');
+
+            if (!fromCurrency || !toCurrency || isNaN(amount)) {
+                responseEl.textContent = JSON.stringify({ 
+                    error: {
+                        code: 400,
+                        message: 'Please fill all fields correctly'
+                    }
+                }, null, 2);
+                return;
+            }
+
+            // Show loading spinner
+            if (spinner) {
+                spinner.classList.remove('d-none');
+            }
+            if (responseEl) {
+                responseEl.textContent = 'Loading...';
+            }
+
+            try {
+                // Get the demo API key from data attribute or use a default
+                const apiUrl = document.querySelector('meta[name="api-demo-url"]')?.getAttribute('content') || 
+                               'https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/demo/';
+                
+                const response = await fetch(`${apiUrl}${fromCurrency}`);
+                const data = await response.json();
+
+                // Hide spinner after response
+                if (spinner) {
+                    spinner.classList.add('d-none');
+                }
+
+                if (response.ok) {
+                    const rate = data.data[toCurrency];
+                    const result = amount * rate;
+
+                    // Display the formatted result with timestamps
+                    if (responseEl) {
+                        responseEl.textContent = JSON.stringify({
+                            meta: {
+                                base_currency: fromCurrency,
+                                target_currency: toCurrency,
+                                last_updated_at: new Date().toISOString()
+                            },
+                            data: {
+                                amount: amount,
+                                rate: rate,
+                                result: parseFloat(result.toFixed(2))
+                            }
+                        }, null, 2);
+                    }
+                } else {
+                    // Handle API errors with structured error format
+                    if (responseEl) {
+                        responseEl.textContent = JSON.stringify({
+                            error: {
+                                code: response.status,
+                                message: data.error?.message || 'Failed to fetch exchange rate'
+                            }
+                        }, null, 2);
+                    }
+                }
+            } catch (error) {
+                // Hide spinner and show error
+                if (spinner) {
+                    spinner.classList.add('d-none');
+                }
+                
+                // Format network errors properly
+                if (responseEl) {
+                    responseEl.textContent = JSON.stringify({
+                        error: {
+                            code: 503,
+                            message: 'Network error. Please try again later.'
+                        }
+                    }, null, 2);
+                }
+            }
+        });
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+});
+
+// Function to copy text to clipboard with visual feedback
+function copyToClipboard(text, elementId) {
+    navigator.clipboard.writeText(text).then(() => {
+        const element = document.getElementById(elementId);
+        if (element) {
+            const originalHtml = element.innerHTML;
+            element.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            setTimeout(() => {
+                element.innerHTML = originalHtml;
+            }, 2000);
+        }
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+    });
+}
