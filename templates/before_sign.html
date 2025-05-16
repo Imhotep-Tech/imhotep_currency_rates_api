@@ -105,42 +105,115 @@
     </section>
 
     <!-- Stats Bar - New section showing API stats -->
-    <section class="stats-bar py-4 bg-white">
+    <section class="stats-bar py-5 bg-white">
         <div class="container">
-            <div class="row text-center">
-                <div class="col-md-3 col-6 mb-3 mb-md-0" data-aos="fade-up" data-aos-delay="100">
-                    <div class="stat-item">
-                        <div class="stat-icon">
-                            <i class="fas fa-globe"></i>
+            <div class="row justify-content-center text-center">
+                <div class="col-md-6 mb-4 mb-md-0" data-aos="fade-up" data-aos-delay="100">
+                    <div class="stat-item enhanced-stat">
+                        <div class="stat-icon-wrapper">
+                            <div class="stat-icon-circle">
+                                <i class="fas fa-globe-americas fa-2x"></i>
+                            </div>
+                            <div class="stat-pulse"></div>
                         </div>
-                        <h3 class="stat-number"><span class="counter">170</span>+</h3>
-                        <p class="stat-text">Currencies</p>
+                        <h3 class="stat-number display-4 fw-bold mt-4"><span class="counter">170</span>+</h3>
+                        <div class="stat-divider"></div>
+                        <p class="stat-text lead">Global Currencies</p>
+                        <p class="text-muted small">Comprehensive coverage of major and minor currencies</p>
                     </div>
                 </div>
-                <div class="col-md-3 col-6 mb-3 mb-md-0" data-aos="fade-up" data-aos-delay="200">
-                    <div class="stat-item">
-                        <i class="fas fa-bolt stat-icon"></i>
-                        <h3 class="stat-number"><span class="counter">99.9</span>%</h3>
-                        <p class="stat-text">Uptime</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="stat-item">
-                        <i class="fas fa-users stat-icon"></i>
-                        <h3 class="stat-number"><span class="counter">10</span>K+</h3>
-                        <p class="stat-text">Developers</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="400">
-                    <div class="stat-item">
-                        <i class="fas fa-exchange-alt stat-icon"></i>
-                        <h3 class="stat-number"><span class="counter">100</span>M+</h3>
-                        <p class="stat-text">API Calls</p>
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="stat-item enhanced-stat">
+                        <div class="stat-icon-wrapper">
+                            <div class="stat-icon-circle">
+                                <i class="fas fa-server fa-2x"></i>
+                            </div>
+                            <div class="stat-pulse"></div>
+                        </div>
+                        <h3 class="stat-number display-4 fw-bold mt-4"><span class="counter">99.9</span>%</h3>
+                        <div class="stat-divider"></div>
+                        <p class="stat-text lead">Service Uptime</p>
+                        <p class="text-muted small">Enterprise-grade reliability you can depend on</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <style>
+        .enhanced-stat {
+            padding: 2rem;
+            border-radius: 16px;
+            background-color: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .enhanced-stat:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-icon-wrapper {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+        }
+        
+        .stat-icon-circle {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            color: white;
+            z-index: 2;
+        }
+        
+        .stat-pulse {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(67, 97, 238, 0.3);
+            z-index: 1;
+            animation: pulse 2s infinite;
+        }
+        
+        .stat-divider {
+            width: 60px;
+            height: 4px;
+            background: var(--gold);
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                opacity: 0.7;
+            }
+            70% {
+                transform: scale(1.1);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+        }
+    </style>
 
     <!-- Features Section - Redesigned with interactive cards -->
     <section class="features-section py-5 bg-light">
