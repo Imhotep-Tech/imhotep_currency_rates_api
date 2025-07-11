@@ -247,3 +247,83 @@ def latest_rates(api_key, base_currency='USD'):
         }
 
     return jsonify(response_data)
+
+# Route to fetch the latest currency rates with conversion
+@api_bp.route('/convert/latest_rates/<string:api_key>/<string:base_currency>/<string:target_currency>/<int:amount>', methods=['GET'])
+@limiter.limit("30 per minute")
+def convert_latest_rates(api_key, base_currency, target_currency, amount):
+
+    if not target_currency or not base_currency:
+        return error_response(404, "Target Currency or Base Currency not found")
+
+    # Convert base_currency to uppercase
+    base_currency = base_currency.upper()
+    target_currency = target_currency.upper()
+
+    # Validate the API key
+    user = db.execute("SELECT * FROM users WHERE api_key = ?", api_key)
+    if not user:
+        return error_response(401, "Invalid API key")
+
+    # Get the latest rates (from cache or database)
+    latest_data, currencies, last_updated_at, is_stale = get_latest_rates()
+
+    # If no data or outdated data, fetch fresh data
+    if latest_data is None:
+        fetch_success = fetch_currency_data()
+        if fetch_success:
+            latest_data, currencies, last_updated_at, is_stale = get_latest_rates()
+        else:
+            # Try to get fallback data if external API fetch fails
+            latest_data, currencies, last_updated_at, is_stale = get_fallback_data()
+            
+            # If no fallback data available either
+            if latest_data is None:
+                return error_response(503, "Failed to fetch currency data and no fallback data available")
+
+    if currencies is None:
+        return error_response(404, "No currency data found in the database")
+
+    # Format the response
+    rates = {currency["currency_code"]: currency["rate"] for currency in currencies}
+
+    # Check if target currency exists
+    if target_currency not in rates:
+        return error_response(400, f"Target currency '{target_currency}' not found")
+
+    # Calculate conversion rate
+    if base_currency == 'USD':
+        conversion_rate = rates[target_currency]
+    elif target_currency == 'USD':
+        conversion_rate = 1 / rates[base_currency]
+    else:
+        # Both currencies are non-USD, convert through USD
+        if base_currency not in rates:
+            return error_response(400, f"Base currency '{base_currency}' not found")
+        base_rate = rates[base_currency]
+        target_rate = rates[target_currency]
+        conversion_rate = target_rate / base_rate
+
+    converted_amount = conversion_rate * amount
+
+    response_data = {
+        "meta": {
+            "base_currency": base_currency,
+            "target_currency": target_currency,
+            "amount": amount,
+            "last_updated_at": last_updated_at
+        },
+        "data": {
+            "conversion_rate": conversion_rate,
+            "converted_amount": round(converted_amount, 2)
+        }
+    }
+
+    # Add warning if data is stale
+    if is_stale:
+        response_data["warning"] = {
+            "message": "Using stale data as fallback. External API could not be reached.",
+            "data_age": f"{(datetime.now() - last_updated_at).days} days old"
+        }
+
+    return jsonify(response_data)

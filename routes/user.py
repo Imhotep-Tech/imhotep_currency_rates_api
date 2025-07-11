@@ -12,11 +12,13 @@ def home():
         return redirect("/")
     
     try:
-        user_id = session.get("user_id")[0]["user_id"]
+        user_id = session.get("user_id")
+        if isinstance(user_id, list):
+            user_id = user_id[0]["user_id"]
         print("user_id = ",user_id)
-    except OperationalError:
-            error = "Welcome Back"
-            return render_template('error.html', error=error,form = CSRFForm())
+    except (OperationalError, TypeError, KeyError):
+        error = "Welcome Back"
+        return render_template('error.html', error=error,form = CSRFForm())
     
     api_key_db = db.execute("SELECT api_key, user_username FROM users WHERE user_id = ?", user_id)
     

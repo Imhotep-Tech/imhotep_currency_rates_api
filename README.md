@@ -17,22 +17,36 @@ The Currency Exchange API allows users to retrieve real-time foreign exchange ra
    - Register on the homepage to receive your free API key.
    - Each user is granted one API key which must be included in the URL for each API request.
 ### 2. API Endpoints
-  Fetch Latest Exchange Rates
-  - **Endpoint**: `/latest_rates/<base_currency>`
+
+#### Fetch Latest Exchange Rates
+  - **Endpoint**: `/latest_rates/<api_key>/<base_currency>`
   - **Method**: `GET`
   - **Parameters**:
-    - `base_currency` (required): The base currency for which exchange rates should be calculated, e.g., USD, EUR.
     - `api_key` (required): Your unique API key, which you received upon registration.
+    - `base_currency` (required): The base currency for which exchange rates should be calculated, e.g., USD, EUR.
   - **Example Request**:
     
     ```
-    
-    GET https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/<your api key>/USD
+    GET https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/<your_api_key>/USD
+    ```
+
+#### Convert Currency Amount
+  - **Endpoint**: `/convert/latest_rates/<api_key>/<base_currency>/<target_currency>/<amount>`
+  - **Method**: `GET`
+  - **Parameters**:
+    - `api_key` (required): Your unique API key
+    - `base_currency` (required): The currency to convert from
+    - `target_currency` (required): The currency to convert to
+    - `amount` (required): The amount to convert (integer)
+  - **Example Request**:
     
     ```
+    GET https://imhotepexchangeratesapi.pythonanywhere.com/convert/latest_rates/<your_api_key>/USD/EUR/100
+    ```
+
   - **Response**: Returns a JSON object containing:
-     - `meta`: Information about the request, including the base currency and last update timestamp.
-     - `data`: An object containing currency codes as keys and their conversion rates relative to the base currency.
+     - `meta`: Information about the request, including currencies, amount, and timestamp.
+     - `data`: Conversion rate and converted amount.
        
 #### Sample Response:
 ``` json

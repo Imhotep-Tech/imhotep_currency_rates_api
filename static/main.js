@@ -466,9 +466,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             try {
-                // Get the demo API key from data attribute or use a default
-                const apiUrl = document.querySelector('meta[name="api-demo-url"]')?.getAttribute('content') || 
-                               'https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/demo/';
+                // Use the demo API key for the conversion demo
+                const apiUrl = 'https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/demo/';
                 
                 const response = await fetch(`${apiUrl}${fromCurrency}`);
                 const data = await response.json();
@@ -488,12 +487,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             meta: {
                                 base_currency: fromCurrency,
                                 target_currency: toCurrency,
-                                last_updated_at: new Date().toISOString()
+                                amount: amount,
+                                last_updated_at: data.meta.last_updated_at
                             },
                             data: {
-                                amount: amount,
-                                rate: rate,
-                                result: parseFloat(result.toFixed(2))
+                                conversion_rate: rate,
+                                converted_amount: parseFloat(result.toFixed(2))
                             }
                         }, null, 2);
                     }
