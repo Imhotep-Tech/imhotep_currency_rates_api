@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <script src="{{ url_for('static', filename='main.js') }}"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Fallback: if Tailwind isn't available, inject from unpkg CDN or local minimal CSS
+      window.addEventListener('error', function(e){
+        if(e && e.target && e.target.tagName === 'SCRIPT' && e.target.src.includes('cdn.tailwindcss.com')){
+          var s = document.createElement('script');
+          s.src = 'https://unpkg.com/tailwindcss-cdn@3.4.17/tailwindcss.js';
+          document.head.appendChild(s);
+        }
+      }, true);
+    </script>
     <link rel="shortcut icon" href="{{ url_for('static', filename='imhotep_exchange_rate_api.jpeg')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <meta name="description" content="Imhotep Exchange Rate API - Get Currency Rates Easily And Free.">
@@ -14,19 +22,31 @@
     <title>Imhotep Exchange Rate API</title>
     <meta name="google-site-verification" content="t0C7WT8MTJ1gP87eh4Y7U9bkqPxRAnm1JxYLnDix6_Y" />
 </head>
-<body>
+<body class="min-h-screen bg-gray-50 text-gray-900 flex flex-col">
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-gray-200">
+        {% include 'nav.html' %}
+    </header>
+
     <!-- Loading Screen -->
-    <div id="loading-overlay">
-        <div class="loader"></div>
-        <p>Loading...</p>
+    <div id="loading-overlay" class="fixed inset-0 hidden items-center justify-center bg-white/70 backdrop-blur-sm">
+        <div class="flex flex-col items-center gap-3">
+            <div class="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"></div>
+            <p class="text-sm text-gray-600">Loading...</p>
+        </div>
     </div>
 
-    <div class="content-container">
-        {% block body %}
-        {% endblock %}
-    </div>
-    
-    {% include 'footer.html' %}
+    <main class="flex-1">
+        <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+            {% block content %}
+                {% block body %}{% endblock %}
+            {% endblock %}
+        </div>
+    </main>
 
+    <footer class="border-t border-gray-200 bg-white">
+        {% include 'footer.html' %}
+    </footer>
+
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
 </html>

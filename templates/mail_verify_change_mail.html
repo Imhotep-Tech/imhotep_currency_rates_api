@@ -1,28 +1,27 @@
 {% extends "layout.html" %}
 
 {% block body %}
-
-{% include 'nav.html' %}
-
-<div class="form-container">
-    <div class="message-container">
-        {% if error %}
-            <div class="error-message">
-                {{ error }}
-            </div>
-        {% endif %}
-    </div>
-    <p class="title">Verify</p>
-    <form action="/settings/personal_info/mail_verification" method="post" class="form" onsubmit="return validatePassword()">
+<div class="flex min-h-[60vh] items-start justify-center px-4 py-8">
+  <div class="w-full max-w-md">
+    {% if error %}
+      <div class="mb-3 rounded-md border border-red-200 bg-red-50 p-3 text-red-800 text-sm text-center">{{ error }}</div>
+    {% endif %}
+    <p class="text-center text-2xl font-bold tracking-tight mb-4">Verify</p>
+    <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-200">
+      <form action="/settings/personal_info/mail_verification" method="post" class="space-y-4" onsubmit="return validatePassword()">
         {{ form.hidden_tag() }}
-        <input type="name" class="input" placeholder="Verification Code" name="verification_code" required="">
+        <div>
+          <label class="mb-1 block text-sm font-medium text-gray-700">Verification Code</label>
+          <input type="name" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" placeholder="Verification Code" name="verification_code" required>
+        </div>
         <input type="hidden"  name="user_username" value="{{ user_username }}">
         <input type="hidden"  name="user_mail" value="{{ user_mail }}">
         <input type="hidden"  name="user_mail_db" value="{{ user_mail_db }}">
-        <p class="page-link"></p>
-        <button class="form-btn">
-            <i class="fas fa-check"></i>
+        <button class="inline-flex w-full items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
+          <i class="fas fa-check mr-2"></i> Verify
         </button>
-    </form>
+      </form>
+    </div>
   </div>
+</div>
 {% endblock %}

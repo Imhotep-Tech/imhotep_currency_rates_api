@@ -2,28 +2,30 @@
 
 {% block body %}
 
-<div class="form-container">
-    <div class="message-container">
-        {% if error %}
-            <div class="error-message">
-                {{ error }}
-            </div>
-        {% endif %}
-    </div>
+<div class="flex min-h-[60vh] items-start justify-center px-4 py-8">
+  <div class="w-full max-w-md">
+    {% if error %}
+      <div class="mb-3 rounded-md border border-red-200 bg-red-50 p-3 text-red-800 text-sm text-center">{{ error }}</div>
+    {% endif %}
     {% include 'back.html' %}
-    <p class="title">Check Password</p>
-    <form action="/settings/security_check" method="post" class="form">
-      {{ form.hidden_tag() }}
+    <p class="text-center text-2xl font-bold tracking-tight mb-4">Check Password</p>
+    <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-200">
+      <form action="/settings/security_check" method="post" class="space-y-4">
+        {{ form.hidden_tag() }}
         <input type="hidden" name="user_id" value="{ user_id }">
-        <input type="password" class="input" placeholder="Old Password" name="check_pass" id = "password" required="">
-        <label for="password-toggle" class="password-toggle-btn">
-            <input type="checkbox" id="password-toggle" onclick="togglePasswordVisibility_all()">
-            <span class="checkmark">Show password</span>
-          </label>
-        <p class="page-link"></p>
-        <button class="form-btn" title="Submit">
-          <i class="fas fa-check"></i>
-      </button>
-    </form>
+        <div>
+          <label class="mb-1 block text-sm font-medium text-gray-700">Old Password</label>
+          <input type="password" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" placeholder="Old Password" name="check_pass" id="password" required>
+        </div>
+        <label for="password-toggle" class="mt-2 inline-flex items-center gap-2 text-sm text-gray-600">
+          <input type="checkbox" id="password-toggle" onclick="togglePasswordVisibility_all()" class="h-4 w-4 rounded border-gray-300">
+          <span>Show password</span>
+        </label>
+        <button class="inline-flex w-full items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700" title="Submit">
+          <i class="fas fa-check mr-2"></i> Continue
+        </button>
+      </form>
+    </div>
   </div>
+</div>
 {% endblock %}

@@ -1,567 +1,142 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <meta charset="utf-8">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='imhotep_exchange_rate_api.jpeg')}}">
-    <title>Imhotep Exchange Rate API</title>
-    <meta name="description" content="Imhotep Exchange Rate API - Get Currency Rates Easily And Free.">
-    <meta name="keywords" content="Imhotep Exchange Rate API, Imhotep Currency Rate API, Imhotep Exchange API, Imhotep API, Currency Rate API, Free Currency Rate API, Exchange Rate API, Free Exchange Rate API">
-    <meta name="google-site-verification" content="t0C7WT8MTJ1gP87eh4Y7U9bkqPxRAnm1JxYLnDix6_Y" />
-</head>
-<body class="landing-page">
-    <!-- Navigation - Modernized with fixed transparency effect -->
-    <nav class="navbar navbar-expand-lg fixed-top navbar-glass">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-globe-americas me-2 text-gold"></i>
-                <span class="fw-bold">Imhotep<span class="text-gold">API</span></span>
-            </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <i class="fas fa-bars text-gold"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link px-3" href="/login">
-                            <i class="fas fa-sign-in-alt me-1"></i> Login
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link px-3 nav-btn-primary" href="/register">
-                            <i class="fas fa-user-plus me-1"></i> Sign Up Free
-                        </a>
-                    </li>
-                </ul>
-            </div>
+{% extends "layout.html" %}
+
+{% block body %}
+
+<section class="relative overflow-hidden bg-gradient-to-br from-blue-700 to-indigo-700">
+  <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div class="text-center lg:text-left text-white">
+        <span class="inline-flex items-center rounded-full bg-white/15 px-3 py-1 text-xs font-medium">100% Free API</span>
+        <h1 class="mt-4 text-3xl sm:text-4xl font-bold tracking-tight">Real-Time Currency Exchange Rates API</h1>
+        <p class="mt-3 text-white/90">Access accurate exchange rates for 170+ currencies with simple integration, reliable data, and zero subscription fees.</p>
+        <div class="mt-6 flex flex-col sm:flex-row gap-3 sm:justify-start justify-center">
+          <a href="/register" class="inline-flex items-center justify-center rounded-md bg-white px-5 py-2 text-sm font-medium text-blue-700 shadow-sm hover:bg-gray-100"><i class="fas fa-rocket mr-2"></i> Get Your API Key</a>
+          <a href="#convert-demo" class="inline-flex items-center justify-center rounded-md border border-white/70 px-5 py-2 text-sm font-medium text-white hover:bg-white/10"><i class="fas fa-code mr-2"></i> Try Demo</a>
         </div>
-    </nav>
-
-    <!-- Hero Section - Enhanced with animation and visual elements -->
-    <section class="hero-section py-5">
-        <div class="container py-5">
-            <div class="row align-items-center">
-                <div class="col-lg-6 text-lg-start text-center mb-5 mb-lg-0">
-                    <div data-aos="fade-right" data-aos-duration="1000">
-                        <span class="badge bg-success-subtle text-success mb-3 p-2 rounded-pill">
-                            <i class="fas fa-check-circle me-1"></i> 100% Free API
-                        </span>
-                        <h1 class="display-4 fw-bold mb-4 text-gradient">
-                            Real-Time Currency Exchange Rates API
-                        </h1>
-                        <p class="lead mb-4 text-white-75">
-                            Access accurate exchange rates for 170+ currencies with simple integration, reliable data, and zero subscription fees.
-                        </p>
-                        <div class="d-flex gap-3 justify-content-lg-start justify-content-center">
-                            <a href="/register" class="btn btn-primary btn-lg pulse-btn">
-                                <i class="fas fa-rocket me-2"></i>Get Your API Key
-                            </a>
-                            <a href="#demo" class="btn btn-outline-light btn-lg">
-                                <i class="fas fa-code me-2"></i>Try Demo
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="200">
-                    <div class="hero-animation">
-                        <div class="currency-card">
-                            <div class="currency-icon">
-                                <i class="fas fa-dollar-sign"></i>
-                            </div>
-                            <div class="currency-data">
-                                <span>USD → EUR</span>
-                                <h4>0.93</h4>
-                            </div>
-                        </div>
-                        <div class="currency-card">
-                            <div class="currency-icon">
-                                <i class="fas fa-euro-sign"></i>
-                            </div>
-                            <div class="currency-data">
-                                <span>EUR → GBP</span>
-                                <h4>0.85</h4>
-                            </div>
-                        </div>
-                        <div class="currency-card">
-                            <div class="currency-icon">
-                                <i class="fas fa-pound-sign"></i>
-                            </div>
-                            <div class="currency-data">
-                                <span>GBP → JPY</span>
-                                <h4>187.24</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Diagonal section divider -->
-            <div class="divider-diagonal-bottom"></div>
+      </div>
+      <div class="hidden lg:block">
+        <div class="relative h-64">
+          <div class="absolute top-4 left-6 rounded-2xl bg-white/10 backdrop-blur p-4 text-white shadow-lg">
+            <div class="text-xs">USD → EUR</div>
+            <div class="text-2xl font-bold">0.93</div>
+          </div>
+          <div class="absolute top-28 right-8 rounded-2xl bg-white/10 backdrop-blur p-4 text-white shadow-lg">
+            <div class="text-xs">EUR → GBP</div>
+            <div class="text-2xl font-bold">0.85</div>
+          </div>
+          <div class="absolute bottom-4 left-24 rounded-2xl bg-white/10 backdrop-blur p-4 text-white shadow-lg">
+            <div class="text-xs">GBP → JPY</div>
+            <div class="text-2xl font-bold">187.24</div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Stats Bar - New section showing API stats -->
-    <section class="stats-bar py-5 bg-white">
-        <div class="container">
-            <div class="row justify-content-center text-center">
-                <div class="col-md-6 mb-4 mb-md-0" data-aos="fade-up" data-aos-delay="100">
-                    <div class="stat-item enhanced-stat">
-                        <div class="stat-icon-wrapper">
-                            <div class="stat-icon-circle">
-                                <i class="fas fa-globe-americas fa-2x"></i>
-                            </div>
-                            <div class="stat-pulse"></div>
-                        </div>
-                        <h3 class="stat-number display-4 fw-bold mt-4"><span class="counter">170</span>+</h3>
-                        <div class="stat-divider"></div>
-                        <p class="stat-text lead">Global Currencies</p>
-                        <p class="text-muted small">Comprehensive coverage of major and minor currencies</p>
-                    </div>
-                </div>
-                <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="stat-item enhanced-stat">
-                        <div class="stat-icon-wrapper">
-                            <div class="stat-icon-circle">
-                                <i class="fas fa-server fa-2x"></i>
-                            </div>
-                            <div class="stat-pulse"></div>
-                        </div>
-                        <h3 class="stat-number display-4 fw-bold mt-4"><span class="counter">99.9</span>%</h3>
-                        <div class="stat-divider"></div>
-                        <p class="stat-text lead">Service Uptime</p>
-                        <p class="text-muted small">Enterprise-grade reliability you can depend on</p>
-                    </div>
-                </div>
+<section class="bg-white">
+  <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-center md:text-left">
+      <div class="rounded-xl border border-gray-200 p-6 shadow-sm">
+        <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-700"><i class="fas fa-globe-americas"></i></div>
+        <h3 class="font-semibold">Global Currencies</h3>
+        <p class="text-gray-600">Comprehensive coverage of major and minor currencies</p>
+      </div>
+      <div class="rounded-xl border border-gray-200 p-6 shadow-sm">
+        <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-700"><i class="fas fa-server"></i></div>
+        <h3 class="font-semibold">99.9% Uptime</h3>
+        <p class="text-gray-600">Enterprise-grade reliability you can depend on</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="convert-demo" class="bg-gray-50">
+  <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+      <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+        <h2 class="m-0 text-lg font-semibold mb-4">Try Conversion Demo</h2>
+        <form id="convert-form" class="space-y-4">
+          <div>
+            <label class="mb-1 block text-sm font-medium text-gray-700">API Key</label>
+            <input id="demo_api_key" type="text" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" placeholder="Enter your API key" required>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="mb-1 block text-sm font-medium text-gray-700">From (Base)</label>
+              <input id="from_currency" type="text" value="USD" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" required>
             </div>
+            <div>
+              <label class="mb-1 block text-sm font-medium text-gray-700">To (Target)</label>
+              <input id="to_currency" type="text" value="EUR" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" required>
+            </div>
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium text-gray-700">Amount</label>
+            <input id="amount" type="number" value="100" min="0" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" required>
+          </div>
+          <button type="submit" class="inline-flex w-full items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
+            <i class="fas fa-exchange-alt mr-2"></i> Convert Currency
+          </button>
+        </form>
+      </div>
+      <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="m-0 text-sm font-semibold">API Response</h3>
+          <button id="copy-convert-response" class="inline-flex items-center rounded-md border border-gray-300 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"><i class="fas fa-copy mr-1"></i> Copy</button>
         </div>
-    </section>
-
-    <style>
-        .enhanced-stat {
-            padding: 2rem;
-            border-radius: 16px;
-            background-color: #ffffff;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            height: 100%;
-        }
-        
-        .enhanced-stat:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-        }
-        
-        .stat-icon-wrapper {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            margin: 0 auto;
-        }
-        
-        .stat-icon-circle {
-            position: relative;
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #4361ee, #3a0ca3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            color: white;
-            z-index: 2;
-        }
-        
-        .stat-pulse {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            margin: auto;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: rgba(67, 97, 238, 0.3);
-            z-index: 1;
-            animation: pulse 2s infinite;
-        }
-        
-        .stat-divider {
-            width: 60px;
-            height: 4px;
-            background: var(--gold);
-            margin: 15px auto;
-            border-radius: 2px;
-        }
-        
-        @keyframes pulse {
-            0% {
-                transform: scale(0.95);
-                opacity: 0.7;
-            }
-            70% {
-                transform: scale(1.1);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(0.95);
-                opacity: 0;
-            }
-        }
-    </style>
-
-    <!-- Features Section - Redesigned with interactive cards -->
-    <section class="features-section py-5 bg-light">
-        <div class="container py-4">
-            <div class="text-center mb-5" data-aos="fade-up">
-                <h2 class="section-title">Why Choose Imhotep Exchange Rate API?</h2>
-                <p class="section-subtitle">Powerful features to meet all your exchange rate needs</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6" data-aos="fade-up">
-                    <div class="feature-card h-100">
-                        <div class="feature-icon bg-primary-subtle">
-                            <i class="fas fa-dollar-sign text-primary"></i>
-                        </div>
-                        <h3>Completely Free</h3>
-                        <p>No subscription fees, no hidden costs, no usage limits. All features are available to everyone.</p>
-                        <div class="feature-hover">
-                            <div class="feature-hover-content">
-                                <p>Our API is and always will be free, with the same high-quality service for all users regardless of usage volume.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-card h-100">
-                        <div class="feature-icon bg-success-subtle">
-                            <i class="fas fa-clock text-success"></i>
-                        </div>
-                        <h3>Real-Time Data</h3>
-                        <p>Get the latest currency exchange rates with automatic updates every 24 hours.</p>
-                        <div class="feature-hover">
-                            <div class="feature-hover-content">
-                                <p>With graceful fallbacks to ensure you always get data, even when the source API is temporarily unavailable.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-card h-100">
-                        <div class="feature-icon bg-info-subtle">
-                            <i class="fas fa-code text-info"></i>
-                        </div>
-                        <h3>Developer Friendly</h3>
-                        <p>Simple, RESTful endpoints with comprehensive documentation and code examples.</p>
-                        <div class="feature-hover">
-                            <div class="feature-hover-content">
-                                <p>Consistent response format with detailed error messages and useful metadata to help you debug issues.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-card h-100">
-                        <div class="feature-icon bg-danger-subtle">
-                            <i class="fas fa-shield-alt text-danger"></i>
-                        </div>
-                        <h3>Reliable & Secure</h3>
-                        <p>Unique API keys for each user with HTTPS encryption for all requests.</p>
-                        <div class="feature-hover">
-                            <div class="feature-hover-content">
-                                <p>Our infrastructure is designed for high availability, with multiple redundancies to ensure your app never goes down.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
-                    <div class="feature-card h-100">
-                        <div class="feature-icon bg-warning-subtle">
-                            <i class="fas fa-exchange-alt text-warning"></i>
-                        </div>
-                        <h3>Base Currency Flexibility</h3>
-                        <p>Convert between any two currencies with configurable base currency.</p>
-                        <div class="feature-hover">
-                            <div class="feature-hover-content">
-                                <p>Easily switch your base currency to any of our 170+ supported currencies without any additional API calls.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
-                    <div class="feature-card h-100">
-                        <div class="feature-icon bg-secondary-subtle">
-                            <i class="fas fa-headset text-secondary"></i>
-                        </div>
-                        <h3>Responsive Support</h3>
-                        <p>Get help when you need it from our dedicated developer support team.</p>
-                        <div class="feature-hover">
-                            <div class="feature-hover-content">
-                                <p>We're committed to helping you integrate and use our API successfully, with extensive documentation and personalized support.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- API Demo Section - Enhanced with interactive elements -->
-    <section id="demo" class="api-demo-section py-5">
-        <div class="container py-5">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
-                    <div class="demo-card">
-                        <div class="demo-card-header">
-                            <div class="demo-dots">
-                                <span class="demo-dot red"></span>
-                                <span class="demo-dot yellow"></span>
-                                <span class="demo-dot green"></span>
-                            </div>
-                            <h6 class="m-0">Try It Now - No Sign Up Required</h6>
-                        </div>
-                        <div class="demo-card-body">
-                            <form id="api-demo-form">
-                                <div class="mb-3">
-                                    <label for="from_currency" class="form-label">From Currency</label>
-                                    <select class="form-select form-select-lg" id="from_currency" name="from_currency" required>
-                                        <option value="USD">USD - United States Dollar</option>
-                                        <option value="EUR">EUR - Euro</option>
-                                        <option value="GBP">GBP - British Pound</option>
-                                        <option value="JPY">JPY - Japanese Yen</option>
-                                        <option value="CAD">CAD - Canadian Dollar</option>
-                                        <option value="AUD">AUD - Australian Dollar</option>
-                                        <option value="CHF">CHF - Swiss Franc</option>
-                                        <option value="CNY">CNY - Chinese Yuan</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="to_currency" class="form-label">To Currency</label>
-                                    <select class="form-select form-select-lg" id="to_currency" name="to_currency" required>
-                                        <option value="EUR">EUR - Euro</option>
-                                        <option value="USD">USD - United States Dollar</option>
-                                        <option value="GBP">GBP - British Pound</option>
-                                        <option value="JPY">JPY - Japanese Yen</option>
-                                        <option value="CAD">CAD - Canadian Dollar</option>
-                                        <option value="AUD">AUD - Australian Dollar</option>
-                                        <option value="CHF">CHF - Swiss Franc</option>
-                                        <option value="CNY">CNY - Chinese Yuan</option>
-                                    </select>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="amount" class="form-label">Amount</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text" id="currency-symbol">$</span>
-                                        <input type="number" class="form-control form-control-lg" id="amount" name="amount" placeholder="Enter amount" value="100" required>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-lg w-100">
-                                    <span class="spinner-border spinner-border-sm me-2 d-none" id="convert-spinner" role="status" aria-hidden="true"></span>
-                                    <i class="fas fa-exchange-alt me-2"></i> Convert Currency
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6" data-aos="fade-left">
-                    <div class="response-card">
-                        <div class="response-card-header">
-                            <div class="response-title">
-                                <i class="fas fa-terminal me-2"></i> API Response
-                            </div>
-                            <button class="btn btn-sm btn-outline-primary copy-button" id="copy-response">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        </div>
-                        <div class="response-card-body">
-                            <pre class="response-content"><code id="api-response">{
-  "result": "0.00",
+<pre class="m-0 bg-gray-900 text-gray-100 p-3 rounded" id="convert-response"><code>{
+  "result": null,
   "status": "waiting for input"
 }</code></pre>
-                        </div>
-                        <div class="response-card-footer">
-                            <a href="/register" class="btn btn-primary">
-                                <i class="fas fa-rocket me-2"></i>Get Your API Key
-                            </a>
-                            <a href="#documentation" class="btn btn-outline-light">
-                                <i class="fas fa-book me-2"></i>Documentation
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Code Example Section - New section showing how to use the API -->
-    <section id="documentation" class="code-example-section py-5 bg-dark">
-        <div class="container py-4">
-            <div class="row">
-                <div class="col-lg-5 mb-4 mb-lg-0">
-                    <div class="pe-lg-5" data-aos="fade-right">
-                        <h2 class="text-white mb-4">Integrate in Minutes</h2>
-                        <p class="text-white-75 mb-4">Our RESTful API is designed to be easy to integrate with any programming language. Just send a GET request and process the JSON response.</p>
-                        
-                        <div class="language-tabs mb-4">
-                            <button class="language-tab active" data-lang="js">JavaScript</button>
-                            <button class="language-tab" data-lang="py">Python</button>
-                            <button class="language-tab" data-lang="php">PHP</button>
-                        </div>
-                        
-                        <div class="code-highlights mb-4">
-                            <div class="code-highlight-item">
-                                <i class="fas fa-check-circle text-success"></i>
-                                <span>Clear documentation</span>
-                            </div>
-                            <div class="code-highlight-item">
-                                <i class="fas fa-check-circle text-success"></i>
-                                <span>Detailed error messages</span>
-                            </div>
-                            <div class="code-highlight-item">
-                                <i class="fas fa-check-circle text-success"></i>
-                                <span>JSON response format</span>
-                            </div>
-                            <div class="code-highlight-item">
-                                <i class="fas fa-check-circle text-success"></i>
-                                <span>Graceful fallbacks</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-7" data-aos="fade-left">
-                    <div class="code-card">
-                        <div class="code-card-header">
-                            <div class="code-dots">
-                                <span class="code-dot red"></span>
-                                <span class="code-dot yellow"></span>
-                                <span class="code-dot green"></span>
-                            </div>
-                            <div class="code-language">script.js</div>
-                            <button class="btn btn-sm btn-dark code-copy-btn">
-                                <i class="fas fa-copy"></i> Copy
-                            </button>
-                        </div>
-                        <div class="code-card-body">
-                            <div class="code-example active" data-lang="js">
-<pre><code>// Fetch exchange rates
-const apiKey = 'your_api_key';
-const baseCurrency = 'USD';
-const url = `https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/${apiKey}/${baseCurrency}`;
+<section class="bg-blue-700 text-white">
+  <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-12 text-center">
+    <h2 class="text-2xl font-semibold mb-2">Ready to Get Started?</h2>
+    <p class="text-white/90 mb-4">Create an account and get your free API key in seconds.</p>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="/register" class="inline-flex items-center justify-center rounded-md bg-white px-5 py-2 text-sm font-medium text-blue-700 shadow-sm hover:bg-gray-100"><i class="fas fa-user-plus mr-2"></i> Sign Up Free</a>
+      <a href="/login" class="inline-flex items-center justify-center rounded-md border border-white/70 px-5 py-2 text-sm font-medium text-white hover:bg-white/10"><i class="fas fa-sign-in-alt mr-2"></i> Login</a>
+    </div>
+  </div>
+</section>
 
-fetch(url)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log('Exchange rates:', data);
-    // Example: Convert 100 USD to EUR
-    const euroRate = data.data.EUR;
-    const amountInEuros = 100 * euroRate;
-    console.log(`100 USD = ${amountInEuros.toFixed(2)} EUR`);
-  })
-  .catch(error => {
-    console.error('Error fetching exchange rates:', error);
-  });</code></pre>
-                            </div>
-                            <div class="code-example" data-lang="py">
-<pre><code>import requests
+<script>
+(function(){
+  var form = document.getElementById('convert-form');
+  var responseEl = document.getElementById('convert-response');
+  var copyBtn = document.getElementById('copy-convert-response');
+  if(form){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var apiKey = document.getElementById('demo_api_key').value.trim();
+      var from = document.getElementById('from_currency').value.trim();
+      var to = document.getElementById('to_currency').value.trim();
+      var amount = document.getElementById('amount').value.trim();
+      if(!apiKey || !from || !to || !amount){ return; }
+      var url = '/convert/latest_rates/' + encodeURIComponent(apiKey) + '/' + encodeURIComponent(from) + '/' + encodeURIComponent(to) + '/' + encodeURIComponent(amount);
+      fetch(url)
+        .then(function(res){ return res.json(); })
+        .then(function(data){
+          var pretty = JSON.stringify(data, null, 2);
+          responseEl.textContent = pretty;
+        })
+        .catch(function(err){
+          responseEl.textContent = JSON.stringify({ error: String(err) }, null, 2);
+        });
+    });
+  }
+  if(copyBtn && responseEl){
+    copyBtn.addEventListener('click', function(){
+      var text = responseEl.textContent;
+      navigator.clipboard.writeText(text);
+    });
+  }
+})();
+</script>
 
-# API configuration
-api_key = 'your_api_key'
-base_currency = 'USD'
-url = f'https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/{api_key}/{base_currency}'
-
-try:
-    # Make API request
-    response = requests.get(url)
-    response.raise_for_status()  # Raise exception for 4XX/5XX responses
-    data = response.json()
-    
-    # Process the data
-    print(f"Exchange rates (base: {data['meta']['base_currency']})")
-    print(f"Last updated: {data['meta']['last_updated_at']}")
-    
-    # Example: Convert 100 USD to EUR
-    euro_rate = data['data']['EUR']
-    amount_in_euros = 100 * euro_rate
-    print(f"100 USD = {amount_in_euros:.2f} EUR")
-    
-except requests.exceptions.RequestException as e:
-    print(f"Error fetching exchange rates: {e}")
-    # Handle the error gracefully</code></pre>
-                            </div>
-                            <div class="code-example" data-lang="php">
-<pre><code>&lt;?php
-// API configuration
-$apiKey = 'your_api_key';
-$baseCurrency = 'USD';
-$url = "https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/{$apiKey}/{$baseCurrency}";
-
-// Make API request
-$ch = curl_init($url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-$response = curl_exec($ch);
-
-if (curl_errno($ch)) {
-    echo 'Error fetching exchange rates: ' . curl_error($ch);
-} else {
-    // Process the data
-    $data = json_decode($response, true);
-    echo "Exchange rates (base: {$data['meta']['base_currency']})\n";
-    echo "Last updated: {$data['meta']['last_updated_at']}\n";
-    
-    // Example: Convert 100 USD to EUR
-    $euroRate = $data['data']['EUR'];
-    $amountInEuros = 100 * $euroRate;
-    echo "100 USD = " . number_format($amountInEuros, 2) . " EUR";
-}
-
-curl_close($ch);
-?></code></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section - New call to action before footer -->
-    <section class="cta-section py-5 bg-primary text-white">
-        <div class="container py-4 text-center">
-            <h2 class="mb-4" data-aos="fade-up">Ready to Get Started?</h2>
-            <p class="lead mb-4" data-aos="fade-up" data-aos-delay="100">Create an account and get your free API key in seconds.</p>
-            <div class="cta-buttons" data-aos="fade-up" data-aos-delay="200">
-                <a href="/register" class="btn btn-light btn-lg me-3">
-                    <i class="fas fa-user-plus me-2"></i> Sign Up Free
-                </a>
-                <a href="/login" class="btn btn-outline-light btn-lg">
-                    <i class="fas fa-sign-in-alt me-2"></i> Login
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    {% include 'footer.html' %}
-
-    <!-- Back to Top Button -->
-    <a id="back-to-top" class="back-to-top" href="#">
-        <i class="fas fa-arrow-up"></i>
-    </a>
-
-    <!-- Initialize AOS (Animate on Scroll) -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('static', filename='main.js') }}"></script>
-</body>
-</html>
+{% endblock %}

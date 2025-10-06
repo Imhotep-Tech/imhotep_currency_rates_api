@@ -1,23 +1,27 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="form-container">
-    <div class="message-container">
-        {% if error_not %}
-            <div class="error-message">
-                {{ error_not }} <a href="/register_page">Sign Up</a>
-            </div>
-        {% endif %}
-    </div>
+<div class="flex min-h-[60vh] items-start justify-center px-4 py-8">
+  <div class="w-full max-w-md">
+    {% if error_not %}
+      <div class="mb-3 rounded-md border border-red-200 bg-red-50 p-3 text-red-800 text-sm text-center">
+        {{ error_not }} <a href="/register_page" class="underline text-blue-700 hover:text-blue-800">Sign Up</a>
+      </div>
+    {% endif %}
     {% include 'back.html' %}
-    <p class="title">Verify</p>
-    <form action="/manual_mail_verification" method="post" class="form">
+    <p class="text-center text-2xl font-bold tracking-tight mb-4">Verify</p>
+    <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-200">
+      <form action="/manual_mail_verification" method="post" class="space-y-4">
         {{ form.hidden_tag() }}
-        <input type="name" class="input" placeholder="User E-mail" name="user_mail" required="">
-        <p class="page-link"></p>
-        <button class="form-btn">
-            <i class="fas fa-check"></i>
+        <div>
+          <label class="mb-1 block text-sm font-medium text-gray-700">User E‑mail</label>
+          <input type="name" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" placeholder="User E‑mail" name="user_mail" required>
+        </div>
+        <button class="inline-flex w-full items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
+          <i class="fas fa-check mr-2"></i> Verify
         </button>
-    </form>
+      </form>
+    </div>
   </div>
+</div>
 {% endblock %}

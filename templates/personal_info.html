@@ -2,28 +2,34 @@
 
 {% block body %}
 
-{% include 'nav.html' %}
-    <div class="form-container">
+<div class="flex min-h-[70vh] items-start justify-center px-4 py-8">
+  <div class="w-full max-w-lg">
+    {% if error %}
+      <div class="mb-3 rounded-md border border-red-200 bg-red-50 p-3 text-red-800 text-sm text-center">{{ error }}</div>
+    {% elif done %}
+      <div class="mb-3 rounded-md border border-green-200 bg-green-50 p-3 text-green-800 text-sm text-center">{{ done }}</div>
+    {% endif %}
 
-        <div class="message-container">
-            {% if error %}
-            <div class="error-message">{{ error }}</div>
-            {% elif done %}
-            <div class="done-message">{{ done }}</div>
-            {% endif %}
+    <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-200">
+      <h2 class="m-0 mb-4 text-lg font-semibold">Personal Information</h2>
+      <form action="/settings/personal_info" method="post" class="space-y-4">
+        {{ form.hidden_tag() }}
+        <div>
+          <label class="mb-1 block text-sm font-medium text-gray-700">Username</label>
+          <input type="text" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" placeholder="Username" value="{{ user_username }}" name="user_username" required>
         </div>
-
-        <form action="/settings/personal_info" method="post" class="form">
-            {{ form.hidden_tag() }}
-            <label>Username</label>
-            <input type="text" class="input" placeholder="Username" value="{{ user_username }}" name="user_username" required="">
-            <label>E-mail</label>
-            <input type="email" class="input" placeholder="E-Mail" value="{{ user_mail }}" name="user_mail" required="">
-            <p class="page-link"></p>
-            <button class="form-btn" title="Submit">
-                <i class="fas fa-check"></i>
-            </button>
-        </form>
+        <div>
+          <label class="mb-1 block text-sm font-medium text-gray-700">E‑mail</label>
+          <input type="email" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" placeholder="E‑Mail" value="{{ user_mail }}" name="user_mail" required>
+        </div>
+        <div class="pt-2">
+          <button class="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700" title="Submit">
+            <i class="fas fa-check mr-2"></i> Save Changes
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
+</div>
 
 {% endblock %}

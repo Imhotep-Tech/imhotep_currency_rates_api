@@ -1,110 +1,47 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-10">
-            <div class="version-header mb-5">
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h1 class="mb-0">
-                        <i class="fas fa-code-branch text-primary me-2"></i>
-                        Version History
-                    </h1>
-                    <a href="javascript:history.back()" class="btn btn-outline-primary">
-                        <i class="fas fa-arrow-left me-2"></i> Back
-                    </a>
-                </div>
-                <div class="bg-light p-3 rounded-3">
-                    <p class="text-muted mb-0">
-                        Tracking the evolution of the Imhotep Exchange Rate API - from its inception to the latest enhancements.
-                    </p>
+<div class="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-5">
+        <div class="flex items-center justify-between mb-4">
+            <h1 class="m-0 text-2xl font-bold"><i class="fas fa-code-branch text-blue-700 mr-2"></i> Version History</h1>
+            <a href="javascript:history.back()" class="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+        <div class="rounded-xl bg-gray-50 p-3 text-gray-600">Tracking the evolution of the Imhotep Exchange Rate API - from its inception to the latest enhancements.</div>
+    </div>
+
+    <div class="relative">
+        <div class="absolute left-4 top-0 bottom-0 w-1 bg-gray-200 rounded"></div>
+        <div class="space-y-8">
+                <!-- Version 3.0 -->
+            <div class="relative pl-14">
+                <div class="absolute left-0 top-1.5 flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white shadow"><i class="fas fa-star"></i></div>
+                <div class="rounded-xl bg-white shadow-sm ring-1 ring-gray-200 overflow-hidden">
+                    <div class="bg-blue-600 text-white px-4 py-3 flex items-center justify-between">
+                        <h2 class="m-0 text-base font-semibold">Version 3.0</h2>
+                        <span class="inline-flex items-center rounded bg-white/20 px-2 py-0.5 text-xs">15/10/2023</span>
+                    </div>
+                    <div class="p-4">
+                        <div class="mb-3">
+                            <span class="inline-flex items-center rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">NEW</span>
+                            <span class="ml-2 text-gray-600">Modern UI & Enhanced User Experience</span>
+                        </div>
+                        <p class="text-gray-700 mb-3">A major update focused on improving the user interface, interaction design, and overall developer experience.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="rounded-md bg-gray-50 p-3"><i class="fas fa-paint-brush text-blue-700 mr-2"></i><strong>Modern UI With Animations</strong><p class="text-gray-600 text-sm m-0">Completely redesigned interface with smooth animations and transitions</p></div>
+                            <div class="rounded-md bg-gray-50 p-3"><i class="fas fa-mobile-alt text-blue-700 mr-2"></i><strong>Responsive Design</strong><p class="text-gray-600 text-sm m-0">Perfect experience on any device from mobile to desktop</p></div>
+                            <div class="rounded-md bg-gray-50 p-3"><i class="fas fa-code text-blue-700 mr-2"></i><strong>Interactive Demo</strong><p class="text-gray-600 text-sm m-0">Try the API directly on the landing page without signing up</p></div>
+                            <div class="rounded-md bg-gray-50 p-3"><i class="fas fa-file-code text-blue-700 mr-2"></i><strong>Multi-language Examples</strong><p class="text-gray-600 text-sm m-0">Code snippets in JavaScript, Python, and PHP</p></div>
+                            <div class="rounded-md bg-gray-50 p-3"><i class="fas fa-chart-bar text-blue-700 mr-2"></i><strong>Animated Statistics</strong><p class="text-gray-600 text-sm m-0">Visual representation of API usage and coverage</p></div>
+                            <div class="rounded-md bg-gray-50 p-3"><i class="fas fa-th-large text-blue-700 mr-2"></i><strong>Interactive Feature Cards</strong><p class="text-gray-600 text-sm m-0">Hover effects with detailed feature information</p></div>
+                            <div class="rounded-md bg-gray-50 p-3"><i class="fas fa-tachometer-alt text-blue-700 mr-2"></i><strong>Enhanced API Performance</strong><p class="text-gray-600 text-sm m-0">Significantly improved response time with optimized backend logic</p></div>
+                            <div class="rounded-md bg-gray-50 p-3"><i class="fas fa-server text-blue-700 mr-2"></i><strong>Optimized Infrastructure</strong><p class="text-gray-600 text-sm m-0">Upgraded servers and caching system for faster API response</p></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="timeline">
-                <!-- Version 3.0 -->
-                <div class="timeline-item">
-                    <div class="timeline-badge bg-primary">
-                        <i class="fas fa-star text-white"></i>
-                    </div>
-                    <div class="timeline-card bg-white shadow-sm border-0 rounded-4 mb-5">
-                        <div class="card-header bg-primary text-white rounded-top-4">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h2 class="mb-0 fs-4">Version 3.0</h2>
-                                <span class="badge bg-light text-primary">15/10/2023</span>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="tag-line mb-3">
-                                <span class="badge bg-success">NEW</span>
-                                <span class="ms-2 text-muted">Modern UI & Enhanced User Experience</span>
-                            </div>
-                            
-                            <p class="mb-3">
-                                A major update focused on improving the user interface, interaction design, and overall developer experience.
-                            </p>
-                            
-                            <div class="row g-4 mb-3">
-                                <div class="col-md-6">
-                                    <div class="feature-item">
-                                        <i class="fas fa-paint-brush text-primary me-2"></i>
-                                        <strong>Modern UI With Animations</strong>
-                                        <p class="text-muted small mb-0">Completely redesigned interface with smooth animations and transitions</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="feature-item">
-                                        <i class="fas fa-mobile-alt text-primary me-2"></i>
-                                        <strong>Responsive Design</strong>
-                                        <p class="text-muted small mb-0">Perfect experience on any device from mobile to desktop</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="feature-item">
-                                        <i class="fas fa-code text-primary me-2"></i>
-                                        <strong>Interactive Demo</strong>
-                                        <p class="text-muted small mb-0">Try the API directly on the landing page without signing up</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="feature-item">
-                                        <i class="fas fa-file-code text-primary me-2"></i>
-                                        <strong>Multi-language Examples</strong>
-                                        <p class="text-muted small mb-0">Code snippets in JavaScript, Python, and PHP</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="feature-item">
-                                        <i class="fas fa-chart-bar text-primary me-2"></i>
-                                        <strong>Animated Statistics</strong>
-                                        <p class="text-muted small mb-0">Visual representation of API usage and coverage</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="feature-item">
-                                        <i class="fas fa-th-large text-primary me-2"></i>
-                                        <strong>Interactive Feature Cards</strong>
-                                        <p class="text-muted small mb-0">Hover effects with detailed feature information</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="feature-item">
-                                        <i class="fas fa-tachometer-alt text-primary me-2"></i>
-                                        <strong>Enhanced API Performance</strong>
-                                        <p class="text-muted small mb-0">Significantly improved response time with optimized backend logic</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="feature-item">
-                                        <i class="fas fa-server text-primary me-2"></i>
-                                        <strong>Optimized Infrastructure</strong>
-                                        <p class="text-muted small mb-0">Upgraded servers and caching system for faster API response</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Version 2.0 -->
                 <div class="timeline-item">
@@ -186,124 +123,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
 </div>
-
-<style>
-    .timeline {
-        position: relative;
-        padding: 0;
-        margin: 0;
-    }
-    
-    .timeline::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 18px;
-        width: 4px;
-        background: #eaeaea;
-        border-radius: 2px;
-    }
-    
-    .timeline-item {
-        position: relative;
-        padding-left: 45px;
-    }
-    
-    .timeline-badge {
-        position: absolute;
-        left: 0;
-        top: 15px;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        text-align: center;
-        line-height: 40px;
-        z-index: 1;
-    }
-    
-    .timeline-badge i {
-        line-height: 40px;
-    }
-    
-    .timeline-card {
-        border: none;
-        border-radius: 8px;
-        margin-bottom: 30px;
-    }
-    
-    .feature-list {
-        list-style: none;
-        padding-left: 0;
-    }
-    
-    .feature-list li {
-        padding: 8px 0;
-        border-bottom: 1px solid #f2f2f2;
-    }
-    
-    .feature-list li:last-child {
-        border-bottom: none;
-    }
-    
-    .feature-list i {
-        margin-right: 10px;
-        width: 20px;
-        text-align: center;
-    }
-    
-    .feature-item {
-        padding: 15px;
-        height: 100%;
-        border-radius: 8px;
-        background-color: #f8f9fa;
-        transition: all 0.3s ease;
-    }
-    
-    .feature-item:hover {
-        background-color: #e9ecef;
-        transform: translateY(-2px);
-    }
-
-    .rounded-top-4 {
-        border-top-left-radius: 0.5rem!important;
-        border-top-right-radius: 0.5rem!important;
-    }
-    
-    .tag-line {
-        border-left: 4px solid #007bff;
-        padding-left: 10px;
-    }
-    
-    @media (min-width: 768px) {
-        .timeline::before {
-            left: 50%;
-        }
-        
-        .timeline-item {
-            padding-left: 0;
-            margin-bottom: 50px;
-        }
-        
-        .timeline-item:nth-child(odd) {
-            padding-right: 50%;
-            padding-left: 30px;
-        }
-        
-        .timeline-item:nth-child(even) {
-            padding-left: 50%;
-            padding-right: 30px;
-            margin-top: -30px;
-        }
-        
-        .timeline-badge {
-            left: 50%;
-            margin-left: -20px;
-        }
-    }
-</style>
 {% endblock %}

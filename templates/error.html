@@ -1,18 +1,17 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Loading...</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script>
-        // Reload the page after 30 milliseconds
-        setTimeout(function(){
-            window.location.reload(1);
-        }, 30);
-    </script>
-</head>
-<body>
-    <h1></h1>
-    <p></p>
-</body>
-</html>
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="mx-auto w-full max-w-xl px-4 sm:px-6 lg:px-8 py-12 text-center">
+    <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+        <h2 class="text-xl font-semibold mb-2">Something went wrong</h2>
+        <p class="text-sm text-gray-600 mb-4">Attempting to recover this page…</p>
+        <div class="flex items-center justify-center gap-2 text-blue-700">
+            <div class="h-5 w-5 animate-spin rounded-full border-2 border-blue-200 border-t-blue-700"></div>
+            <span class="text-sm">Reloading…</span>
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(function(){ window.location.reload(); }, 300);
+</script>
+{% endblock %}

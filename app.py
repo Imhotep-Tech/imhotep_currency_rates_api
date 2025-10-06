@@ -37,27 +37,32 @@ csp = {
     'default-src': "'self'",
     'script-src': [
         "'self'",
-        "https://cdn.jsdelivr.net",  # Allow Bootstrap and other scripts
-        "'unsafe-inline'",  # Allow inline scripts (e.g., event handlers)
-        "'unsafe-eval'",  # Allow eval (if needed)
+        "https://cdn.jsdelivr.net",
+        "https://cdn.tailwindcss.com",
+        "https://unpkg.com",
+        "'unsafe-inline'",
+        "'unsafe-eval'",
     ],
     'style-src': [
         "'self'",
-        "https://cdn.jsdelivr.net",  # Allow Bootstrap CSS
-        "https://cdnjs.cloudflare.com",  # Allow Font Awesome CSS
-        "'unsafe-inline'",  # Allow inline styles
+        "https://cdn.jsdelivr.net",
+        "https://cdnjs.cloudflare.com",
+        "https://cdn.tailwindcss.com",
+        "https://fonts.googleapis.com",
+        "'unsafe-inline'",
     ],
     'font-src': [
         "'self'",
-        "https://cdnjs.cloudflare.com",  # Allow Font Awesome fonts
-        "https://fonts.gstatic.com",  # Allow Google Fonts
+        "https://cdnjs.cloudflare.com",
+        "https://fonts.gstatic.com",
+        "data:",
     ],
     'img-src': [
         "'self'",
-        "data:",  # Allow data URIs for images
+        "data:",
     ],
     'connect-src': [
-        "'self'",  # Allow AJAX requests to your server
+        "'self'",
     ],
 }
 
@@ -69,11 +74,7 @@ def add_header(response):
     response.headers['X-Frame-Options'] = 'SAMEORIGIN'
     return response
 
-@app.after_request
-def remove_csp_header(response):
-    if 'Content-Security-Policy' in response.headers:
-        del response.headers['Content-Security-Policy']
-    return response
+# Remove previous CSP stripping to allow CSP to be sent with Tailwind whitelisted
 
 @app.after_request
 def set_content_type_options(response):

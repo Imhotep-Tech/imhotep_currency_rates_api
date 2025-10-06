@@ -2,254 +2,262 @@
 
 {% block body %}
 
-{% include 'nav.html' %}
-
-<main class="container my-5">
+<main class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
     {% if success %}
-        <div class="alert alert-success text-center done-message shadow-sm">
-            <i class="fas fa-check-circle me-2"></i> {{ success }}
+        <div class="mb-4 rounded-md border border-green-200 bg-green-50 p-3 text-green-800 text-center shadow-sm">
+            <i class="fas fa-check-circle mr-2"></i> {{ success }}
         </div>
     {% endif %}
     
-    <div class="text-center mb-5">
-        <h1 class="display-5 fw-bold text-primary mb-2">Imhotep Exchange Rate API</h1>
-        <p class="lead text-muted">Your personal dashboard for API management and documentation</p>
+    <div class="text-center mb-6">
+        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-blue-700 mb-2">Imhotep Exchange Rate API</h1>
+        <p class="text-sm sm:text-base text-gray-600">Your personal dashboard for API management and documentation</p>
     </div>
     
-    <!-- Dashboard Navigation Tabs - Improved styling -->
-    <ul class="nav nav-pills nav-fill mb-4 bg-light p-2 rounded-pill shadow-sm" id="dashboardTabs" role="tablist">
-        <li class="nav-item mx-1" role="presentation">
-            <button class="nav-link active rounded-pill" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">
-                <i class="fas fa-home me-1"></i> Overview
+    <!-- Dashboard Navigation Tabs (Tailwind) -->
+    <div class="mb-5">
+        <div class="inline-flex w-full md:w-auto items-center justify-between md:justify-start gap-2 rounded-lg bg-white p-1 shadow-sm ring-1 ring-gray-200">
+            <button class="tab-btn px-3 py-2 text-sm font-medium rounded-md bg-blue-600 text-white" data-target="#overview">
+                <i class="fas fa-home mr-1"></i> Overview
             </button>
-        </li>
-        <li class="nav-item mx-1" role="presentation">
-            <button class="nav-link rounded-pill" id="api-keys-tab" data-bs-toggle="tab" data-bs-target="#api-keys" type="button" role="tab">
-                <i class="fas fa-key me-1"></i> API Keys
+            <button class="tab-btn px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-50" data-target="#api-keys">
+                <i class="fas fa-key mr-1"></i> API Keys
             </button>
-        </li>
-        <li class="nav-item mx-1" role="presentation">
-            <button class="nav-link rounded-pill" id="documentation-tab" data-bs-toggle="tab" data-bs-target="#documentation" type="button" role="tab">
-                <i class="fas fa-book me-1"></i> Documentation
+            <button class="tab-btn px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-50" data-target="#documentation">
+                <i class="fas fa-book mr-1"></i> Documentation
             </button>
-        </li>
-    </ul>
-    
+            <button class="tab-btn px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-50" data-target="#convert">
+                <i class="fas fa-exchange-alt mr-1"></i> Convert
+            </button>
+        </div>
+    </div>
+
     <!-- Tab Content -->
-    <div class="tab-content" id="dashboardTabContent">
+    <div id="dashboardTabContent">
         <!-- Overview Tab -->
-        <div class="tab-pane fade show active" id="overview" role="tabpanel">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card border-0 rounded-4 shadow-sm mb-4 hover-card">
-                        <div class="card-header bg-gradient text-white rounded-top-4" style="background-color: #4361ee;">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-key fa-2x me-3"></i>
-                                <h5 class="mb-0">Your API Key</h5>
-                            </div>
-                        </div>
-                        <div class="card-body p-4">
-                            <div class="api-key-box mb-3">
-                                <div class="input-group">
-                                    <input type="text" class="form-control bg-light border-0 py-3 monospace-text"
-                                        id="apiKey"
-                                        value="https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/{{api_key}}/USD"
-                                        readonly>
-                                    <button class="btn btn-primary" id="copyBtn" onclick="copyApiKeyWithFeedback()">
-                                        <i class="fas fa-copy me-1"></i> Copy
-                                    </button>
-                                </div>
-                            </div>
+        <section id="overview" class="block">
+            <div class="rounded-xl bg-white shadow-sm ring-1 ring-gray-200 mb-4 overflow-hidden">
+                <div class="bg-blue-700 text-white px-4 py-3">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-key text-xl"></i>
+                        <h3 class="m-0 text-base font-semibold">Your API Key</h3>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex flex-col gap-3">
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <input type="text" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 font-mono text-sm" id="apiKey" value="https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/{{api_key}}/USD" readonly>
+                            <button class="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700" id="copyBtn" onclick="copyApiKeyWithFeedback()">
+                                <i class="fas fa-copy mr-1"></i> Copy
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="card border-0 rounded-4 shadow-sm mb-4 hover-card">
-                <div class="card-header bg-gradient text-white rounded-top-4" style="background-color: #3a86ff;">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-rocket fa-2x me-3"></i>
-                        <h5 class="mb-0">Quick Start Guide</h5>
+
+            <div class="rounded-xl bg-white shadow-sm ring-1 ring-gray-200 mb-4 overflow-hidden">
+                <div class="bg-blue-600 text-white px-4 py-3">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-rocket text-xl"></i>
+                        <h3 class="m-0 text-base font-semibold">Quick Start Guide</h3>
                     </div>
                 </div>
-                <div class="card-body p-4">
-                    <p class="lead mb-4">Get started with the Imhotep Exchange Rate API in just three simple steps:</p>
-                    <div class="row mb-4">
-                        <div class="col-md-4 mb-3">
-                            <div class="card h-100 border-0 bg-light rounded-4 text-center p-3 shadow-sm step-card">
-                                <div class="step-circle mb-3 mx-auto">1</div>
-                                <h6>Copy Your API Key</h6>
-                                <p class="small">Use the button above to copy your unique API key</p>
-                            </div>
+                <div class="p-4">
+                    <p class="text-gray-700 mb-4">Get started with the Imhotep Exchange Rate API in just three simple steps:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                        <div class="rounded-xl border border-gray-200 bg-gray-50 text-center p-4 shadow-sm">
+                            <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-700 text-white font-bold">1</div>
+                            <h6 class="font-semibold">Copy Your API Key</h6>
+                            <p class="text-sm text-gray-600">Use the button above to copy your unique API key</p>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <div class="card h-100 border-0 bg-light rounded-4 text-center p-3 shadow-sm step-card">
-                                <div class="step-circle mb-3 mx-auto">2</div>
-                                <h6>Make an API Request</h6>
-                                <p class="small">Use the endpoint <code>/latest_rates/YOUR_API_KEY/USD</code></p>
-                            </div>
+                        <div class="rounded-xl border border-gray-200 bg-gray-50 text-center p-4 shadow-sm">
+                            <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-700 text-white font-bold">2</div>
+                            <h6 class="font-semibold">Make an API Request</h6>
+                            <p class="text-sm text-gray-600">Use the endpoint <code class="bg-gray-100 px-1 rounded">/latest_rates/YOUR_API_KEY/USD</code></p>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <div class="card h-100 border-0 bg-light rounded-4 text-center p-3 shadow-sm step-card">
-                                <div class="step-circle mb-3 mx-auto">3</div>
-                                <h6>Process JSON Response</h6>
-                                <p class="small">Get real-time exchange rates for all currencies</p>
-                            </div>
+                        <div class="rounded-xl border border-gray-200 bg-gray-50 text-center p-4 shadow-sm">
+                            <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-700 text-white font-bold">3</div>
+                            <h6 class="font-semibold">Process JSON Response</h6>
+                            <p class="text-sm text-gray-600">Get real-time exchange rates for all currencies</p>
                         </div>
                     </div>
                     <div class="text-center">
-                        <a href="#" class="btn btn-outline-primary rounded-pill px-4" onclick="document.getElementById('documentation-tab').click();">
-                            <i class="fas fa-file-alt me-1"></i> View Full Documentation
-                        </a>
+                        <button class="inline-flex items-center justify-center rounded-full border border-blue-600 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-blue-50" onclick="switchToTab('#documentation')">
+                            <i class="fas fa-file-alt mr-1"></i> View Full Documentation
+                        </button>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
         
-        <!-- API Keys Tab -->
-        <div class="tab-pane fade" id="api-keys" role="tabpanel">
-            <div class="card border-0 rounded-4 shadow-sm mb-4 hover-card">
-                <div class="card-header bg-gradient text-white rounded-top-4" style="background-color: #4361ee;">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-key fa-2x me-3"></i>
-                        <h5 class="mb-0">API Key Management</h5>
-                    </div>
-                </div>
-                <div class="card-body p-4">
-                    <div class="mb-4">
-                        <label class="form-label fw-bold"><i class="fas fa-tag me-2"></i>Current API Key:</label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control bg-light border-0 py-2 monospace-text" value="{{api_key}}" readonly>
-                            <button class="btn btn-outline-primary" type="button" onclick="copyCustomTextWithFeedback('{{api_key}}', 'key-only-btn')">
-                                <i class="fas fa-copy me-1" id="key-only-btn"></i> Copy Key
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="form-label fw-bold"><i class="fas fa-link me-2"></i>Full API URL:</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 py-2 monospace-text" value="https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/{{api_key}}/USD" readonly>
-                            <button class="btn btn-outline-primary" type="button" onclick="copyCustomTextWithFeedback('https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/{{api_key}}/USD', 'url-btn')">
-                                <i class="fas fa-copy me-1" id="url-btn"></i> Copy URL
-                            </button>
-                        </div>
-                        <div class="form-text mt-2"><i class="fas fa-info-circle me-1 text-primary"></i> Use this URL to access the API with USD as the base currency.</div>
-                    </div>
-                    
-                    <div class="alert alert-info bg-light border-start border-info border-4 rounded-3 shadow-sm">
-                        <div class="d-flex">
-                            <div class="me-3">
-                                <i class="fas fa-info-circle text-info fa-2x"></i>
+        <!-- Convert Tab -->
+        <section id="convert" class="hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
+                <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+                    <h2 class="m-0 text-lg font-semibold mb-4">Convert Currency</h2>
+                    <form id="dash-convert-form" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="mb-1 block text-sm font-medium text-gray-700">From (Base)</label>
+                                <input id="dash_from_currency" type="text" value="USD" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" required>
                             </div>
                             <div>
-                                <h6 class="alert-heading">API Access Information</h6>
-                                <p class="mb-0">Your API key provides access to all supported currency rates and endpoints. Keep this key confidential.</p>
+                                <label class="mb-1 block text-sm font-medium text-gray-700">To (Target)</label>
+                                <input id="dash_to_currency" type="text" value="EUR" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-sm font-medium text-gray-700">Amount</label>
+                            <input id="dash_amount" type="number" value="100" min="0" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" required>
+                        </div>
+                        <button type="submit" class="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
+                            <i class="fas fa-exchange-alt mr-2"></i> Convert
+                        </button>
+                    </form>
+                </div>
+                <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="m-0 text-sm font-semibold">API Response</h3>
+                        <button id="dash-copy-convert-response" class="inline-flex items-center rounded-md border border-gray-300 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"><i class="fas fa-copy mr-1"></i> Copy</button>
+                    </div>
+<pre class="m-0 bg-gray-900 text-gray-100 p-3 rounded" id="dash-convert-response"><code>{
+  "result": null,
+  "status": "waiting for input"
+}</code></pre>
+                </div>
+            </div>
+        </section>
+        
+        <!-- API Keys Tab -->
+        <section id="api-keys" class="hidden">
+            <div class="rounded-xl bg-white shadow-sm ring-1 ring-gray-200 mb-4 overflow-hidden">
+                <div class="bg-blue-700 text-white px-4 py-3">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-key text-xl"></i>
+                        <h3 class="m-0 text-base font-semibold">API Key Management</h3>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="mb-4">
+                        <label class="mb-1 block text-sm font-semibold text-gray-700"><i class="fas fa-tag mr-2"></i>Current API Key:</label>
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                            <input type="text" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 font-mono text-sm" value="{{api_key}}" readonly>
+                            <button class="inline-flex items-center justify-center rounded-md border border-blue-600 px-3 py-2 text-sm font-medium text-blue-700 hover:bg-blue-50" type="button" onclick="copyCustomTextWithFeedback('{{api_key}}', 'key-only-btn')">
+                                <i class="fas fa-copy mr-1" id="key-only-btn"></i> Copy Key
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="mb-1 block text-sm font-semibold text-gray-700"><i class="fas fa-link mr-2"></i>Full API URL:</label>
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                            <input type="text" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 font-mono text-sm" value="https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/{{api_key}}/USD" readonly>
+                            <button class="inline-flex items-center justify-center rounded-md border border-blue-600 px-3 py-2 text-sm font-medium text-blue-700 hover:bg-blue-50" type="button" onclick="copyCustomTextWithFeedback('https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/{{api_key}}/USD', 'url-btn')">
+                                <i class="fas fa-copy mr-1" id="url-btn"></i> Copy URL
+                            </button>
+                        </div>
+                        <div class="mt-2 text-sm text-gray-600"><i class="fas fa-info-circle mr-1 text-blue-600"></i> Use this URL to access the API with USD as the base currency.</div>
+                    </div>
+                    
+                    <div class="rounded-md border border-blue-200 bg-blue-50 p-3 text-blue-800">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-info-circle text-blue-600 text-xl"></i>
+                            <div>
+                                <h6 class="font-semibold">API Access Information</h6>
+                                <p class="m-0 text-sm">Your API key provides access to all supported currency rates and endpoints. Keep this key confidential.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class="card border-0 rounded-4 shadow-sm mb-4 hover-card">
-                <div class="card-header bg-gradient text-white rounded-top-4" style="background-color: #3a0ca3;">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-shield-alt fa-2x me-3"></i>
-                        <h5 class="mb-0">Security Recommendations</h5>
+            <div class="rounded-xl bg-white shadow-sm ring-1 ring-gray-200 mb-4 overflow-hidden">
+                <div class="bg-indigo-700 text-white px-4 py-3">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-shield-alt text-xl"></i>
+                        <h3 class="m-0 text-base font-semibold">Security Recommendations</h3>
                     </div>
                 </div>
-                <div class="card-body p-4">
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <div class="card h-100 border-0 shadow-sm rounded-4">
-                                <div class="card-body text-center p-4">
-                                    <div class="icon-circle bg-primary text-white mx-auto mb-4">
-                                        <i class="fas fa-user-shield"></i>
-                                    </div>
-                                    <h6>Keep API Key Secret</h6>
-                                    <p class="small mb-0">Never share your API key publicly or commit it to source control</p>
-                                </div>
+                <div class="p-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="rounded-xl border border-gray-200 bg-white text-center p-4 shadow-sm">
+                            <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white text-xl">
+                                <i class="fas fa-user-shield"></i>
                             </div>
+                            <h6 class="font-semibold">Keep API Key Secret</h6>
+                            <p class="text-sm text-gray-600">Never share your API key publicly or commit it to source control</p>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <div class="card h-100 border-0 shadow-sm rounded-4">
-                                <div class="card-body text-center p-4">
-                                    <div class="icon-circle bg-success text-white mx-auto mb-4">
-                                        <i class="fas fa-server"></i>
-                                    </div>
-                                    <h6>Server-Side Requests</h6>
-                                    <p class="small mb-0">Make API requests from your backend, not client-side JavaScript</p>
-                                </div>
+                        <div class="rounded-xl border border-gray-200 bg-white text-center p-4 shadow-sm">
+                            <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-600 text-white text-xl">
+                                <i class="fas fa-server"></i>
                             </div>
+                            <h6 class="font-semibold">Server-Side Requests</h6>
+                            <p class="text-sm text-gray-600">Make API requests from your backend, not client-side JavaScript</p>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <div class="card h-100 border-0 shadow-sm rounded-4">
-                                <div class="card-body text-center p-4">
-                                    <div class="icon-circle bg-warning text-white mx-auto mb-4">
-                                        <i class="fas fa-tachometer-alt"></i>
-                                    </div>
-                                    <h6>Rate Limiting</h6>
-                                    <p class="small mb-0">Implement proper rate limiting in your application</p>
-                                </div>
+                        <div class="rounded-xl border border-gray-200 bg-white text-center p-4 shadow-sm">
+                            <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-yellow-500 text-white text-xl">
+                                <i class="fas fa-tachometer-alt"></i>
                             </div>
+                            <h6 class="font-semibold">Rate Limiting</h6>
+                            <p class="text-sm text-gray-600">Implement proper rate limiting in your application</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
         
         <!-- Documentation Tab -->
-        <div class="tab-pane fade" id="documentation" role="tabpanel">
-            <div class="card border-0 rounded-4 shadow-sm mb-4 hover-card">
-                <div class="card-header bg-gradient text-white rounded-top-4" style="background-color: #3a86ff;">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-book fa-2x me-3"></i>
-                        <h5 class="mb-0">API Documentation</h5>
+        <section id="documentation" class="hidden">
+            <div class="rounded-xl bg-white shadow-sm ring-1 ring-gray-200 mb-4 overflow-hidden">
+                <div class="bg-blue-600 text-white px-4 py-3">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-book text-xl"></i>
+                        <h3 class="m-0 text-base font-semibold">API Documentation</h3>
                     </div>
                 </div>
-                <div class="card-body p-4">
+                <div class="p-4">
                     <!-- Endpoints -->
                     <div class="mb-5">
-                        <h4 class="border-bottom pb-2 d-flex align-items-center">
-                            <i class="fas fa-sitemap me-2 text-primary"></i> Available Endpoints
+                        <h4 class="mb-3 border-b pb-2 flex items-center gap-2 text-lg font-semibold">
+                            <i class="fas fa-sitemap text-blue-600"></i> Available Endpoints
                         </h4>
-                        <div class="card border-0 shadow-sm rounded-4 mb-3">
-                            <div class="card-header bg-light border-0 rounded-top-4">
-                                <div class="d-flex align-items-center">
-                                    <span class="badge bg-success me-2">GET</span>
-                                    <h5 class="mb-0 monospace-text">/latest_rates/{api_key}/{base_currency}</h5>
+                        <div class="rounded-xl border border-gray-200 bg-white shadow-sm mb-3 overflow-hidden">
+                            <div class="bg-gray-50 px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="inline-flex items-center rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">GET</span>
+                                    <h5 class="m-0 font-mono text-sm">/latest_rates/{api_key}/{base_currency}</h5>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <p>Returns the latest exchange rates for all currencies relative to the specified base currency.</p>
+                            <div class="p-4">
+                                <p class="text-gray-700">Returns the latest exchange rates for all currencies relative to the specified base currency.</p>
                                 
-                                <div class="card bg-light border-0 mb-3">
-                                    <div class="card-header border-0">
-                                        <h6 class="mb-0"><i class="fas fa-list-ul me-2"></i> Parameters</h6>
+                                <div class="rounded-lg border border-gray-200 bg-gray-50 mb-3 overflow-hidden">
+                                    <div class="px-4 py-2">
+                                        <h6 class="m-0 font-semibold"><i class="fas fa-list-ul mr-2"></i> Parameters</h6>
                                     </div>
-                                    <div class="card-body p-0">
-                                        <div class="table-responsive">
-                                            <table class="table mb-0">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th>Name</th>
-                                                        <th>Type</th>
-                                                        <th>Required</th>
-                                                        <th>Description</th>
+                                    <div class="p-0">
+                                        <div class="overflow-x-auto">
+                                            <table class="w-full text-left text-sm">
+                                                <thead class="bg-white">
+                                                    <tr class="border-b">
+                                                        <th class="px-4 py-2">Name</th>
+                                                        <th class="px-4 py-2">Type</th>
+                                                        <th class="px-4 py-2">Required</th>
+                                                        <th class="px-4 py-2">Description</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td><code class="bg-light px-2 py-1 rounded">api_key</code></td>
-                                                        <td><span class="badge bg-secondary">string</span></td>
-                                                        <td><span class="badge bg-danger">Yes</span></td>
-                                                        <td>Your unique API key</td>
+                                                    <tr class="border-b hover:bg-gray-50">
+                                                        <td class="px-4 py-2"><code class="bg-gray-100 px-1 rounded">api_key</code></td>
+                                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-gray-200 px-2 py-0.5 text-xs font-medium text-gray-800">string</span></td>
+                                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">Yes</span></td>
+                                                        <td class="px-4 py-2">Your unique API key</td>
                                                     </tr>
-                                                    <tr>
-                                                        <td><code class="bg-light px-2 py-1 rounded">base_currency</code></td>
-                                                        <td><span class="badge bg-secondary">string</span></td>
-                                                        <td><span class="badge bg-danger">Yes</span></td>
-                                                        <td>Currency code (USD, EUR, GBP, etc.)</td>
+                                                    <tr class="border-b hover:bg-gray-50">
+                                                        <td class="px-4 py-2"><code class="bg-gray-100 px-1 rounded">base_currency</code></td>
+                                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-gray-200 px-2 py-0.5 text-xs font-medium text-gray-800">string</span></td>
+                                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">Yes</span></td>
+                                                        <td class="px-4 py-2">Currency code (USD, EUR, GBP, etc.)</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -257,15 +265,15 @@
                                     </div>
                                 </div>
                                 
-                                <div class="card bg-light border-0">
-                                    <div class="card-header border-0 d-flex justify-content-between align-items-center">
-                                        <h6 class="mb-0"><i class="fas fa-reply me-2"></i> Response Format</h6>
-                                        <button class="btn btn-sm btn-outline-primary" onclick="copyCustomTextWithFeedback(document.getElementById('response-example').textContent, 'response-btn')">
-                                            <i class="fas fa-copy me-1" id="response-btn"></i> Copy Example
+                                <div class="rounded-lg border border-gray-200 bg-gray-50 overflow-hidden">
+                                    <div class="px-4 py-2 flex items-center justify-between">
+                                        <h6 class="m-0 font-semibold"><i class="fas fa-reply mr-2"></i> Response Format</h6>
+                                        <button class="inline-flex items-center justify-center rounded-md border border-blue-600 px-2 py-1 text-xs font-medium text-blue-700 hover:bg-blue-50" onclick="copyCustomTextWithFeedback(document.getElementById('response-example').textContent, 'response-btn')">
+                                            <i class="fas fa-copy mr-1" id="response-btn"></i> Copy Example
                                         </button>
                                     </div>
-                                    <div class="card-body">
-                                        <pre class="bg-dark text-light p-3 rounded-3" id="response-example"><code>{
+                                    <div class="p-0">
+<pre class="m-0 bg-gray-900 text-gray-100 p-3" id="response-example"><code>{
     "meta": {
         "base_currency": "USD",
         "last_updated_at": "2024-10-24T18:00:00Z"
@@ -281,25 +289,107 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Convert Amount Endpoint -->
+                        <div class="rounded-xl border border-gray-200 bg-white shadow-sm mb-3 overflow-hidden">
+                            <div class="bg-gray-50 px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="inline-flex items-center rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">GET</span>
+                                    <h5 class="m-0 font-mono text-sm">/convert/latest_rates/{api_key}/{base_currency}/{target_currency}/{amount}</h5>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <p class="text-gray-700">Converts an <span class="font-mono">amount</span> from the <span class="font-mono">base_currency</span> to the <span class="font-mono">target_currency</span> using the latest rates.</p>
+
+                                <div class="rounded-lg border border-gray-200 bg-gray-50 mb-3 overflow-hidden">
+                                    <div class="px-4 py-2">
+                                        <h6 class="m-0 font-semibold"><i class="fas fa-list-ul mr-2"></i> Parameters</h6>
+                                    </div>
+                                    <div class="p-0">
+                                        <div class="overflow-x-auto">
+                                            <table class="w-full text-left text-sm">
+                                                <thead class="bg-white">
+                                                    <tr class="border-b">
+                                                        <th class="px-4 py-2">Name</th>
+                                                        <th class="px-4 py-2">Type</th>
+                                                        <th class="px-4 py-2">Required</th>
+                                                        <th class="px-4 py-2">Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="border-b hover:bg-gray-50">
+                                                        <td class="px-4 py-2"><code class="bg-gray-100 px-1 rounded">api_key</code></td>
+                                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-gray-200 px-2 py-0.5 text-xs font-medium text-gray-800">string</span></td>
+                                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">Yes</span></td>
+                                                        <td class="px-4 py-2">Your unique API key</td>
+                                                    </tr>
+                                                    <tr class="border-b hover:bg-gray-50">
+                                                        <td class="px-4 py-2"><code class="bg-gray-100 px-1 rounded">base_currency</code></td>
+                                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-gray-200 px-2 py-0.5 text-xs font-medium text-gray-800">string</span></td>
+                                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">Yes</span></td>
+                                                        <td class="px-4 py-2">Currency code to convert from (e.g., USD)</td>
+                                                    </tr>
+                                                    <tr class="border-b hover:bg-gray-50">
+                                                        <td class="px-4 py-2"><code class="bg-gray-100 px-1 rounded">target_currency</code></td>
+                                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-gray-200 px-2 py-0.5 text-xs font-medium text-gray-800">string</span></td>
+                                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">Yes</span></td>
+                                                        <td class="px-4 py-2">Currency code to convert to (e.g., EUR)</td>
+                                                    </tr>
+                                                    <tr class="border-b hover:bg-gray-50">
+                                                        <td class="px-4 py-2"><code class="bg-gray-100 px-1 rounded">amount</code></td>
+                                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-gray-200 px-2 py-0.5 text-xs font-medium text-gray-800">number</span></td>
+                                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">Yes</span></td>
+                                                        <td class="px-4 py-2">Amount to convert</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="rounded-lg border border-gray-200 bg-gray-50 overflow-hidden">
+                                    <div class="px-4 py-2 flex items-center justify-between">
+                                        <h6 class="m-0 font-semibold"><i class="fas fa-reply mr-2"></i> Response Example</h6>
+                                        <button class="inline-flex items-center justify-center rounded-md border border-blue-600 px-2 py-1 text-xs font-medium text-blue-700 hover:bg-blue-50" onclick="copyCustomTextWithFeedback(document.getElementById('convert-response-doc').textContent, 'convert-response-doc-btn')">
+                                            <i class="fas fa-copy mr-1" id="convert-response-doc-btn"></i> Copy Example
+                                        </button>
+                                    </div>
+                                    <div class="p-0">
+<pre class="m-0 bg-gray-900 text-gray-100 p-3" id="convert-response-doc"><code>{
+  "meta": {
+    "base_currency": "USD",
+    "target_currency": "EUR",
+    "amount": 100,
+    "last_updated_at": "2024-10-24T18:00:00Z"
+  },
+  "data": {
+    "rate": 0.85,
+    "converted_amount": 85.0
+  }
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <!-- Error Responses -->
                     <div class="mb-5">
-                        <h4 class="border-bottom pb-2 d-flex align-items-center">
-                            <i class="fas fa-exclamation-triangle me-2 text-warning"></i> Error Responses
+                        <h4 class="mb-3 border-b pb-2 flex items-center gap-2 text-lg font-semibold">
+                            <i class="fas fa-exclamation-triangle text-yellow-500"></i> Error Responses
                         </h4>
                         
-                        <p class="mb-3">The API returns detailed error responses to help with debugging. All error responses follow this format:</p>
+                        <p class="text-gray-700 mb-3">The API returns detailed error responses to help with debugging. All error responses follow this format:</p>
                         
-                        <div class="card bg-light border-0 mb-4">
-                            <div class="card-header border-0 d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0"><i class="fas fa-exclamation-circle me-2 text-danger"></i> Error Response Format</h6>
-                                <button class="btn btn-sm btn-outline-primary" onclick="copyCustomTextWithFeedback(document.getElementById('error-example').textContent, 'error-btn')">
-                                    <i class="fas fa-copy me-1" id="error-btn"></i> Copy Example
+                        <div class="rounded-lg border border-gray-200 bg-gray-50 mb-4 overflow-hidden">
+                            <div class="px-4 py-2 flex items-center justify-between">
+                                <h6 class="m-0 font-semibold"><i class="fas fa-exclamation-circle text-red-600 mr-2"></i> Error Response Format</h6>
+                                <button class="inline-flex items-center justify-center rounded-md border border-blue-600 px-2 py-1 text-xs font-medium text-blue-700 hover:bg-blue-50" onclick="copyCustomTextWithFeedback(document.getElementById('error-example').textContent, 'error-btn')">
+                                    <i class="fas fa-copy mr-1" id="error-btn"></i> Copy Example
                                 </button>
                             </div>
-                            <div class="card-body">
-                                <pre class="bg-dark text-light p-3 rounded-3" id="error-example"><code>{
+                            <div class="p-0">
+<pre class="m-0 bg-gray-900 text-gray-100 p-3" id="error-example"><code>{
     "error": {
         "code": 401,
         "message": "Invalid API key"
@@ -308,45 +398,45 @@
                             </div>
                         </div>
                         
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Status Code</th>
-                                        <th>Error Type</th>
-                                        <th>Description</th>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-white">
+                                    <tr class="border-b">
+                                        <th class="px-4 py-2">Status Code</th>
+                                        <th class="px-4 py-2">Error Type</th>
+                                        <th class="px-4 py-2">Description</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><span class="badge bg-warning text-dark">400</span></td>
-                                        <td>Bad Request</td>
-                                        <td>The request was malformed or contains invalid parameters</td>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">400</span></td>
+                                        <td class="px-4 py-2">Bad Request</td>
+                                        <td class="px-4 py-2">The request was malformed or contains invalid parameters</td>
                                     </tr>
-                                    <tr>
-                                        <td><span class="badge bg-danger">401</span></td>
-                                        <td>Unauthorized</td>
-                                        <td>Missing or invalid API key</td>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">401</span></td>
+                                        <td class="px-4 py-2">Unauthorized</td>
+                                        <td class="px-4 py-2">Missing or invalid API key</td>
                                     </tr>
-                                    <tr>
-                                        <td><span class="badge bg-secondary">404</span></td>
-                                        <td>Not Found</td>
-                                        <td>The requested resource could not be found</td>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-gray-200 px-2 py-0.5 text-xs font-medium text-gray-800">404</span></td>
+                                        <td class="px-4 py-2">Not Found</td>
+                                        <td class="px-4 py-2">The requested resource could not be found</td>
                                     </tr>
-                                    <tr>
-                                        <td><span class="badge bg-warning text-dark">429</span></td>
-                                        <td>Too Many Requests</td>
-                                        <td>Rate limit exceeded (30 requests per minute)</td>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">429</span></td>
+                                        <td class="px-4 py-2">Too Many Requests</td>
+                                        <td class="px-4 py-2">Rate limit exceeded (30 requests per minute)</td>
                                     </tr>
-                                    <tr>
-                                        <td><span class="badge bg-danger">500</span></td>
-                                        <td>Server Error</td>
-                                        <td>An error occurred while processing your request</td>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">500</span></td>
+                                        <td class="px-4 py-2">Server Error</td>
+                                        <td class="px-4 py-2">An error occurred while processing your request</td>
                                     </tr>
-                                    <tr>
-                                        <td><span class="badge bg-danger">503</span></td>
-                                        <td>Service Unavailable</td>
-                                        <td>External currency API is unavailable and no fallback data exists</td>
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">503</span></td>
+                                        <td class="px-4 py-2">Service Unavailable</td>
+                                        <td class="px-4 py-2">External currency API is unavailable and no fallback data exists</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -355,21 +445,21 @@
                     
                     <!-- Graceful Fallbacks -->
                     <div class="mb-5">
-                        <h4 class="border-bottom pb-2 d-flex align-items-center">
-                            <i class="fas fa-life-ring me-2 text-success"></i> Graceful Fallbacks
+                        <h4 class="mb-3 border-b pb-2 flex items-center gap-2 text-lg font-semibold">
+                            <i class="fas fa-life-ring text-green-600"></i> Graceful Fallbacks
                         </h4>
                         
-                        <p>If the external currency API is unavailable, the service will automatically return cached data with a warning:</p>
+                        <p class="text-gray-700">If the external currency API is unavailable, the service will automatically return cached data with a warning:</p>
                         
-                        <div class="card bg-light border-0 mb-3">
-                            <div class="card-header border-0 d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0"><i class="fas fa-exclamation-triangle me-2 text-warning"></i> Fallback Response Format</h6>
-                                <button class="btn btn-sm btn-outline-primary" onclick="copyCustomTextWithFeedback(document.getElementById('fallback-example').textContent, 'fallback-btn')">
-                                    <i class="fas fa-copy me-1" id="fallback-btn"></i> Copy Example
+                        <div class="rounded-lg border border-gray-200 bg-gray-50 mb-3 overflow-hidden">
+                            <div class="px-4 py-2 flex items-center justify-between">
+                                <h6 class="m-0 font-semibold"><i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i> Fallback Response Format</h6>
+                                <button class="inline-flex items-center justify-center rounded-md border border-blue-600 px-2 py-1 text-xs font-medium text-blue-700 hover:bg-blue-50" onclick="copyCustomTextWithFeedback(document.getElementById('fallback-example').textContent, 'fallback-btn')">
+                                    <i class="fas fa-copy mr-1" id="fallback-btn"></i> Copy Example
                                 </button>
                             </div>
-                            <div class="card-body">
-                                <pre class="bg-dark text-light p-3 rounded-3" id="fallback-example"><code>{
+                            <div class="p-0">
+<pre class="m-0 bg-gray-900 text-gray-100 p-3" id="fallback-example"><code>{
     "meta": {
         "base_currency": "USD",
         "last_updated_at": "2024-10-22T18:00:00Z"
@@ -388,14 +478,12 @@
                             </div>
                         </div>
                         
-                        <div class="alert border-start border-4 border-warning rounded-4 shadow-sm" style="background-color: #fff8e1;">
-                            <div class="d-flex">
-                                <div class="me-3">
-                                    <i class="fas fa-lightbulb text-warning fa-2x"></i>
-                                </div>
+                        <div class="rounded-md border border-yellow-200 bg-yellow-50 p-3 text-yellow-900 shadow-sm">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-lightbulb text-yellow-500 text-xl"></i>
                                 <div>
-                                    <h5 class="alert-heading">Note on Fallback Data</h5>
-                                    <p class="mb-0">While using fallback data, the exchange rates may not reflect the current market conditions. The API will include a warning with the response indicating that the data is stale and its age.</p>
+                                    <h5 class="m-0 font-semibold">Note on Fallback Data</h5>
+                                    <p class="m-0 text-sm">While using fallback data, the exchange rates may not reflect the current market conditions. The API will include a warning with the response indicating that the data is stale and its age.</p>
                                 </div>
                             </div>
                         </div>
@@ -403,36 +491,28 @@
                     
                     <!-- Code Examples -->
                     <div class="mb-5">
-                        <h4 class="border-bottom pb-2 d-flex align-items-center">
-                            <i class="fas fa-code me-2 text-success"></i> Code Examples
+                        <h4 class="mb-3 border-b pb-2 flex items-center gap-2 text-lg font-semibold">
+                            <i class="fas fa-code text-green-600"></i> Code Examples
                         </h4>
                         
-                        <!-- Code examples tab navigation -->
-                        <ul class="nav nav-tabs mb-3" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="js-tab" data-bs-toggle="tab" data-bs-target="#js-code" type="button" role="tab">
-                                    <i class="fab fa-js me-1"></i> JavaScript
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="python-tab" data-bs-toggle="tab" data-bs-target="#python-code" type="button" role="tab">
-                                    <i class="fab fa-python me-1"></i> Python
-                                </button>
-                            </li>
-                        </ul>
+                        <!-- Code examples sub-tabs -->
+                        <div class="inline-flex items-center gap-2 rounded-lg bg-white p-1 shadow-sm ring-1 ring-gray-200 mb-3">
+                            <button class="subtab-btn px-3 py-1.5 text-xs font-medium rounded-md bg-gray-900 text-white" data-target="#js-code">JavaScript</button>
+                            <button class="subtab-btn px-3 py-1.5 text-xs font-medium rounded-md text-gray-700 hover:bg-gray-50" data-target="#python-code">Python</button>
+                        </div>
                         
-                        <div class="tab-content">
+                        <div>
                             <!-- JavaScript Example -->
-                            <div class="tab-pane fade show active" id="js-code" role="tabpanel">
-                                <div class="card bg-dark border-0 rounded-4 mb-3">
-                                    <div class="card-header bg-dark text-light border-0 d-flex justify-content-between align-items-center">
-                                        <h6 class="mb-0 text-light">JavaScript Example</h6>
-                                        <button class="btn btn-sm btn-outline-light" onclick="copyCodeExample('js-example')">
-                                            <i class="fas fa-copy me-1"></i> Copy Code
+                            <div id="js-code" class="block">
+                                <div class="rounded-xl bg-gray-900 text-gray-100 shadow-sm mb-3 overflow-hidden">
+                                    <div class="flex items-center justify-between px-4 py-2">
+                                        <h6 class="m-0 text-sm">JavaScript Example</h6>
+                                        <button class="inline-flex items-center justify-center rounded-md border border-gray-300 px-2 py-1 text-xs font-medium text-gray-100 hover:bg-gray-800" onclick="copyCodeExample('js-example')">
+                                            <i class="fas fa-copy mr-1"></i> Copy Code
                                         </button>
                                     </div>
-                                    <div class="card-body p-0">
-                                        <pre class="m-0 p-3 rounded-bottom-4" id="js-example"><code class="text-light">// Fetch exchange rates
+                                    <div class="p-0">
+<pre class="m-0 p-3" id="js-example"><code>// Fetch exchange rates
 const apiKey = '{{api_key}}';
 const baseCurrency = 'USD';
 const url = `https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/${apiKey}/${baseCurrency}`;
@@ -458,16 +538,16 @@ fetch(url)
                             </div>
                             
                             <!-- Python Example -->
-                            <div class="tab-pane fade" id="python-code" role="tabpanel">
-                                <div class="card bg-dark border-0 rounded-4 mb-3">
-                                    <div class="card-header bg-dark text-light border-0 d-flex justify-content-between align-items-center">
-                                        <h6 class="mb-0 text-light">Python Example</h6>
-                                        <button class="btn btn-sm btn-outline-light" onclick="copyCodeExample('python-example')">
-                                            <i class="fas fa-copy me-1"></i> Copy Code
+                            <div id="python-code" class="hidden">
+                                <div class="rounded-xl bg-gray-900 text-gray-100 shadow-sm mb-3 overflow-hidden">
+                                    <div class="flex items-center justify-between px-4 py-2">
+                                        <h6 class="m-0 text-sm">Python Example</h6>
+                                        <button class="inline-flex items-center justify-center rounded-md border border-gray-300 px-2 py-1 text-xs font-medium text-gray-100 hover:bg-gray-800" onclick="copyCodeExample('python-example')">
+                                            <i class="fas fa-copy mr-1"></i> Copy Code
                                         </button>
                                     </div>
-                                    <div class="card-body p-0">
-                                        <pre class="m-0 p-3 rounded-bottom-4" id="python-example"><code class="text-light">import requests
+                                    <div class="p-0">
+<pre class="m-0 p-3" id="python-example"><code>import requests
 
 api_key = '{{api_key}}'
 base_currency = 'USD'
@@ -497,237 +577,151 @@ except requests.exceptions.RequestException as e:
                     
                     <!-- Rate Limits -->
                     <div>
-                        <h4 class="border-bottom pb-2 d-flex align-items-center">
-                            <i class="fas fa-tachometer-alt me-2 text-danger"></i> Rate Limits
+                        <h4 class="mb-3 border-b pb-2 flex items-center gap-2 text-lg font-semibold">
+                            <i class="fas fa-tachometer-alt text-red-600"></i> Rate Limits
                         </h4>
-                        <div class="alert border-start border-4 border-info rounded-4 shadow-sm" style="background-color: #f0f7ff;">
-                            <div class="d-flex">
-                                <div class="me-3">
-                                    <i class="fas fa-info-circle text-info fa-2x"></i>
-                                </div>
+                        <div class="rounded-md border border-blue-200 bg-blue-50 p-3 text-blue-900 shadow-sm">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-info-circle text-blue-600 text-xl"></i>
                                 <div>
-                                    <h5 class="alert-heading">Current Limits</h5>
-                                    <p class="mb-0">The API enforces a rate limit of <strong>30 requests per minute</strong> per API key. Our free tier offers unlimited daily requests within this rate limit.</p>
+                                    <h5 class="m-0 font-semibold">Current Limits</h5>
+                                    <p class="m-0 text-sm">The API enforces a rate limit of <strong>30 requests per minute</strong> per API key. Our free tier offers unlimited daily requests within this rate limit.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
 </main>
 
-<style>
-/* Custom Styles to enhance UI */
-.monospace-text {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.9rem;
-}
-
-.hover-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hover-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-}
-
-.step-circle {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #4361ee;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 1.2rem;
-}
-
-.step-card {
-    transition: all 0.3s ease;
-}
-
-.step-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-}
-
-.icon-circle {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-}
-
-pre {
-    border-radius: 0.5rem;
-    position: relative;
-}
-
-.rounded-top-4 {
-    border-top-left-radius: 1rem !important;
-    border-top-right-radius: 1rem !important;
-}
-
-.rounded-bottom-4 {
-    border-bottom-left-radius: 1rem !important;
-    border-bottom-right-radius: 1rem !important;
-}
-
-.rounded-4 {
-    border-radius: 1rem !important;
-}
-
-.nav-pills .nav-link.active {
-    background-color: #4361ee;
-}
-
-.nav-pills .nav-link {
-    color: #4361ee;
-    transition: all 0.3s ease;
-}
-
-.nav-pills .nav-link:hover:not(.active) {
-    background-color: rgba(67, 97, 238, 0.1);
-}
-
-.table tbody tr {
-    transition: background-color 0.3s ease;
-}
-
-.table tbody tr:hover {
-    background-color: rgba(67, 97, 238, 0.05);
-}
-</style>
-
 <script>
-// Copy API key function with visual feedback
+// Tabs switching
+(function(){
+    function activateTab(targetSelector){
+        var sections = document.querySelectorAll('#dashboardTabContent > section');
+        sections.forEach(function(sec){ sec.classList.add('hidden'); sec.classList.remove('block'); });
+        var target = document.querySelector(targetSelector);
+        if(target){ target.classList.remove('hidden'); target.classList.add('block'); }
+        var buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(function(btn){ btn.classList.remove('bg-blue-600','text-white'); btn.classList.add('text-gray-700'); });
+        var activeBtn = Array.from(buttons).find(function(b){ return b.getAttribute('data-target') === targetSelector; });
+        if(activeBtn){ activeBtn.classList.add('bg-blue-600','text-white'); activeBtn.classList.remove('text-gray-700'); }
+    }
+    window.switchToTab = activateTab;
+    var tabButtons = document.querySelectorAll('.tab-btn');
+    tabButtons.forEach(function(btn){
+        btn.addEventListener('click', function(){ activateTab(this.getAttribute('data-target')); });
+    });
+})();
+
+// Subtabs switching (Documentation code examples)
+(function(){
+    function activateSubtab(targetSelector){
+        var panes = document.querySelectorAll('#documentation > div .hidden, #documentation > div .block');
+        // explicitly toggle only our two panes
+        ['#js-code','#python-code'].forEach(function(id){
+            var el = document.querySelector(id);
+            if(el){ el.classList.add('hidden'); el.classList.remove('block'); }
+        });
+        var target = document.querySelector(targetSelector);
+        if(target){ target.classList.remove('hidden'); target.classList.add('block'); }
+        var buttons = document.querySelectorAll('.subtab-btn');
+        buttons.forEach(function(btn){ btn.classList.remove('bg-gray-900','text-white'); btn.classList.add('text-gray-700'); });
+        var activeBtn = Array.from(buttons).find(function(b){ return b.getAttribute('data-target') === targetSelector; });
+        if(activeBtn){ activeBtn.classList.add('bg-gray-900','text-white'); activeBtn.classList.remove('text-gray-700'); }
+    }
+    var subtabButtons = document.querySelectorAll('.subtab-btn');
+    subtabButtons.forEach(function(btn){
+        btn.addEventListener('click', function(){ activateSubtab(this.getAttribute('data-target')); });
+    });
+})();
+
+// Copy helpers
 function copyApiKeyWithFeedback() {
-    const apiKeyElement = document.getElementById('apiKey');
-    const copyBtn = document.getElementById('copyBtn');
-    const originalBtnText = copyBtn.innerHTML;
-    const textToCopy = apiKeyElement.value;
+    var apiKeyElement = document.getElementById('apiKey');
+    var copyBtn = document.getElementById('copyBtn');
+    var originalBtnText = copyBtn.innerHTML;
+    var textToCopy = apiKeyElement.value;
     
     navigator.clipboard.writeText(textToCopy)
-        .then(() => {
-            copyBtn.innerHTML = '<i class="fas fa-check me-1"></i> Copied!';
-            copyBtn.classList.remove('btn-primary');
-            copyBtn.classList.add('btn-success');
-            
-            setTimeout(() => {
-                copyBtn.innerHTML = originalBtnText;
-                copyBtn.classList.remove('btn-success');
-                copyBtn.classList.add('btn-primary');
-            }, 2000);
+        .then(function(){
+            copyBtn.innerHTML = '<i class="fas fa-check mr-1"></i> Copied!';
+            setTimeout(function(){ copyBtn.innerHTML = originalBtnText; }, 2000);
         })
-        .catch(err => {
-            console.error('Could not copy text: ', err);
-            copyBtn.innerHTML = '<i class="fas fa-times me-1"></i> Error!';
-            copyBtn.classList.remove('btn-primary');
-            copyBtn.classList.add('btn-danger');
-            
-            setTimeout(() => {
-                copyBtn.innerHTML = originalBtnText;
-                copyBtn.classList.remove('btn-danger');
-                copyBtn.classList.add('btn-primary');
-            }, 2000);
+        .catch(function(){
+            copyBtn.innerHTML = '<i class="fas fa-times mr-1"></i> Error!';
+            setTimeout(function(){ copyBtn.innerHTML = originalBtnText; }, 2000);
         });
 }
 
-// Copy custom text with visual feedback
 function copyCustomTextWithFeedback(text, iconId) {
-    const icon = document.getElementById(iconId);
-    const originalClass = icon.className;
-    
+    var icon = document.getElementById(iconId);
+    var originalClass = icon.className;
     navigator.clipboard.writeText(text)
-        .then(() => {
-            icon.className = 'fas fa-check me-1';
-            
-            setTimeout(() => {
-                icon.className = originalClass;
-            }, 2000);
+        .then(function(){
+            icon.className = 'fas fa-check mr-1';
+            setTimeout(function(){ icon.className = originalClass; }, 2000);
         })
-        .catch(err => {
-            console.error('Could not copy text: ', err);
-            icon.className = 'fas fa-times me-1';
-            
-            setTimeout(() => {
-                icon.className = originalClass;
-            }, 2000);
+        .catch(function(){
+            icon.className = 'fas fa-times mr-1';
+            setTimeout(function(){ icon.className = originalClass; }, 2000);
         });
 }
 
-// Copy code example function
 function copyCodeExample(elementId) {
-    const codeElement = document.getElementById(elementId);
-    const text = codeElement.textContent;
-    
+    var codeElement = document.getElementById(elementId);
+    var text = codeElement.textContent;
     navigator.clipboard.writeText(text)
-        .then(() => {
-            // Create a toast notification
-            const toast = document.createElement('div');
+        .then(function(){
+            var toast = document.createElement('div');
             toast.style.position = 'fixed';
             toast.style.bottom = '20px';
             toast.style.right = '20px';
-            toast.style.backgroundColor = '#4caf50';
+            toast.style.backgroundColor = '#16a34a';
             toast.style.color = 'white';
             toast.style.padding = '10px 20px';
-            toast.style.borderRadius = '4px';
+            toast.style.borderRadius = '6px';
             toast.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
             toast.style.zIndex = '9999';
             toast.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
             toast.style.opacity = '0';
             toast.style.transform = 'translateY(20px)';
-            toast.innerHTML = '<i class="fas fa-check-circle me-2"></i> Code copied to clipboard!';
-            
+            toast.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Code copied to clipboard!';
             document.body.appendChild(toast);
-            
-            // Show the toast
-            setTimeout(() => {
-                toast.style.opacity = '1';
-                toast.style.transform = 'translateY(0)';
-            }, 10);
-            
-            // Hide and remove the toast
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateY(20px)';
-                setTimeout(() => {
-                    document.body.removeChild(toast);
-                }, 300);
-            }, 3000);
-        })
-        .catch(err => {
-            console.error('Could not copy code: ', err);
+            setTimeout(function(){ toast.style.opacity = '1'; toast.style.transform = 'translateY(0)'; }, 10);
+            setTimeout(function(){
+                toast.style.opacity = '0'; toast.style.transform = 'translateY(20px)';
+                setTimeout(function(){ document.body.removeChild(toast); }, 300);
+            }, 2500);
         });
 }
 
-// Add animation to tabs
-document.addEventListener('DOMContentLoaded', function() {
-    const tabButtons = document.querySelectorAll('[data-bs-toggle="tab"]');
-    
-    tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const targetId = this.getAttribute('data-bs-target');
-            const targetPane = document.querySelector(targetId);
-            
-            if (targetPane) {
-                targetPane.style.animation = 'fadeIn 0.5s ease';
-                setTimeout(() => {
-                    targetPane.style.animation = '';
-                }, 500);
-            }
+// Convert on dashboard
+(function(){
+    var form = document.getElementById('dash-convert-form');
+    var responseEl = document.getElementById('dash-convert-response');
+    var copyBtn = document.getElementById('dash-copy-convert-response');
+    if(form){
+        form.addEventListener('submit', function(e){
+            e.preventDefault();
+            var apiKey = '{{api_key}}';
+            var from = document.getElementById('dash_from_currency').value.trim();
+            var to = document.getElementById('dash_to_currency').value.trim();
+            var amount = document.getElementById('dash_amount').value.trim();
+            if(!apiKey || !from || !to || !amount){ return; }
+            var url = '/convert/latest_rates/' + encodeURIComponent(apiKey) + '/' + encodeURIComponent(from) + '/' + encodeURIComponent(to) + '/' + encodeURIComponent(amount);
+            fetch(url)
+                .then(function(res){ return res.json(); })
+                .then(function(data){ responseEl.textContent = JSON.stringify(data, null, 2); })
+                .catch(function(err){ responseEl.textContent = JSON.stringify({ error: String(err) }, null, 2); });
         });
-    });
-});
+    }
+    if(copyBtn && responseEl){
+        copyBtn.addEventListener('click', function(){ navigator.clipboard.writeText(responseEl.textContent); });
+    }
+})();
 </script>
 
 {% endblock %}

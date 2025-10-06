@@ -1,22 +1,31 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="form-container">
-    <p class="title">Welcome</p>
-    <form action="/settings/security" method="post" class="form">
-      {{ form.hidden_tag() }}
-        <input type="password" class="input" placeholder="New Password" name="new_password" id="password" required="">
-        <input type="password" class="input" placeholder="Confirm New Password" id="confirm_password" required="">
+<div class="flex min-h-[60vh] items-start justify-center px-4 py-8">
+  <div class="w-full max-w-md">
+    <p class="text-center text-2xl font-bold tracking-tight mb-4">Change Password</p>
+    <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-200">
+      <form action="/settings/security" method="post" class="space-y-4">
+        {{ form.hidden_tag() }}
+        <div>
+          <label class="mb-1 block text-sm font-medium text-gray-700">New Password</label>
+          <input type="password" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" placeholder="New Password" name="new_password" id="password" required>
+        </div>
+        <div>
+          <label class="mb-1 block text-sm font-medium text-gray-700">Confirm New Password</label>
+          <input type="password" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" placeholder="Confirm New Password" id="confirm_password" required>
+        </div>
         <input type="hidden" name="user_id" value="{ user_id }">
-        <label for="password-toggle" class="password-toggle-btn">
-            <input type="checkbox" id="password-toggle" onclick="togglePasswordVisibility_all()">
-            <span class="checkmark">Show password</span>
-          </label>
-        <p class="page-link"></p>
-        <button class="form-btn" title="Submit">
-          <i class="fas fa-check"></i>
-      </button>
-    </form>
+        <label for="password-toggle" class="mt-2 inline-flex items-center gap-2 text-sm text-gray-600">
+          <input type="checkbox" id="password-toggle" onclick="togglePasswordVisibility_all()" class="h-4 w-4 rounded border-gray-300">
+          <span>Show password</span>
+        </label>
+        <button class="inline-flex w-full items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700" title="Submit">
+          <i class="fas fa-check mr-2"></i> Save
+        </button>
+      </form>
+    </div>
   </div>
+</div>
 
 {% endblock %}
