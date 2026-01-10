@@ -735,18 +735,66 @@ axios.get(url)
                         </div>
                     </div>
                     
-                    <!-- Rate Limits -->
-                    <div>
+                    <!-- Supported Currencies -->
+                    <div class="mb-5">
                         <h4 class="mb-3 border-b pb-2 flex items-center gap-2 text-lg font-semibold">
-                            <i class="fas fa-tachometer-alt text-red-600"></i> Rate Limits
+                            <i class="fas fa-coins text-yellow-500"></i> Supported Currencies
                         </h4>
-                        <div class="rounded-md border border-blue-200 bg-blue-50 p-3 text-blue-900 shadow-sm">
+
+                        <p class="text-gray-700 mb-3">
+                            The supported currency codes are the keys returned in <code class="bg-gray-100 px-1 rounded">data</code> from
+                            <code class="bg-gray-100 px-1 rounded">/latest_rates/{api_key}/{base_currency}</code>.
+                            Use the lists below for copy/paste.
+                        </p>
+
+                        <div class="rounded-md border border-yellow-200 bg-yellow-50 p-3 text-yellow-900 mb-4">
                             <div class="flex items-start gap-3">
-                                <i class="fas fa-info-circle text-blue-600 text-xl"></i>
-                                <div>
-                                    <h5 class="m-0 font-semibold">Current Limits</h5>
-                                    <p class="m-0 text-sm mb-2">The API enforces a rate limit of <strong>30 requests per minute</strong> per API key. This applies to all endpoints.</p>
-                                    <p class="m-0 text-sm"><strong>Best Practices:</strong> Implement request caching, use exponential backoff when rate limited, and make requests from your backend server.</p>
+                                <i class="fas fa-info-circle text-yellow-600 text-xl"></i>
+                                <div class="text-sm">
+                                    <div class="font-semibold mb-1">How it’s generated</div>
+                                    <div>
+                                        We fetch <code class="bg-yellow-100 px-1 rounded">/latest_rates/{{api_key}}/USD</code> and extract <code class="bg-yellow-100 px-1 rounded">Object.keys(data.data)</code>.
+                                        Click “Refresh” if you suspect the upstream provider changed.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div class="rounded-lg border border-gray-200 bg-gray-50 overflow-hidden">
+                                <div class="px-4 py-2 flex items-center justify-between">
+                                    <h6 class="m-0 font-semibold"><i class="fas fa-code mr-2"></i> JSON array (sorted)</h6>
+                                    <div class="flex items-center gap-2">
+                                        <button class="inline-flex items-center justify-center rounded-md border border-blue-600 px-2 py-1 text-xs font-medium text-blue-700 hover:bg-blue-50"
+                                                type="button"
+                                                onclick="window.loadSupportedCurrencies && window.loadSupportedCurrencies(true)">
+                                            <i class="fas fa-rotate-right mr-1"></i> Refresh
+                                        </button>
+                                        <button class="inline-flex items-center justify-center rounded-md border border-blue-600 px-2 py-1 text-xs font-medium text-blue-700 hover:bg-blue-50"
+                                                type="button"
+                                                onclick="copyCustomTextWithFeedback(document.getElementById('supported-currencies-json').textContent, 'supported-currencies-json-btn')">
+                                            <i class="fas fa-copy mr-1" id="supported-currencies-json-btn"></i> Copy
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="p-0">
+<pre class="m-0 bg-gray-900 text-gray-100 p-3" id="supported-currencies-json"><code>[
+  "USD"
+]</code></pre>
+                                </div>
+                            </div>
+
+                            <div class="rounded-lg border border-gray-200 bg-gray-50 overflow-hidden">
+                                <div class="px-4 py-2 flex items-center justify-between">
+                                    <h6 class="m-0 font-semibold"><i class="fas fa-list mr-2"></i> One per line</h6>
+                                    <button class="inline-flex items-center justify-center rounded-md border border-blue-600 px-2 py-1 text-xs font-medium text-blue-700 hover:bg-blue-50"
+                                            type="button"
+                                            onclick="copyCustomTextWithFeedback(document.getElementById('supported-currencies-lines').textContent, 'supported-currencies-lines-btn')">
+                                        <i class="fas fa-copy mr-1" id="supported-currencies-lines-btn"></i> Copy
+                                    </button>
+                                </div>
+                                <div class="p-0">
+<pre class="m-0 bg-gray-900 text-gray-100 p-3" id="supported-currencies-lines"><code>USD</code></pre>
                                 </div>
                             </div>
                         </div>
@@ -865,6 +913,79 @@ function copyCodeExample(elementId) {
         });
 }
 
+// Supported currencies (derived from /latest_rates)
+(function(){
+    var loaded = false;
+
+    function setSupportedCurrenciesLoading() {
+        var jsonEl = document.getElementById('supported-currencies-json');
+        var linesEl = document.getElementById('supported-currencies-lines');
+        if (jsonEl) jsonEl.textContent = '[\n  "loading..."\n]';
+        if (linesEl) linesEl.textContent = 'loading...';
+    }
+
+    function setSupportedCurrenciesError(message) {
+        var jsonEl = document.getElementById('supported-currencies-json');
+        var linesEl = document.getElementById('supported-currencies-lines');
+        var payload = { error: { code: 500, message: message || 'Failed to load supported currencies' } };
+        if (jsonEl) jsonEl.textContent = JSON.stringify(payload, null, 2);
+        if (linesEl) linesEl.textContent = (message || 'Failed to load supported currencies');
+    }
+
+    function renderSupportedCurrencies(codes) {
+        var jsonEl = document.getElementById('supported-currencies-json');
+        var linesEl = document.getElementById('supported-currencies-lines');
+        if (!Array.isArray(codes)) codes = [];
+
+        // Ensure unique + sorted
+        var uniq = Array.from(new Set(codes.map(function(c){ return String(c).trim().toUpperCase(); }).filter(Boolean))).sort();
+
+        if (jsonEl) jsonEl.textContent = JSON.stringify(uniq, null, 2);
+        if (linesEl) linesEl.textContent = uniq.join('\n');
+    }
+
+    window.loadSupportedCurrencies = function(force){
+        if (loaded && !force) return;
+
+        var apiKey = '{{api_key}}';
+        if (!apiKey) {
+            setSupportedCurrenciesError('Missing API key in template context');
+            return;
+        }
+
+        loaded = true;
+        setSupportedCurrenciesLoading();
+
+        // Use USD just to discover the full set of returned keys
+        var url = '/latest_rates/' + encodeURIComponent(apiKey) + '/USD';
+
+        fetch(url)
+            .then(function(res){
+                return res.json().then(function(data){
+                    if (!res.ok) throw { response: res, data: data };
+                    return data;
+                });
+            })
+            .then(function(data){
+                var codes = [];
+                if (data && data.data && typeof data.data === 'object') {
+                    codes = Object.keys(data.data);
+                }
+                // Include base currency too for convenience
+                if (data && data.meta && data.meta.base_currency) {
+                    codes.push(data.meta.base_currency);
+                } else {
+                    codes.push('USD');
+                }
+                renderSupportedCurrencies(codes);
+            })
+            .catch(function(err){
+                var msg = (err && err.data && err.data.error && err.data.error.message) ? err.data.error.message : String(err);
+                setSupportedCurrenciesError(msg);
+            });
+    };
+})();
+  
 // Convert on dashboard
 (function(){
     var form = document.getElementById('dash-convert-form');

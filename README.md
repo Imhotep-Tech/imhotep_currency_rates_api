@@ -19,6 +19,7 @@ A free, production-ready REST API for retrieving real-time foreign exchange rate
 - [Response Formats](#response-formats)
 - [Error Handling](#error-handling)
 - [Rate Limiting](#rate-limiting)
+- [Supported Currencies](#supported-currencies)
 - [Code Examples](#code-examples)
 - [Best Practices](#best-practices)
 
@@ -352,6 +353,53 @@ The API enforces rate limiting to ensure fair usage and system stability.
 - Cache API responses on your end when possible
 - Monitor your request rate to stay within limits
 - Consider batching operations when possible
+
+## Supported Currencies
+
+Supported currency codes are the **keys returned under** `data` from:
+
+```
+/latest_rates/{api_key}/{base_currency}
+```
+
+Because the upstream provider can evolve, the most reliable way to get the current supported list is to generate it from the API response.
+
+### Copy/paste (JSON array)
+
+```bash
+curl -s "https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/YOUR_API_KEY/USD" \
+  | jq -c '.data | keys | map(ascii_upcase) | unique | sort'
+```
+
+### Copy/paste (one code per line)
+
+```bash
+curl -s "https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/YOUR_API_KEY/USD" \
+  | jq -r '.data | keys | map(ascii_upcase) | unique | sort[]'
+```
+
+### Programmatic extraction
+
+**JavaScript**
+
+```javascript
+const res = await fetch(`https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/${apiKey}/USD`);
+const body = await res.json();
+const supported = Object.keys(body.data).map(s => s.toUpperCase()).sort();
+console.log(JSON.stringify(supported, null, 2));
+```
+
+**Python**
+
+```python
+import requests, json
+
+api_key = "YOUR_API_KEY"
+url = f"https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/{api_key}/USD"
+data = requests.get(url, timeout=10).json()
+supported = sorted({k.upper() for k in data["data"].keys()})
+print(json.dumps(supported, indent=2))
+```
 
 ## Code Examples
 
