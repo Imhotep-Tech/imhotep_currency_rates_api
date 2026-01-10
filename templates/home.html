@@ -9,25 +9,25 @@
         </div>
     {% endif %}
     
-    <div class="text-center mb-6">
-        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-blue-700 mb-2">Imhotep Exchange Rate API</h1>
-        <p class="text-sm sm:text-base text-gray-600">Your personal dashboard for API management and documentation</p>
+    <div class="text-center mb-8">
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-blue-700 mb-3">Imhotep Exchange Rate API</h1>
+        <p class="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">Your personal dashboard for API management and comprehensive documentation</p>
     </div>
     
     <!-- Dashboard Navigation Tabs (Tailwind) -->
-    <div class="mb-5">
-        <div class="inline-flex w-full md:w-auto items-center justify-between md:justify-start gap-2 rounded-lg bg-white p-1 shadow-sm ring-1 ring-gray-200">
-            <button class="tab-btn px-3 py-2 text-sm font-medium rounded-md bg-blue-600 text-white" data-target="#overview">
-                <i class="fas fa-home mr-1"></i> Overview
+    <div class="mb-6">
+        <div class="inline-flex w-full md:w-auto items-center justify-between md:justify-start gap-2 rounded-lg bg-white p-1.5 shadow-md ring-1 ring-gray-200">
+            <button class="tab-btn px-4 py-2.5 text-sm font-semibold rounded-md bg-blue-600 text-white transition-colors duration-200" data-target="#overview">
+                <i class="fas fa-home mr-1.5"></i> Overview
             </button>
-            <button class="tab-btn px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-50" data-target="#api-keys">
-                <i class="fas fa-key mr-1"></i> API Keys
+            <button class="tab-btn px-4 py-2.5 text-sm font-semibold rounded-md text-gray-700 hover:bg-gray-100 transition-colors duration-200" data-target="#api-keys">
+                <i class="fas fa-key mr-1.5"></i> API Keys
             </button>
-            <button class="tab-btn px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-50" data-target="#documentation">
-                <i class="fas fa-book mr-1"></i> Documentation
+            <button class="tab-btn px-4 py-2.5 text-sm font-semibold rounded-md text-gray-700 hover:bg-gray-100 transition-colors duration-200" data-target="#documentation">
+                <i class="fas fa-book mr-1.5"></i> Documentation
             </button>
-            <button class="tab-btn px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-50" data-target="#convert">
-                <i class="fas fa-exchange-alt mr-1"></i> Convert
+            <button class="tab-btn px-4 py-2.5 text-sm font-semibold rounded-md text-gray-700 hover:bg-gray-100 transition-colors duration-200" data-target="#convert">
+                <i class="fas fa-exchange-alt mr-1.5"></i> Convert
             </button>
         </div>
     </div>
@@ -36,54 +36,58 @@
     <div id="dashboardTabContent">
         <!-- Overview Tab -->
         <section id="overview" class="block">
-            <div class="rounded-xl bg-white shadow-sm ring-1 ring-gray-200 mb-4 overflow-hidden">
-                <div class="bg-blue-700 text-white px-4 py-3">
+            <div class="rounded-xl bg-white shadow-md ring-1 ring-gray-200 mb-6 overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-700 to-blue-600 text-white px-5 py-4">
                     <div class="flex items-center gap-3">
                         <i class="fas fa-key text-xl"></i>
-                        <h3 class="m-0 text-base font-semibold">Your API Key</h3>
+                        <h3 class="m-0 text-lg font-bold">Your API Key</h3>
                     </div>
                 </div>
-                <div class="p-4">
-                    <div class="flex flex-col gap-3">
-                        <div class="flex flex-col sm:flex-row gap-2">
-                            <input type="text" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 font-mono text-sm" id="apiKey" value="https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/{{api_key}}/USD" readonly>
-                            <button class="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700" id="copyBtn" onclick="copyApiKeyWithFeedback()">
-                                <i class="fas fa-copy mr-1"></i> Copy
+                <div class="p-5">
+                    <div class="flex flex-col gap-4">
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <input type="text" class="flex-1 rounded-lg border-2 border-gray-300 bg-gray-50 px-4 py-3 font-mono text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-colors" id="apiKey" value="https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/{{api_key}}/USD" readonly>
+                            <button class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-blue-700 hover:shadow-lg transition-all duration-200" id="copyBtn" onclick="copyApiKeyWithFeedback()">
+                                <i class="fas fa-copy mr-2"></i> Copy URL
                             </button>
                         </div>
+                        <p class="text-xs text-gray-500 flex items-center gap-2">
+                            <i class="fas fa-info-circle"></i>
+                            This is your complete API endpoint URL. Copy it to use in your applications.
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <div class="rounded-xl bg-white shadow-sm ring-1 ring-gray-200 mb-4 overflow-hidden">
-                <div class="bg-blue-600 text-white px-4 py-3">
+            <div class="rounded-xl bg-white shadow-md ring-1 ring-gray-200 mb-4 overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-4">
                     <div class="flex items-center gap-3">
                         <i class="fas fa-rocket text-xl"></i>
-                        <h3 class="m-0 text-base font-semibold">Quick Start Guide</h3>
+                        <h3 class="m-0 text-lg font-bold">Quick Start Guide</h3>
                     </div>
                 </div>
-                <div class="p-4">
-                    <p class="text-gray-700 mb-4">Get started with the Imhotep Exchange Rate API in just three simple steps:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-                        <div class="rounded-xl border border-gray-200 bg-gray-50 text-center p-4 shadow-sm">
-                            <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-700 text-white font-bold">1</div>
-                            <h6 class="font-semibold">Copy Your API Key</h6>
+                <div class="p-5">
+                    <p class="text-gray-700 mb-5 text-base">Get started with the Imhotep Exchange Rate API in just three simple steps:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+                        <div class="rounded-xl border-2 border-gray-200 bg-gradient-to-br from-gray-50 to-white text-center p-5 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-700 text-white font-bold text-lg shadow-md">1</div>
+                            <h6 class="font-bold text-gray-800 mb-2">Copy Your API Key</h6>
                             <p class="text-sm text-gray-600">Use the button above to copy your unique API key</p>
                         </div>
-                        <div class="rounded-xl border border-gray-200 bg-gray-50 text-center p-4 shadow-sm">
-                            <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-700 text-white font-bold">2</div>
-                            <h6 class="font-semibold">Make an API Request</h6>
-                            <p class="text-sm text-gray-600">Use the endpoint <code class="bg-gray-100 px-1 rounded">/latest_rates/YOUR_API_KEY/USD</code></p>
+                        <div class="rounded-xl border-2 border-gray-200 bg-gradient-to-br from-gray-50 to-white text-center p-5 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-700 text-white font-bold text-lg shadow-md">2</div>
+                            <h6 class="font-bold text-gray-800 mb-2">Make an API Request</h6>
+                            <p class="text-sm text-gray-600">Use the endpoint <code class="bg-gray-100 px-1.5 py-0.5 rounded text-xs font-mono">/latest_rates/YOUR_API_KEY/USD</code></p>
                         </div>
-                        <div class="rounded-xl border border-gray-200 bg-gray-50 text-center p-4 shadow-sm">
-                            <div class="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-700 text-white font-bold">3</div>
-                            <h6 class="font-semibold">Process JSON Response</h6>
+                        <div class="rounded-xl border-2 border-gray-200 bg-gradient-to-br from-gray-50 to-white text-center p-5 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-700 text-white font-bold text-lg shadow-md">3</div>
+                            <h6 class="font-bold text-gray-800 mb-2">Process JSON Response</h6>
                             <p class="text-sm text-gray-600">Get real-time exchange rates for all currencies</p>
                         </div>
                     </div>
                     <div class="text-center">
-                        <button class="inline-flex items-center justify-center rounded-full border border-blue-600 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-blue-50" onclick="switchToTab('#documentation')">
-                            <i class="fas fa-file-alt mr-1"></i> View Full Documentation
+                        <button class="inline-flex items-center justify-center rounded-lg border-2 border-blue-600 px-6 py-2.5 text-sm font-semibold text-blue-700 hover:bg-blue-50 hover:shadow-md transition-all duration-200" onclick="switchToTab('#documentation')">
+                            <i class="fas fa-file-alt mr-2"></i> View Full Documentation
                         </button>
                     </div>
                 </div>
@@ -110,8 +114,9 @@
                             <label class="mb-1 block text-sm font-medium text-gray-700">Amount</label>
                             <input id="dash_amount" type="number" value="100" min="0" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" required>
                         </div>
-                        <button type="submit" class="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
-                            <i class="fas fa-exchange-alt mr-2"></i> Convert
+                        <button type="submit" id="dash-convert-btn" class="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i class="fas fa-exchange-alt mr-2" id="dash-convert-icon"></i> 
+                            <span id="dash-convert-text">Convert</span>
                         </button>
                     </form>
                 </div>
@@ -120,7 +125,7 @@
                         <h3 class="m-0 text-sm font-semibold">API Response</h3>
                         <button id="dash-copy-convert-response" class="inline-flex items-center rounded-md border border-gray-300 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"><i class="fas fa-copy mr-1"></i> Copy</button>
                     </div>
-<pre class="m-0 bg-gray-900 text-gray-100 p-3 rounded" id="dash-convert-response"><code>{
+<pre class="m-0 bg-gray-900 text-gray-100 p-3 rounded" id="dash-convert-response"><code id="dash-convert-response-code">{
   "result": null,
   "status": "waiting for input"
 }</code></pre>
@@ -216,6 +221,41 @@
                     </div>
                 </div>
                 <div class="p-4">
+                    <!-- Base URL and Authentication -->
+                    <div class="mb-5">
+                        <h4 class="mb-3 border-b pb-2 flex items-center gap-2 text-lg font-semibold">
+                            <i class="fas fa-server text-blue-600"></i> Base URL & Authentication
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                                <h6 class="m-0 font-semibold mb-2 flex items-center gap-2">
+                                    <i class="fas fa-link text-blue-600"></i> Base URL
+                                </h6>
+                                <code class="block bg-gray-900 text-gray-100 p-2 rounded text-sm break-all">https://imhotepexchangeratesapi.pythonanywhere.com</code>
+                            </div>
+                            <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                                <h6 class="m-0 font-semibold mb-2 flex items-center gap-2">
+                                    <i class="fas fa-key text-green-600"></i> Authentication
+                                </h6>
+                                <p class="text-sm text-gray-700 m-0">All requests require your API key as a path parameter. Keep it secure and never expose it in client-side code.</p>
+                            </div>
+                        </div>
+                        <div class="rounded-md border border-yellow-200 bg-yellow-50 p-3 text-yellow-900">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-shield-alt text-yellow-600 text-xl"></i>
+                                <div>
+                                    <h6 class="m-0 font-semibold mb-1">Security Best Practices</h6>
+                                    <ul class="m-0 text-sm list-disc list-inside space-y-1">
+                                        <li>Never commit API keys to version control</li>
+                                        <li>Make API requests from your backend server, not client-side JavaScript</li>
+                                        <li>Store API keys in environment variables or secure configuration</li>
+                                        <li>If your API key is compromised, contact support immediately</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <!-- Endpoints -->
                     <div class="mb-5">
                         <h4 class="mb-3 border-b pb-2 flex items-center gap-2 text-lg font-semibold">
@@ -229,7 +269,18 @@
                                 </div>
                             </div>
                             <div class="p-4">
-                                <p class="text-gray-700">Returns the latest exchange rates for all currencies relative to the specified base currency.</p>
+                                <p class="text-gray-700 mb-3">Returns the latest exchange rates for all supported currencies relative to the specified base currency. Rates are updated daily and cached for optimal performance.</p>
+                                
+                                <div class="mb-3">
+                                    <div class="rounded-md border border-blue-200 bg-blue-50 p-3 text-blue-900">
+                                        <div class="flex items-start gap-2">
+                                            <i class="fas fa-info-circle text-blue-600 mt-0.5"></i>
+                                            <div class="text-sm">
+                                                <strong>Base URL:</strong> <code class="bg-blue-100 px-1 rounded">https://imhotepexchangeratesapi.pythonanywhere.com</code>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 
                                 <div class="rounded-lg border border-gray-200 bg-gray-50 mb-3 overflow-hidden">
                                     <div class="px-4 py-2">
@@ -274,16 +325,20 @@
                                     </div>
                                     <div class="p-0">
 <pre class="m-0 bg-gray-900 text-gray-100 p-3" id="response-example"><code>{
-    "meta": {
-        "base_currency": "USD",
-        "last_updated_at": "2024-10-24T18:00:00Z"
-    },
-    "data": {
-        "EUR": 0.85,
-        "GBP": 0.74,
-        "JPY": 110.25,
-        ...
-    }
+  "meta": {
+    "base_currency": "USD",
+    "last_updated_at": "2024-10-24T18:00:00"
+  },
+  "data": {
+    "EUR": 0.85,
+    "GBP": 0.74,
+    "JPY": 110.25,
+    "CAD": 1.35,
+    "AUD": 1.52,
+    "CHF": 0.92,
+    "CNY": 7.25,
+    "INR": 83.12
+  }
 }</code></pre>
                                     </div>
                                 </div>
@@ -299,7 +354,7 @@
                                 </div>
                             </div>
                             <div class="p-4">
-                                <p class="text-gray-700">Converts an <span class="font-mono">amount</span> from the <span class="font-mono">base_currency</span> to the <span class="font-mono">target_currency</span> using the latest rates.</p>
+                                <p class="text-gray-700 mb-3">Converts a specific <span class="font-mono font-semibold">amount</span> from the <span class="font-mono font-semibold">base_currency</span> to the <span class="font-mono font-semibold">target_currency</span> using the latest exchange rates. The amount must be a positive integer.</p>
 
                                 <div class="rounded-lg border border-gray-200 bg-gray-50 mb-3 overflow-hidden">
                                     <div class="px-4 py-2">
@@ -360,10 +415,10 @@
     "base_currency": "USD",
     "target_currency": "EUR",
     "amount": 100,
-    "last_updated_at": "2024-10-24T18:00:00Z"
+    "last_updated_at": "2024-10-24T18:00:00"
   },
   "data": {
-    "rate": 0.85,
+    "conversion_rate": 0.85,
     "converted_amount": 85.0
   }
 }</code></pre>
@@ -390,12 +445,16 @@
                             </div>
                             <div class="p-0">
 <pre class="m-0 bg-gray-900 text-gray-100 p-3" id="error-example"><code>{
-    "error": {
-        "code": 401,
-        "message": "Invalid API key"
-    }
+  "error": {
+    "code": 401,
+    "message": "Invalid API key"
+  }
 }</code></pre>
                             </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-600 mb-2"><strong>Note:</strong> All error responses follow this structured format with a numeric <code class="bg-gray-100 px-1 rounded">code</code> and descriptive <code class="bg-gray-100 px-1 rounded">message</code> field.</p>
                         </div>
                         
                         <div class="overflow-x-auto">
@@ -426,7 +485,7 @@
                                     <tr class="border-b hover:bg-gray-50">
                                         <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">429</span></td>
                                         <td class="px-4 py-2">Too Many Requests</td>
-                                        <td class="px-4 py-2">Rate limit exceeded (30 requests per minute)</td>
+                                        <td class="px-4 py-2">Rate limit exceeded. Maximum 30 requests per minute per API key.</td>
                                     </tr>
                                     <tr class="border-b hover:bg-gray-50">
                                         <td class="px-4 py-2"><span class="inline-flex items-center rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">500</span></td>
@@ -460,20 +519,21 @@
                             </div>
                             <div class="p-0">
 <pre class="m-0 bg-gray-900 text-gray-100 p-3" id="fallback-example"><code>{
-    "meta": {
-        "base_currency": "USD",
-        "last_updated_at": "2024-10-22T18:00:00Z"
-    },
-    "warning": {
-        "message": "Using stale data as fallback. External API could not be reached.",
-        "data_age": "2 days old"
-    },
-    "data": {
-        "EUR": 0.85,
-        "GBP": 0.74,
-        "JPY": 110.25,
-        ...
-    }
+  "meta": {
+    "base_currency": "USD",
+    "last_updated_at": "2024-10-22T18:00:00"
+  },
+  "warning": {
+    "message": "Using stale data as fallback. External API could not be reached.",
+    "data_age": "2 days old"
+  },
+  "data": {
+    "EUR": 0.85,
+    "GBP": 0.74,
+    "JPY": 110.25,
+    "CAD": 1.35,
+    "AUD": 1.52
+  }
 }</code></pre>
                             </div>
                         </div>
@@ -499,11 +559,16 @@
                         <div class="inline-flex items-center gap-2 rounded-lg bg-white p-1 shadow-sm ring-1 ring-gray-200 mb-3">
                             <button class="subtab-btn px-3 py-1.5 text-xs font-medium rounded-md bg-gray-900 text-white" data-target="#js-code">JavaScript</button>
                             <button class="subtab-btn px-3 py-1.5 text-xs font-medium rounded-md text-gray-700 hover:bg-gray-50" data-target="#python-code">Python</button>
+                            <button class="subtab-btn px-3 py-1.5 text-xs font-medium rounded-md text-gray-700 hover:bg-gray-50" data-target="#curl-code">cURL</button>
+                            <button class="subtab-btn px-3 py-1.5 text-xs font-medium rounded-md text-gray-700 hover:bg-gray-50" data-target="#nodejs-code">Node.js</button>
                         </div>
                         
                         <div>
                             <!-- JavaScript Example -->
                             <div id="js-code" class="block">
+                                <div class="mb-3">
+                                    <p class="text-sm text-gray-600 mb-2">Get latest exchange rates using the Fetch API:</p>
+                                </div>
                                 <div class="rounded-xl bg-gray-900 text-gray-100 shadow-sm mb-3 overflow-hidden">
                                     <div class="flex items-center justify-between px-4 py-2">
                                         <h6 class="m-0 text-sm">JavaScript Example</h6>
@@ -512,7 +577,7 @@
                                         </button>
                                     </div>
                                     <div class="p-0">
-<pre class="m-0 p-3" id="js-example"><code>// Fetch exchange rates
+<pre class="m-0 p-3" id="js-example"><code>// Fetch latest exchange rates
 const apiKey = '{{api_key}}';
 const baseCurrency = 'USD';
 const url = `https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/${apiKey}/${baseCurrency}`;
@@ -520,13 +585,22 @@ const url = `https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/${a
 fetch(url)
   .then(response => {
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      return response.json().then(err => {
+        throw new Error(`API Error: ${err.error.message}`);
+      });
     }
     return response.json();
   })
   .then(data => {
-    console.log('Exchange rates:', data);
-    // Process your exchange rates here
+    console.log('Exchange rates:', data.data);
+    console.log(`Last updated: ${data.meta.last_updated_at}`);
+    
+    // Check for stale data warning
+    if (data.warning) {
+      console.warn('Warning:', data.warning.message);
+    }
+    
+    // Access specific rate
     const euroRate = data.data.EUR;
     console.log(`1 ${baseCurrency} = ${euroRate} EUR`);
   })
@@ -539,6 +613,9 @@ fetch(url)
                             
                             <!-- Python Example -->
                             <div id="python-code" class="hidden">
+                                <div class="mb-3">
+                                    <p class="text-sm text-gray-600 mb-2">Get latest exchange rates using Python requests library:</p>
+                                </div>
                                 <div class="rounded-xl bg-gray-900 text-gray-100 shadow-sm mb-3 overflow-hidden">
                                     <div class="flex items-center justify-between px-4 py-2">
                                         <h6 class="m-0 text-sm">Python Example</h6>
@@ -554,21 +631,104 @@ base_currency = 'USD'
 url = f'https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/{api_key}/{base_currency}'
 
 try:
-    response = requests.get(url)
+    response = requests.get(url, timeout=10)
     response.raise_for_status()  # Raise exception for 4XX/5XX responses
     data = response.json()
     
     print(f"Exchange rates (base: {data['meta']['base_currency']})")
     print(f"Last updated: {data['meta']['last_updated_at']}")
     
-    # Print rates for some common currencies
-    common_currencies = ['EUR', 'GBP', 'JPY', 'CAD', 'AUD']
+    # Check for stale data warning
+    if 'warning' in data:
+        print(f"⚠️  Warning: {data['warning']['message']}")
+        print(f"   Data age: {data['warning']['data_age']}")
+    
+    # Print rates for common currencies
+    common_currencies = ['EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'CHF', 'CNY']
     for currency in common_currencies:
         if currency in data['data']:
-            print(f"1 {base_currency} = {data['data'][currency]} {currency}")
+            rate = data['data'][currency]
+            print(f"1 {base_currency} = {rate} {currency}")
             
+except requests.exceptions.HTTPError as e:
+    error_data = e.response.json() if e.response else {}
+    print(f"HTTP Error {e.response.status_code}: {error_data.get('error', {}).get('message', str(e))}")
 except requests.exceptions.RequestException as e:
-    print(f"Error fetching exchange rates: {e}")</code></pre>
+    print(f"Request error: {e}")</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- cURL Example -->
+                            <div id="curl-code" class="hidden">
+                                <div class="mb-3">
+                                    <p class="text-sm text-gray-600 mb-2">Get latest exchange rates using cURL from command line:</p>
+                                </div>
+                                <div class="rounded-xl bg-gray-900 text-gray-100 shadow-sm mb-3 overflow-hidden">
+                                    <div class="flex items-center justify-between px-4 py-2">
+                                        <h6 class="m-0 text-sm">cURL Example</h6>
+                                        <button class="inline-flex items-center justify-center rounded-md border border-gray-300 px-2 py-1 text-xs font-medium text-gray-100 hover:bg-gray-800" onclick="copyCodeExample('curl-example')">
+                                            <i class="fas fa-copy mr-1"></i> Copy Code
+                                        </button>
+                                    </div>
+                                    <div class="p-0">
+<pre class="m-0 p-3" id="curl-example"><code># Get latest exchange rates
+curl -X GET "https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/{{api_key}}/USD" \
+  -H "Accept: application/json"
+
+# Convert currency amount
+curl -X GET "https://imhotepexchangeratesapi.pythonanywhere.com/convert/latest_rates/{{api_key}}/USD/EUR/100" \
+  -H "Accept: application/json"
+
+# Pretty print JSON response (requires jq)
+curl -X GET "https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/{{api_key}}/USD" \
+  -H "Accept: application/json" | jq '.'</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Node.js Example -->
+                            <div id="nodejs-code" class="hidden">
+                                <div class="mb-3">
+                                    <p class="text-sm text-gray-600 mb-2">Get latest exchange rates using Node.js with axios:</p>
+                                </div>
+                                <div class="rounded-xl bg-gray-900 text-gray-100 shadow-sm mb-3 overflow-hidden">
+                                    <div class="flex items-center justify-between px-4 py-2">
+                                        <h6 class="m-0 text-sm">Node.js Example</h6>
+                                        <button class="inline-flex items-center justify-center rounded-md border border-gray-300 px-2 py-1 text-xs font-medium text-gray-100 hover:bg-gray-800" onclick="copyCodeExample('nodejs-example')">
+                                            <i class="fas fa-copy mr-1"></i> Copy Code
+                                        </button>
+                                    </div>
+                                    <div class="p-0">
+<pre class="m-0 p-3" id="nodejs-example"><code>const axios = require('axios');
+
+const apiKey = '{{api_key}}';
+const baseCurrency = 'USD';
+const url = `https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/${apiKey}/${baseCurrency}`;
+
+axios.get(url)
+  .then(response => {
+    const data = response.data;
+    console.log('Exchange rates:', data.data);
+    console.log(`Last updated: ${data.meta.last_updated_at}`);
+    
+    // Check for stale data warning
+    if (data.warning) {
+      console.warn('Warning:', data.warning.message);
+      console.warn('Data age:', data.warning.data_age);
+    }
+    
+    // Access specific rate
+    const euroRate = data.data.EUR;
+    console.log(`1 ${baseCurrency} = ${euroRate} EUR`);
+  })
+  .catch(error => {
+    if (error.response) {
+      console.error('API Error:', error.response.data.error.message);
+    } else {
+      console.error('Request Error:', error.message);
+    }
+  });</code></pre>
                                     </div>
                                 </div>
                             </div>
@@ -585,7 +745,8 @@ except requests.exceptions.RequestException as e:
                                 <i class="fas fa-info-circle text-blue-600 text-xl"></i>
                                 <div>
                                     <h5 class="m-0 font-semibold">Current Limits</h5>
-                                    <p class="m-0 text-sm">The API enforces a rate limit of <strong>30 requests per minute</strong> per API key. Our free tier offers unlimited daily requests within this rate limit.</p>
+                                    <p class="m-0 text-sm mb-2">The API enforces a rate limit of <strong>30 requests per minute</strong> per API key. This applies to all endpoints.</p>
+                                    <p class="m-0 text-sm"><strong>Best Practices:</strong> Implement request caching, use exponential backoff when rate limited, and make requests from your backend server.</p>
                                 </div>
                             </div>
                         </div>
@@ -605,9 +766,15 @@ except requests.exceptions.RequestException as e:
         var target = document.querySelector(targetSelector);
         if(target){ target.classList.remove('hidden'); target.classList.add('block'); }
         var buttons = document.querySelectorAll('.tab-btn');
-        buttons.forEach(function(btn){ btn.classList.remove('bg-blue-600','text-white'); btn.classList.add('text-gray-700'); });
+        buttons.forEach(function(btn){ 
+            btn.classList.remove('bg-blue-600','text-white'); 
+            btn.classList.add('text-gray-700'); 
+        });
         var activeBtn = Array.from(buttons).find(function(b){ return b.getAttribute('data-target') === targetSelector; });
-        if(activeBtn){ activeBtn.classList.add('bg-blue-600','text-white'); activeBtn.classList.remove('text-gray-700'); }
+        if(activeBtn){ 
+            activeBtn.classList.add('bg-blue-600','text-white'); 
+            activeBtn.classList.remove('text-gray-700','hover:bg-gray-100'); 
+        }
     }
     window.switchToTab = activateTab;
     var tabButtons = document.querySelectorAll('.tab-btn');
@@ -620,8 +787,8 @@ except requests.exceptions.RequestException as e:
 (function(){
     function activateSubtab(targetSelector){
         var panes = document.querySelectorAll('#documentation > div .hidden, #documentation > div .block');
-        // explicitly toggle only our two panes
-        ['#js-code','#python-code'].forEach(function(id){
+        // explicitly toggle only our code example panes
+        ['#js-code','#python-code','#curl-code','#nodejs-code'].forEach(function(id){
             var el = document.querySelector(id);
             if(el){ el.classList.add('hidden'); el.classList.remove('block'); }
         });
@@ -702,24 +869,95 @@ function copyCodeExample(elementId) {
 (function(){
     var form = document.getElementById('dash-convert-form');
     var responseEl = document.getElementById('dash-convert-response');
+    var responseCodeEl = document.getElementById('dash-convert-response-code');
     var copyBtn = document.getElementById('dash-copy-convert-response');
+    var convertBtn = document.getElementById('dash-convert-btn');
+    var convertIcon = document.getElementById('dash-convert-icon');
+    var convertText = document.getElementById('dash-convert-text');
+    
+    function updateResponse(data) {
+        if (responseCodeEl) {
+            responseCodeEl.textContent = JSON.stringify(data, null, 2);
+        } else if (responseEl) {
+            responseEl.innerHTML = '<code>' + JSON.stringify(data, null, 2) + '</code>';
+        }
+    }
+    
+    function setLoading(loading) {
+        if (loading) {
+            updateResponse({ status: "loading", message: "Converting currency..." });
+            if(convertBtn) {
+                convertBtn.disabled = true;
+                if(convertIcon) convertIcon.className = 'fas fa-spinner fa-spin mr-2';
+                if(convertText) convertText.textContent = 'Converting...';
+            }
+        } else {
+            if(convertBtn) {
+                convertBtn.disabled = false;
+                if(convertIcon) convertIcon.className = 'fas fa-exchange-alt mr-2';
+                if(convertText) convertText.textContent = 'Convert';
+            }
+        }
+    }
+    
     if(form){
         form.addEventListener('submit', function(e){
             e.preventDefault();
             var apiKey = '{{api_key}}';
-            var from = document.getElementById('dash_from_currency').value.trim();
-            var to = document.getElementById('dash_to_currency').value.trim();
+            var from = document.getElementById('dash_from_currency').value.trim().toUpperCase();
+            var to = document.getElementById('dash_to_currency').value.trim().toUpperCase();
             var amount = document.getElementById('dash_amount').value.trim();
-            if(!apiKey || !from || !to || !amount){ return; }
+            
+            if(!apiKey || !from || !to || !amount || isNaN(amount) || amount <= 0){ 
+                updateResponse({ 
+                    error: { 
+                        code: 400, 
+                        message: "Please provide valid currency codes and a positive amount" 
+                    } 
+                });
+                return; 
+            }
+            
+            // Show loading state
+            setLoading(true);
+            
             var url = '/convert/latest_rates/' + encodeURIComponent(apiKey) + '/' + encodeURIComponent(from) + '/' + encodeURIComponent(to) + '/' + encodeURIComponent(amount);
+            
             fetch(url)
-                .then(function(res){ return res.json(); })
-                .then(function(data){ responseEl.textContent = JSON.stringify(data, null, 2); })
-                .catch(function(err){ responseEl.textContent = JSON.stringify({ error: String(err) }, null, 2); });
+                .then(function(res){ 
+                    return res.json().then(function(data) {
+                        if (!res.ok) {
+                            throw { response: res, data: data };
+                        }
+                        return data;
+                    });
+                })
+                .then(function(data){ 
+                    updateResponse(data);
+                })
+                .catch(function(err){ 
+                    var errorData = err.data || { error: { code: 500, message: String(err) } };
+                    updateResponse(errorData);
+                })
+                .finally(function() {
+                    // Always reset button state
+                    setLoading(false);
+                });
         });
     }
     if(copyBtn && responseEl){
-        copyBtn.addEventListener('click', function(){ navigator.clipboard.writeText(responseEl.textContent); });
+        copyBtn.addEventListener('click', function(){ 
+            var text = responseCodeEl ? responseCodeEl.textContent : (responseEl.textContent || responseEl.innerText);
+            navigator.clipboard.writeText(text).then(function() {
+                var originalHtml = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fas fa-check mr-1"></i> Copied!';
+                setTimeout(function() {
+                    copyBtn.innerHTML = originalHtml;
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Failed to copy:', err);
+            });
+        });
     }
 })();
 </script>

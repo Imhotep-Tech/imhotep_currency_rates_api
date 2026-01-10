@@ -2,105 +2,237 @@
 
 {% block body %}
 
-<section class="relative overflow-hidden bg-gradient-to-br from-blue-700 to-indigo-700">
-  <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+<!-- Hero Section -->
+<section class="relative overflow-hidden bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700">
+  <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
       <div class="text-center lg:text-left text-white">
-        <span class="inline-flex items-center rounded-full bg-white/15 px-3 py-1 text-xs font-medium">100% Free API</span>
-        <h1 class="mt-4 text-3xl sm:text-4xl font-bold tracking-tight">Real-Time Currency Exchange Rates API</h1>
-        <p class="mt-3 text-white/90">Access accurate exchange rates for 170+ currencies with simple integration, reliable data, and zero subscription fees.</p>
-        <div class="mt-6 flex flex-col sm:flex-row gap-3 sm:justify-start justify-center">
-          <a href="/register" class="inline-flex items-center justify-center rounded-md bg-white px-5 py-2 text-sm font-medium text-blue-700 shadow-sm hover:bg-gray-100"><i class="fas fa-rocket mr-2"></i> Get Your API Key</a>
-          <a href="#convert-demo" class="inline-flex items-center justify-center rounded-md border border-white/70 px-5 py-2 text-sm font-medium text-white hover:bg-white/10"><i class="fas fa-code mr-2"></i> Try Demo</a>
+        <span class="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-4 py-1.5 text-sm font-semibold mb-4 shadow-lg">
+          <i class="fas fa-gift mr-2"></i> 100% Free API - No Credit Card Required
+        </span>
+        <h1 class="mt-4 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
+          Real-Time Currency Exchange Rates API
+        </h1>
+        <p class="mt-6 text-lg sm:text-xl text-white/90 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+          Access accurate exchange rates for 170+ currencies with simple integration, reliable data, and zero subscription fees. Built for developers, by developers.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-4 sm:justify-start justify-center">
+          <a href="/register" class="inline-flex items-center justify-center rounded-lg bg-white px-6 py-3 text-base font-semibold text-blue-700 shadow-lg hover:bg-gray-50 hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+            <i class="fas fa-rocket mr-2"></i> Get Your Free API Key
+          </a>
+          <a href="#convert-demo" class="inline-flex items-center justify-center rounded-lg border-2 border-white/80 px-6 py-3 text-base font-semibold text-white hover:bg-white/10 hover:border-white transition-all duration-200">
+            <i class="fas fa-code mr-2"></i> Try Live Demo
+          </a>
+        </div>
+        <div class="mt-8 flex flex-wrap items-center gap-6 justify-center lg:justify-start text-sm text-white/80">
+          <div class="flex items-center gap-2">
+            <i class="fas fa-check-circle text-green-300"></i>
+            <span>No Rate Limits</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="fas fa-check-circle text-green-300"></i>
+            <span>99.9% Uptime</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="fas fa-check-circle text-green-300"></i>
+            <span>RESTful API</span>
+          </div>
         </div>
       </div>
-      <div class="hidden lg:block">
-        <div class="relative h-64">
-          <div class="absolute top-4 left-6 rounded-2xl bg-white/10 backdrop-blur p-4 text-white shadow-lg">
-            <div class="text-xs">USD → EUR</div>
-            <div class="text-2xl font-bold">0.93</div>
+      <div class="hidden lg:block relative">
+        <div class="relative h-96">
+          <!-- Floating Currency Cards -->
+          <div class="absolute top-8 left-8 rounded-2xl bg-white/10 backdrop-blur-md p-6 text-white shadow-2xl border border-white/20 transform hover:scale-105 transition-transform duration-300">
+            <div class="text-xs font-medium text-white/80 mb-1">USD → EUR</div>
+            <div class="text-3xl font-bold">0.93</div>
+            <div class="text-xs text-white/60 mt-1">Last updated: Today</div>
           </div>
-          <div class="absolute top-28 right-8 rounded-2xl bg-white/10 backdrop-blur p-4 text-white shadow-lg">
-            <div class="text-xs">EUR → GBP</div>
-            <div class="text-2xl font-bold">0.85</div>
+          <div class="absolute top-32 right-12 rounded-2xl bg-white/10 backdrop-blur-md p-6 text-white shadow-2xl border border-white/20 transform hover:scale-105 transition-transform duration-300">
+            <div class="text-xs font-medium text-white/80 mb-1">EUR → GBP</div>
+            <div class="text-3xl font-bold">0.85</div>
+            <div class="text-xs text-white/60 mt-1">Real-time rates</div>
           </div>
-          <div class="absolute bottom-4 left-24 rounded-2xl bg-white/10 backdrop-blur p-4 text-white shadow-lg">
-            <div class="text-xs">GBP → JPY</div>
-            <div class="text-2xl font-bold">187.24</div>
+          <div class="absolute bottom-16 left-20 rounded-2xl bg-white/10 backdrop-blur-md p-6 text-white shadow-2xl border border-white/20 transform hover:scale-105 transition-transform duration-300">
+            <div class="text-xs font-medium text-white/80 mb-1">GBP → JPY</div>
+            <div class="text-3xl font-bold">187.24</div>
+            <div class="text-xs text-white/60 mt-1">170+ currencies</div>
+          </div>
+          <div class="absolute bottom-8 right-8 rounded-2xl bg-white/10 backdrop-blur-md p-6 text-white shadow-2xl border border-white/20 transform hover:scale-105 transition-transform duration-300">
+            <div class="text-xs font-medium text-white/80 mb-1">USD → CAD</div>
+            <div class="text-3xl font-bold">1.35</div>
+            <div class="text-xs text-white/60 mt-1">Free forever</div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <!-- Decorative wave -->
+  <div class="absolute bottom-0 left-0 right-0">
+    <svg class="w-full h-12 text-white" fill="currentColor" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25"></path>
+      <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5"></path>
+      <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"></path>
+    </svg>
+  </div>
 </section>
 
-<section class="bg-white">
-  <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-center md:text-left">
-      <div class="rounded-xl border border-gray-200 p-6 shadow-sm">
-        <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-700"><i class="fas fa-globe-americas"></i></div>
-        <h3 class="font-semibold">Global Currencies</h3>
-        <p class="text-gray-600">Comprehensive coverage of major and minor currencies</p>
+<!-- Features Section -->
+<section class="bg-white py-16">
+  <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Why Choose Our API?</h2>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">Built with developers in mind, our API offers everything you need for seamless currency integration.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="rounded-xl border-2 border-gray-200 bg-gradient-to-br from-blue-50 to-white p-6 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+        <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-700 text-white shadow-md">
+          <i class="fas fa-globe-americas text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">170+ Global Currencies</h3>
+        <p class="text-gray-600">Comprehensive coverage of major and minor currencies from around the world, updated daily.</p>
       </div>
-      <div class="rounded-xl border border-gray-200 p-6 shadow-sm">
-        <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-700"><i class="fas fa-server"></i></div>
-        <h3 class="font-semibold">99.9% Uptime</h3>
-        <p class="text-gray-600">Enterprise-grade reliability you can depend on</p>
+      <div class="rounded-xl border-2 border-gray-200 bg-gradient-to-br from-green-50 to-white p-6 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+        <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-green-600 to-green-700 text-white shadow-md">
+          <i class="fas fa-server text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">99.9% Uptime</h3>
+        <p class="text-gray-600">Enterprise-grade reliability with intelligent caching and automatic fallback mechanisms.</p>
+      </div>
+      <div class="rounded-xl border-2 border-gray-200 bg-gradient-to-br from-purple-50 to-white p-6 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+        <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-purple-700 text-white shadow-md">
+          <i class="fas fa-bolt text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">Lightning Fast</h3>
+        <p class="text-gray-600">Optimized API with intelligent caching for sub-second response times.</p>
+      </div>
+      <div class="rounded-xl border-2 border-gray-200 bg-gradient-to-br from-yellow-50 to-white p-6 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+        <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-yellow-600 to-yellow-700 text-white shadow-md">
+          <i class="fas fa-shield-alt text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">Secure & Private</h3>
+        <p class="text-gray-600">Unique API keys for each user with secure authentication and data protection.</p>
+      </div>
+      <div class="rounded-xl border-2 border-gray-200 bg-gradient-to-br from-indigo-50 to-white p-6 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+        <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-indigo-700 text-white shadow-md">
+          <i class="fas fa-code text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">Easy Integration</h3>
+        <p class="text-gray-600">RESTful API with comprehensive documentation and code examples in multiple languages.</p>
+      </div>
+      <div class="rounded-xl border-2 border-gray-200 bg-gradient-to-br from-red-50 to-white p-6 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+        <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-red-600 to-red-700 text-white shadow-md">
+          <i class="fas fa-heart text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">100% Free Forever</h3>
+        <p class="text-gray-600">No hidden costs, no credit card required, no subscription fees. Free for all developers.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section id="convert-demo" class="bg-gray-50">
-  <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-      <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
-        <h2 class="m-0 text-lg font-semibold mb-4">Try Conversion Demo</h2>
-        <form id="convert-form" class="space-y-4">
-          <div>
-            <label class="mb-1 block text-sm font-medium text-gray-700">API Key</label>
-            <input id="demo_api_key" type="text" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" placeholder="Enter your API key" required>
+<!-- Convert Demo Section -->
+<section id="convert-demo" class="bg-gradient-to-br from-gray-50 to-blue-50 py-16">
+  <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Try It Live</h2>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">Test our API with a real currency conversion. No sign-up required for the demo!</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+      <div class="rounded-xl bg-white p-8 shadow-lg ring-1 ring-gray-200">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white">
+            <i class="fas fa-exchange-alt"></i>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <h2 class="m-0 text-2xl font-bold text-gray-900">Currency Converter</h2>
+        </div>
+        <form id="convert-form" class="space-y-5">
+          <div>
+            <label class="mb-2 block text-sm font-semibold text-gray-700">
+              <i class="fas fa-key mr-2 text-blue-600"></i>API Key (Optional for demo)
+            </label>
+            <input id="demo_api_key" type="text" class="w-full rounded-lg border-2 border-gray-300 bg-gray-50 px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-colors" placeholder="Enter your API key or leave empty for demo" value="">
+            <p class="mt-1 text-xs text-gray-500">Leave empty to use demo mode, or enter your API key for full access</p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="mb-1 block text-sm font-medium text-gray-700">From (Base)</label>
-              <input id="from_currency" type="text" value="USD" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" required>
+              <label class="mb-2 block text-sm font-semibold text-gray-700">
+                <i class="fas fa-arrow-right mr-2 text-green-600"></i>From (Base Currency)
+              </label>
+              <input id="from_currency" type="text" value="USD" class="w-full rounded-lg border-2 border-gray-300 bg-gray-50 px-4 py-3 text-sm font-mono focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-colors" placeholder="USD" required>
             </div>
             <div>
-              <label class="mb-1 block text-sm font-medium text-gray-700">To (Target)</label>
-              <input id="to_currency" type="text" value="EUR" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" required>
+              <label class="mb-2 block text-sm font-semibold text-gray-700">
+                <i class="fas fa-arrow-left mr-2 text-red-600"></i>To (Target Currency)
+              </label>
+              <input id="to_currency" type="text" value="EUR" class="w-full rounded-lg border-2 border-gray-300 bg-gray-50 px-4 py-3 text-sm font-mono focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-colors" placeholder="EUR" required>
             </div>
           </div>
           <div>
-            <label class="mb-1 block text-sm font-medium text-gray-700">Amount</label>
-            <input id="amount" type="number" value="100" min="0" class="w-full rounded-md border border-gray-300 bg-gray-50 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none" required>
+            <label class="mb-2 block text-sm font-semibold text-gray-700">
+              <i class="fas fa-dollar-sign mr-2 text-yellow-600"></i>Amount
+            </label>
+            <input id="amount" type="number" value="100" min="0" step="0.01" class="w-full rounded-lg border-2 border-gray-300 bg-gray-50 px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-colors" required>
           </div>
-          <button type="submit" class="inline-flex w-full items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
-            <i class="fas fa-exchange-alt mr-2"></i> Convert Currency
+          <button type="submit" id="convert-submit-btn" class="w-full inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 transform hover:scale-105">
+            <i class="fas fa-exchange-alt mr-2" id="convert-icon"></i>
+            <span id="convert-text">Convert Currency</span>
           </button>
         </form>
       </div>
-      <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
-        <div class="flex items-center justify-between mb-2">
-          <h3 class="m-0 text-sm font-semibold">API Response</h3>
-          <button id="copy-convert-response" class="inline-flex items-center rounded-md border border-gray-300 px-2 py-1 text-xs text-gray-700 hover:bg-gray-50"><i class="fas fa-copy mr-1"></i> Copy</button>
+      <div class="rounded-xl bg-white p-8 shadow-lg ring-1 ring-gray-200">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-900 text-white">
+              <i class="fas fa-code"></i>
+            </div>
+            <h3 class="m-0 text-lg font-bold text-gray-900">API Response</h3>
+          </div>
+          <button id="copy-convert-response" class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 hover:shadow-md transition-all">
+            <i class="fas fa-copy mr-1"></i> Copy
+          </button>
         </div>
-<pre class="m-0 bg-gray-900 text-gray-100 p-3 rounded" id="convert-response"><code>{
-  "result": null,
-  "status": "waiting for input"
+        <div class="rounded-lg bg-gray-900 p-4 overflow-x-auto">
+          <pre class="m-0 text-gray-100 text-sm" id="convert-response"><code id="convert-response-code">{
+  "status": "ready",
+  "message": "Enter values above and click Convert to see the API response"
 }</code></pre>
+        </div>
+        <div class="mt-4 rounded-md border border-blue-200 bg-blue-50 p-3">
+          <div class="flex items-start gap-2">
+            <i class="fas fa-info-circle text-blue-600 mt-0.5"></i>
+            <p class="m-0 text-xs text-blue-800">This demo shows real API responses. Sign up to get your own API key for production use.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="bg-blue-700 text-white">
-  <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-12 text-center">
-    <h2 class="text-2xl font-semibold mb-2">Ready to Get Started?</h2>
-    <p class="text-white/90 mb-4">Create an account and get your free API key in seconds.</p>
-    <div class="flex flex-col sm:flex-row gap-3 justify-center">
-      <a href="/register" class="inline-flex items-center justify-center rounded-md bg-white px-5 py-2 text-sm font-medium text-blue-700 shadow-sm hover:bg-gray-100"><i class="fas fa-user-plus mr-2"></i> Sign Up Free</a>
-      <a href="/login" class="inline-flex items-center justify-center rounded-md border border-white/70 px-5 py-2 text-sm font-medium text-white hover:bg-white/10"><i class="fas fa-sign-in-alt mr-2"></i> Login</a>
+<!-- CTA Section -->
+<section class="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 text-white py-16">
+  <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+    <h2 class="text-3xl sm:text-4xl font-bold mb-4">Ready to Get Started?</h2>
+    <p class="text-lg text-white/90 mb-8 max-w-2xl mx-auto">Create an account and get your free API key in seconds. No credit card required, no hidden fees.</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="/register" class="inline-flex items-center justify-center rounded-lg bg-white px-8 py-3 text-base font-semibold text-blue-700 shadow-lg hover:bg-gray-50 hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+        <i class="fas fa-user-plus mr-2"></i> Sign Up Free
+      </a>
+      <a href="/login" class="inline-flex items-center justify-center rounded-lg border-2 border-white/80 px-8 py-3 text-base font-semibold text-white hover:bg-white/10 hover:border-white transition-all duration-200">
+        <i class="fas fa-sign-in-alt mr-2"></i> Login
+      </a>
+    </div>
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-white/80">
+      <a href="https://github.com/Imhotep-Tech/imhotep_currency_rates_api" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors">
+        <i class="fab fa-github"></i>
+        <span>View on GitHub</span>
+      </a>
+      <span class="text-white/40">•</span>
+      <a href="/version" class="hover:text-white transition-colors">Version 3.1</a>
+      <span class="text-white/40">•</span>
+      <a href="https://github.com/Imhotep-Tech/imhotep_currency_rates_api/blob/main/README.md" target="_blank" class="flex items-center gap-2 hover:text-white transition-colors">
+        <i class="fas fa-book"></i>
+        <span>Full Documentation</span>
+      </a>
     </div>
   </div>
 </section>
@@ -109,31 +241,99 @@
 (function(){
   var form = document.getElementById('convert-form');
   var responseEl = document.getElementById('convert-response');
+  var responseCodeEl = document.getElementById('convert-response-code');
   var copyBtn = document.getElementById('copy-convert-response');
+  var submitBtn = document.getElementById('convert-submit-btn');
+  var convertIcon = document.getElementById('convert-icon');
+  var convertText = document.getElementById('convert-text');
+  
+  function updateResponse(data) {
+    if (responseCodeEl) {
+      responseCodeEl.textContent = JSON.stringify(data, null, 2);
+    } else if (responseEl) {
+      responseEl.innerHTML = '<code>' + JSON.stringify(data, null, 2) + '</code>';
+    }
+  }
+  
+  function setLoading(loading) {
+    if (loading) {
+      updateResponse({ status: "loading", message: "Converting currency..." });
+      if(submitBtn) {
+        submitBtn.disabled = true;
+        if(convertIcon) convertIcon.className = 'fas fa-spinner fa-spin mr-2';
+        if(convertText) convertText.textContent = 'Converting...';
+      }
+    } else {
+      if(submitBtn) {
+        submitBtn.disabled = false;
+        if(convertIcon) convertIcon.className = 'fas fa-exchange-alt mr-2';
+        if(convertText) convertText.textContent = 'Convert Currency';
+      }
+    }
+  }
+  
   if(form){
     form.addEventListener('submit', function(e){
       e.preventDefault();
       var apiKey = document.getElementById('demo_api_key').value.trim();
-      var from = document.getElementById('from_currency').value.trim();
-      var to = document.getElementById('to_currency').value.trim();
+      var from = document.getElementById('from_currency').value.trim().toUpperCase();
+      var to = document.getElementById('to_currency').value.trim().toUpperCase();
       var amount = document.getElementById('amount').value.trim();
-      if(!apiKey || !from || !to || !amount){ return; }
+      
+      if(!from || !to || !amount || isNaN(amount) || amount <= 0){ 
+        updateResponse({ 
+          error: { 
+            code: 400, 
+            message: "Please provide valid currency codes and a positive amount" 
+          } 
+        });
+        return; 
+      }
+      
+      // Show loading state
+      setLoading(true);
+      
+      // Use demo API key if none provided
+      if (!apiKey) {
+        apiKey = 'demo';
+      }
+      
       var url = '/convert/latest_rates/' + encodeURIComponent(apiKey) + '/' + encodeURIComponent(from) + '/' + encodeURIComponent(to) + '/' + encodeURIComponent(amount);
+      
       fetch(url)
-        .then(function(res){ return res.json(); })
-        .then(function(data){
-          var pretty = JSON.stringify(data, null, 2);
-          responseEl.textContent = pretty;
+        .then(function(res){ 
+          return res.json().then(function(data) {
+            if (!res.ok) {
+              throw { response: res, data: data };
+            }
+            return data;
+          });
         })
-        .catch(function(err){
-          responseEl.textContent = JSON.stringify({ error: String(err) }, null, 2);
+        .then(function(data){ 
+          updateResponse(data);
+        })
+        .catch(function(err){ 
+          var errorData = err.data || { error: { code: 500, message: String(err) } };
+          updateResponse(errorData);
+        })
+        .finally(function() {
+          // Always reset button state
+          setLoading(false);
         });
     });
   }
   if(copyBtn && responseEl){
-    copyBtn.addEventListener('click', function(){
-      var text = responseEl.textContent;
-      navigator.clipboard.writeText(text);
+    copyBtn.addEventListener('click', function(){ 
+      var text = responseCodeEl ? responseCodeEl.textContent : (responseEl.textContent || responseEl.innerText);
+      navigator.clipboard.writeText(text).then(function() {
+        var originalHtml = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<i class="fas fa-check mr-1"></i> Copied!';
+        setTimeout(function() {
+          copyBtn.innerHTML = originalHtml;
+        }, 2000);
+      }).catch(function(err) {
+        console.error('Failed to copy:', err);
+      });
     });
   }
 })();
