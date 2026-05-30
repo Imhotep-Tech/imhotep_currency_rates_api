@@ -1,3 +1,4 @@
+// Global Loading Screen helpers
 function showLoadingScreen() {
     const loadingOverlay = document.getElementById('loading-overlay');
     if (loadingOverlay) {
@@ -14,7 +15,7 @@ function hideLoadingScreen() {
 
 // Show loading screen on form submission
 document.addEventListener('DOMContentLoaded', function() {
-    const forms = document.querySelectorAll('form');
+    const forms = document.querySelectorAll('form:not(#playground-form):not(#dash-convert-form)');
     forms.forEach(form => {
         form.addEventListener('submit', function() {
             showLoadingScreen();
@@ -22,63 +23,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Handle page load and unload
 window.addEventListener('load', function() {
-    hideLoadingScreen(); // Ensure loading screen is hidden after initial load
+    hideLoadingScreen();
 });
 
-window.addEventListener('beforeunload', function() {
-    showLoadingScreen(); // Show loading screen when navigating away
-});
-
-// Show loading screen when navigating back
-window.addEventListener('pageshow', function(event) {
-    if (event.persisted) {
-        showLoadingScreen();
-        setTimeout(function() {
-            hideLoadingScreen();
-        }, 100); // Adjust delay if necessary
-    }
-});
-
-window.addEventListener('online', updateOnlineStatus);
-window.addEventListener('offline', updateOnlineStatus);
-
-function updateOnlineStatus() {
-    if (!navigator.onLine) {
-        document.body.innerHTML = '<h1>You are offline</h1><p>Database connection is unavailable. Please check your internet connection.</p>';
-    } else {
-        location.reload();  // Reload when back online
-    }
-}
-
-function updatePage() {
-    const page = document.getElementById("page-selector");
-    if (page) {
-        window.location.href = `${page.value}`;
-    }
-}
-
-setTimeout(function() {
-    const doneMessage = document.querySelector('.done-message');
-    const errorMessage = document.querySelector('.error-message');
-
-    if (doneMessage) {
-        doneMessage.style.display = 'none';
-    }
-
-    if (errorMessage) {
-        errorMessage.style.display = 'none';
-    }
-}, 5000); // 5000 milliseconds = 5 seconds
-
-function submitForm() {
-    const uploadForm = document.getElementById("upload-form");
-    if (uploadForm) {
-        uploadForm.submit();
-    }
-}
-
+// Password toggles and validation
 function validatePassword() {
     const password = document.getElementById("password");
     const confirmPassword = document.getElementById("confirm_password");
@@ -97,465 +46,298 @@ function togglePasswordVisibility_all() {
     if (passwordInput) {
         passwordInput.type = passwordInput.type === "password" ? "text" : "password";
     }
-
     if (confirmPasswordInput) {
         confirmPasswordInput.type = confirmPasswordInput.type === "password" ? "text" : "password";
     }
 }
 
+// -----------------------------------------------------------------------------
+// GUEST API KEY MANAGEMENT & INTERACTIVE PLAYGROUND
+// -----------------------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', function() {
-    // Populate the year select options if the element exists
-    const yearSelect = document.getElementById('yearSelect');
-    if (yearSelect) {
-        const currentYear = new Date().getFullYear();
-        const startYear = currentYear - 50;
-        const endYear = currentYear + 50;
+    // Elements on the landing page
+    const onboardKeyInput = document.getElementById('onboard-api-key');
+    const onboardUrlInput = document.getElementById('onboard-api-url');
+    const copyKeyBtn = document.getElementById('copy-onboard-key-btn');
+    const copyUrlBtn = document.getElementById('copy-onboard-url-btn');
+    const refreshKeyBtn = document.getElementById('refresh-guest-key-btn');
+    
+    // Playground Elements
+    const playKeyInput = document.getElementById('play-api-key');
+    const playBaseInput = document.getElementById('play-base');
+    const playTargetInput = document.getElementById('play-target');
+    const playAmountInput = document.getElementById('play-amount');
+    const playSendBtn = document.getElementById('play-send-btn');
+    const playSendIcon = document.getElementById('play-send-icon');
+    const playSendText = document.getElementById('play-send-text');
+    const playResponseCode = document.getElementById('play-response-code');
+    const playUrlPreview = document.getElementById('play-url-preview');
+    const playStatusPill = document.getElementById('play-status-pill');
+    const playTimeElapsed = document.getElementById('play-time-elapsed');
+    const playCopyResponseBtn = document.getElementById('play-copy-response-btn');
+    
+    // Playground Endpoint Tabs
+    const tabRates = document.getElementById('endpoint-tab-rates');
+    const tabConvert = document.getElementById('endpoint-tab-convert');
+    let currentEndpoint = 'rates'; // 'rates' or 'convert'
 
-        for (let year = startYear; year <= endYear; year++) {
-            const option = document.createElement('option');
-            option.value = year;
-            option.textContent = year;
-            if (year === currentYear) {
-                option.selected = true;
+    // Code template database
+    let activeKey = 'YOUR_API_KEY';
+    
+    // Initial key fetch sequence
+    async function loadOrCreateGuestKey(force = false) {
+        let key = localStorage.getItem('imhotep_guest_key');
+        
+        if (!key || force) {
+            if (onboardKeyInput) onboardKeyInput.value = 'Generating key...';
+            try {
+                const response = await fetch('/api/get_guest_key', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    key = data.api_key;
+                    localStorage.setItem('imhotep_guest_key', key);
+                } else {
+                    key = 'demo'; // Fallback to demo
+                }
+            } catch (err) {
+                console.error('Failed to generate guest key:', err);
+                key = 'demo';
             }
-            yearSelect.appendChild(option);
+        }
+        
+        activeKey = key;
+        updateUIWithKey(key);
+    }
+
+    function updateUIWithKey(key) {
+        // Update onboard inputs
+        if (onboardKeyInput) {
+            onboardKeyInput.value = key;
+            if (copyKeyBtn) copyKeyBtn.disabled = false;
+        }
+        if (onboardUrlInput) {
+            onboardUrlInput.value = `https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/${key}/USD`;
+            if (copyUrlBtn) copyUrlBtn.disabled = false;
+        }
+
+        // Update playground inputs
+        if (playKeyInput) {
+            playKeyInput.value = key;
+        }
+        
+        // Refresh playground URL preview
+        updatePlaygroundUrlPreview();
+        updateCodeBlockTemplates(key);
+    }
+
+    function updatePlaygroundUrlPreview() {
+        if (!playUrlPreview) return;
+        const key = (playKeyInput ? playKeyInput.value.trim() : '') || activeKey;
+        const base = (playBaseInput ? playBaseInput.value.trim().toUpperCase() : 'USD') || 'USD';
+        
+        if (currentEndpoint === 'rates') {
+            playUrlPreview.textContent = `/latest_rates/${key}/${base}`;
+        } else {
+            const target = (playTargetInput ? playTargetInput.value.trim().toUpperCase() : 'EUR') || 'EUR';
+            const amount = (playAmountInput ? playAmountInput.value.trim() : '100') || '100';
+            playUrlPreview.textContent = `/convert/latest_rates/${key}/${base}/${target}/${amount}`;
         }
     }
 
-    // Handle currency search and filtering if the elements exist
-    const searchInput1 = document.getElementById('searchInput1');
-    const currencySelect1 = document.getElementById('CurrencySelect1');
+    // Dynamic docs pre-filling templates
+    const docsTemplates = {
+        latest: {
+            js: (key) => `// Fetch latest exchange rates\nconst url = 'https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/${key}/USD';\n\nfetch(url)\n  .then(res => res.json())\n  .then(data => {\n    console.log('Exchange rates:', data.data);\n  })\n  .catch(err => console.error(err));`,
+            python: (key) => `import requests\n\nurl = 'https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/${key}/USD'\ntry:\n    res = requests.get(url)\n    data = res.json()\n    print(data['data'])\nexcept Exception as e:\n    print(e)`,
+            curl: (key) => `curl -X GET "https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/${key}/USD"`,
+            go: (key) => `package main\n\nimport (\n\t"fmt"\n\t"io/ioutil"\n\t"net/http"\n)\n\nfunc main() {\n\turl := "https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/${key}/USD"\n\tresp, _ := http.Get(url)\n\tdefer resp.Body.Close()\n\tbody, _ := ioutil.ReadAll(resp.Body)\n\tfmt.Println(string(body))\n}`
+        },
+        convert: {
+            js: (key) => `// Convert currency amount\nconst url = 'https://imhotepexchangeratesapi.pythonanywhere.com/convert/latest_rates/${key}/USD/EUR/100';\n\nfetch(url)\n  .then(res => res.json())\n  .then(data => {\n    console.log(\`Converted: \${data.data.converted_amount}\`);\n  })\n  .catch(err => console.error(err));`,
+            python: (key) => `import requests\n\nurl = 'https://imhotepexchangeratesapi.pythonanywhere.com/convert/latest_rates/${key}/USD/EUR/100'\ntry:\n    res = requests.get(url)\n    data = res.json()\n    print(data['data']['converted_amount'])\nexcept Exception as e:\n    print(e)`,
+            curl: (key) => `curl -X GET "https://imhotepexchangeratesapi.pythonanywhere.com/convert/latest_rates/${key}/USD/EUR/100"`,
+            go: (key) => `package main\n\nimport (\n\t"fmt"\n\t"io/ioutil"\n\t"net/http"\n)\n\nfunc main() {\n\turl := "https://imhotepexchangeratesapi.pythonanywhere.com/convert/latest_rates/${key}/USD/EUR/100"\n\tresp, _ := http.Get(url)\n\tdefer resp.Body.Close()\n\tbody, _ := ioutil.ReadAll(resp.Body)\n\tfmt.Println(string(body))\n}`
+        }
+    };
 
-    if (searchInput1 && currencySelect1) {
-        const originalOptions1 = [...currencySelect1.options];
-
-        searchInput1.addEventListener('input', function() {
-            filterOptions(searchInput1, currencySelect1, originalOptions1);
-        });
-
-        // Set the favorite currency if available
-        const doctorCategory = "{{ favorite_currency }}";
-        const options = currencySelect1.options;
-
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].value === doctorCategory) {
-                options[i].selected = true;
-                break;
-            }
+    function updateCodeBlockTemplates(key) {
+        // Fill initial active tab templates for latest and convert
+        const blockLatest = document.getElementById('code-block-latest');
+        if (blockLatest) {
+            blockLatest.textContent = docsTemplates.latest.js(key);
+        }
+        const blockConvert = document.getElementById('code-block-convert');
+        if (blockConvert) {
+            blockConvert.textContent = docsTemplates.convert.js(key);
         }
     }
 
-    // Show the loading overlay on form submission if the form exists
-    const submitForm = document.getElementById('submit-form');
-    if (submitForm) {
-        submitForm.addEventListener('submit', function() {
-            showLoadingScreen();
+    // Playground switcher
+    if (tabRates && tabConvert) {
+        tabRates.addEventListener('click', function() {
+            currentEndpoint = 'rates';
+            tabRates.className = 'endpoint-tab-btn py-2 text-xs font-bold rounded-lg border border-brand-500/30 bg-brand-500/10 text-white transition-all';
+            tabConvert.className = 'endpoint-tab-btn py-2 text-xs font-bold rounded-lg border border-gray-800 bg-[#0B0F19] text-gray-400 hover:text-white transition-all';
+            
+            document.getElementById('play-target-wrapper')?.classList.add('hidden');
+            document.getElementById('play-amount-wrapper')?.classList.add('hidden');
+            updatePlaygroundUrlPreview();
+        });
+
+        tabConvert.addEventListener('click', function() {
+            currentEndpoint = 'convert';
+            tabConvert.className = 'endpoint-tab-btn py-2 text-xs font-bold rounded-lg border border-brand-500/30 bg-brand-500/10 text-white transition-all';
+            tabRates.className = 'endpoint-tab-btn py-2 text-xs font-bold rounded-lg border border-gray-800 bg-[#0B0F19] text-gray-400 hover:text-white transition-all';
+            
+            document.getElementById('play-target-wrapper')?.classList.remove('hidden');
+            document.getElementById('play-amount-wrapper')?.classList.remove('hidden');
+            updatePlaygroundUrlPreview();
         });
     }
-});
 
-// Function to filter the select dropdown based on input
-function filterOptions(searchInput, currencySelect, originalOptions) {
-    const searchText = searchInput.value.toLowerCase();
-    currencySelect.innerHTML = '';
-
-    // Filter from original options
-    const filteredOptions = originalOptions.filter(option => {
-        const optionText = option.textContent.toLowerCase();
-        return optionText.includes(searchText);
+    // Playground updates on input changes
+    [playKeyInput, playBaseInput, playTargetInput, playAmountInput].forEach(input => {
+        input?.addEventListener('input', updatePlaygroundUrlPreview);
     });
 
-    // Add filtered options to the select dropdown
-    filteredOptions.forEach(option => {
-        currencySelect.appendChild(option);
-    });
-
-    // If no options match the filter, add a 'No Match' option
-    if (filteredOptions.length === 0) {
-        const defaultOption = document.createElement('option');
-        defaultOption.disabled = true;
-        defaultOption.selected = true;
-        defaultOption.textContent = 'No Match';
-        currencySelect.appendChild(defaultOption);
-    }
-}
-
-// Setting the date input to today's date if the element exists
-function setTodayDate(dateInputId) {
-    const dateInput = document.getElementById(dateInputId);
-    if (dateInput) {
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.value = today;
-    }
-}
-
-// Pre-select favorite currency in the dropdown if the element exists
-function preselectCurrency(selectElementId, favoriteCurrency) {
-    const selectElement = document.getElementById(selectElementId);
-    if (selectElement) {
-        const options = selectElement.options;
-
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].value === favoriteCurrency) {
-                options[i].selected = true;
-                break;
-            }
-        }
-    }
-}
-
-// Event listeners
-document.addEventListener("DOMContentLoaded", function () {
-    const favoriteCurrency = "{{ favorite_currency }}"; // Assuming this is passed in the template
-
-    const searchInput1 = document.getElementById('searchInput1');
-    const currencySelect1 = document.getElementById('CurrencySelect1');
-
-    if (searchInput1 && currencySelect1) {
-        const originalOptions1 = [...currencySelect1.options];
-
-        // Filter options on search input
-        searchInput1.addEventListener('input', () => {
-            filterOptions(searchInput1, currencySelect1, originalOptions1);
-        });
-
-        // Pre-select favorite currency
-        preselectCurrency('CurrencySelect1', favoriteCurrency);
-    }
-
-    // Set default date if the element exists
-    setTodayDate('dateInput');
-});
-
-// Pre-select a value in a dropdown based on a value passed from the server
-function preSelectValue(selectElement, value) {
-    if (selectElement) {
-        const options = selectElement.options;
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].value === value) {
-                options[i].selected = true;
-                break;
-            }
-        }
-    }
-}
-
-// Add event listener to submit form on select change if the elements exist
-function autoSubmitOnChange(selectElement, formId) {
-    if (selectElement && document.getElementById(formId)) {
-        selectElement.addEventListener("change", function () {
-            document.getElementById(formId).submit();
-        });
-    }
-}
-
-// General initialization function
-function initializeDropdown(searchInputId, selectElementId, serverValue, formId) {
-    const searchInput = document.getElementById(searchInputId);
-    const selectElement = document.getElementById(selectElementId);
-
-    if (searchInput && selectElement) {
-        const originalOptions = [...selectElement.options];
-
-        searchInput.addEventListener('input', () => {
-            filterOptions(searchInput, selectElement, originalOptions);
-        });
-
-        if (serverValue) {
-            preSelectValue(selectElement, serverValue);
-        }
-
-        if (formId) {
-            autoSubmitOnChange(selectElement, formId);
-        }
-    }
-}
-
-function copyApiKey() {
-    const apiKeyElement = document.getElementById('apiKey');
-    if (apiKeyElement) {
-        const apiKeyText = apiKeyElement.textContent; // Get the full URL text
-
-        // Create a temporary textarea element to hold the text for copying
-        const textarea = document.createElement('textarea');
-        textarea.value = apiKeyText; // Set the textarea value to the URL
-        document.body.appendChild(textarea); // Append the textarea to the body
-
-        textarea.select(); // Select the text in the textarea
-        document.execCommand('copy'); // Copy the selected text to the clipboard
-        document.body.removeChild(textarea); // Remove the textarea from the DOM
-
-        alert('API key copied to clipboard!'); // Optional: Alert the user
-    }
-}
-
-// Landing Page Initialization
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize AOS (Animate on Scroll)
-    if (typeof AOS !== 'undefined') {
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
-            once: true
-        });
-    }
-
-    // Update currency symbol based on selected currency
-    const fromCurrencySelect = document.getElementById('from_currency');
-    if (fromCurrencySelect) {
-        fromCurrencySelect.addEventListener('change', function() {
-            const currencySymbol = document.getElementById('currency-symbol');
-            if (currencySymbol) {
-                switch(this.value) {
-                    case 'USD': currencySymbol.textContent = '$'; break;
-                    case 'EUR': currencySymbol.textContent = '€'; break;
-                    case 'GBP': currencySymbol.textContent = '£'; break;
-                    case 'JPY': currencySymbol.textContent = '¥'; break;
-                    case 'CAD': currencySymbol.textContent = 'CA$'; break;
-                    case 'AUD': currencySymbol.textContent = 'A$'; break;
-                    case 'CHF': currencySymbol.textContent = 'CHF'; break;
-                    case 'CNY': currencySymbol.textContent = '¥'; break;
-                    default: currencySymbol.textContent = '$'; break;
-                }
-            }
-        });
-    }
-
-    // Language tabs for code examples
-    const languageTabs = document.querySelectorAll('.language-tab');
-    if (languageTabs.length) {
-        languageTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const lang = tab.getAttribute('data-lang');
-                
-                // Update active tab
-                document.querySelectorAll('.language-tab').forEach(t => {
-                    t.classList.remove('active');
-                });
-                tab.classList.add('active');
-                
-                // Show the selected code example
-                document.querySelectorAll('.code-example').forEach(example => {
-                    example.classList.remove('active');
-                });
-                const activeExample = document.querySelector(`.code-example[data-lang="${lang}"]`);
-                if (activeExample) {
-                    activeExample.classList.add('active');
-                }
-            });
-        });
-    }
-
-    // Copy code example
-    const codeCopyBtn = document.querySelector('.code-copy-btn');
-    if (codeCopyBtn) {
-        codeCopyBtn.addEventListener('click', function() {
-            const activeExample = document.querySelector('.code-example.active code');
-            if (activeExample) {
-                navigator.clipboard.writeText(activeExample.innerText).then(() => {
-                    const originalHtml = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                    setTimeout(() => {
-                        this.innerHTML = originalHtml;
-                    }, 2000);
-                }).catch(err => {
-                    console.error('Failed to copy: ', err);
-                });
-            }
-        });
-    }
-
-    // Copy API response
-    const copyResponseBtn = document.getElementById('copy-response');
-    if (copyResponseBtn) {
-        copyResponseBtn.addEventListener('click', function() {
-            const response = document.getElementById('api-response');
-            if (response) {
-                navigator.clipboard.writeText(response.innerText).then(() => {
-                    const originalHtml = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-check"></i>';
-                    setTimeout(() => {
-                        this.innerHTML = originalHtml;
-                    }, 2000);
-                }).catch(err => {
-                    console.error('Failed to copy response: ', err);
-                });
-            }
-        });
-    }
-
-    // Back to top button visibility
-    const backToTopBtn = document.getElementById('back-to-top');
-    if (backToTopBtn) {
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 300) {
-                backToTopBtn.classList.add('show');
-            } else {
-                backToTopBtn.classList.remove('show');
-            }
-        });
-
-        // Smooth scroll for back to top
-        backToTopBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    }
-
-    // Counter animation
-    const counterElements = document.querySelectorAll('.counter');
-    if (counterElements.length) {
-        const observerOptions = {
-            threshold: 0.5
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const counter = entry.target;
-                    const targetValue = parseInt(counter.textContent);
-                    let currentValue = 0;
-                    const increment = Math.ceil(targetValue / 50);
-                    const timer = setInterval(() => {
-                        currentValue += increment;
-                        if (currentValue >= targetValue) {
-                            counter.textContent = targetValue;
-                            clearInterval(timer);
-                        } else {
-                            counter.textContent = currentValue;
-                        }
-                    }, 30);
-                    observer.unobserve(counter);
-                }
-            });
-        }, observerOptions);
-
-        counterElements.forEach(counter => {
-            observer.observe(counter);
-        });
-    }
-
-    // API Demo Form Submission
-    const apiDemoForm = document.getElementById('api-demo-form');
-    if (apiDemoForm) {
-        apiDemoForm.addEventListener('submit', async function (event) {
-            event.preventDefault();
-
-            const fromCurrency = document.getElementById('from_currency').value.toUpperCase();
-            const toCurrency = document.getElementById('to_currency').value.toUpperCase();
-            const amount = parseFloat(document.getElementById('amount').value);
-            const spinner = document.getElementById('convert-spinner');
-            const responseEl = document.getElementById('api-response');
-
-            if (!fromCurrency || !toCurrency || isNaN(amount)) {
-                responseEl.textContent = JSON.stringify({ 
-                    error: {
-                        code: 400,
-                        message: 'Please fill all fields correctly'
-                    }
-                }, null, 2);
-                return;
+    // Send Playground Request
+    if (playSendBtn) {
+        playSendBtn.addEventListener('click', async function() {
+            const key = (playKeyInput ? playKeyInput.value.trim() : '') || activeKey;
+            const base = (playBaseInput ? playBaseInput.value.trim().toUpperCase() : 'USD') || 'USD';
+            
+            let url = `/latest_rates/${encodeURIComponent(key)}/${encodeURIComponent(base)}`;
+            if (currentEndpoint === 'convert') {
+                const target = (playTargetInput ? playTargetInput.value.trim().toUpperCase() : 'EUR') || 'EUR';
+                const amount = (playAmountInput ? playAmountInput.value.trim() : '100') || '100';
+                url = `/convert/latest_rates/${encodeURIComponent(key)}/${encodeURIComponent(base)}/${encodeURIComponent(target)}/${encodeURIComponent(amount)}`;
             }
 
-            // Show loading spinner
-            if (spinner) {
-                spinner.classList.remove('d-none');
+            // Set loading state
+            playSendBtn.disabled = true;
+            if (playSendIcon) playSendIcon.className = 'fa-solid fa-arrows-spin fa-spin mr-1.5';
+            if (playSendText) playSendText.textContent = 'Sending...';
+            if (playResponseCode) playResponseCode.textContent = '// Sending API request...';
+            if (playStatusPill) {
+                playStatusPill.className = 'inline-flex items-center gap-1';
+                playStatusPill.innerHTML = '<span class="h-2 w-2 rounded-full bg-yellow-500 animate-pulse"></span> Querying';
             }
-            if (responseEl) {
-                responseEl.textContent = 'Loading...';
-            }
+
+            const startTime = performance.now();
 
             try {
-                // Use the demo API key for the conversion demo
-                const apiUrl = 'https://imhotepexchangeratesapi.pythonanywhere.com/latest_rates/demo/';
-                
-                const response = await fetch(`${apiUrl}${fromCurrency}`);
+                const response = await fetch(url);
                 const data = await response.json();
+                const elapsed = Math.round(performance.now() - startTime);
 
-                // Hide spinner after response
-                if (spinner) {
-                    spinner.classList.add('d-none');
-                }
-
-                if (response.ok) {
-                    const rate = data.data[toCurrency];
-                    const result = amount * rate;
-
-                    // Display the formatted result with timestamps
-                    if (responseEl) {
-                        responseEl.textContent = JSON.stringify({
-                            meta: {
-                                base_currency: fromCurrency,
-                                target_currency: toCurrency,
-                                amount: amount,
-                                last_updated_at: data.meta.last_updated_at
-                            },
-                            data: {
-                                conversion_rate: rate,
-                                converted_amount: parseFloat(result.toFixed(2))
-                            }
-                        }, null, 2);
-                    }
-                } else {
-                    // Handle API errors with structured error format
-                    if (responseEl) {
-                        responseEl.textContent = JSON.stringify({
-                            error: {
-                                code: response.status,
-                                message: data.error?.message || 'Failed to fetch exchange rate'
-                            }
-                        }, null, 2);
-                    }
-                }
-            } catch (error) {
-                // Hide spinner and show error
-                if (spinner) {
-                    spinner.classList.add('d-none');
-                }
+                if (playResponseCode) playResponseCode.textContent = JSON.stringify(data, null, 2);
+                if (playTimeElapsed) playTimeElapsed.textContent = `${elapsed} ms`;
                 
-                // Format network errors properly
-                if (responseEl) {
-                    responseEl.textContent = JSON.stringify({
-                        error: {
-                            code: 503,
-                            message: 'Network error. Please try again later.'
-                        }
-                    }, null, 2);
+                if (playStatusPill) {
+                    if (response.ok) {
+                        playStatusPill.className = 'inline-flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/25 px-2 py-0.5 rounded text-emerald-400';
+                        playStatusPill.innerHTML = `<span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> ${response.status} OK`;
+                    } else {
+                        playStatusPill.className = 'inline-flex items-center gap-1 bg-rose-500/10 border border-rose-500/25 px-2 py-0.5 rounded text-rose-400';
+                        playStatusPill.innerHTML = `<span class="h-1.5 w-1.5 rounded-full bg-rose-500"></span> ${response.status} Error`;
+                    }
                 }
+            } catch (err) {
+                console.error(err);
+                if (playResponseCode) playResponseCode.textContent = JSON.stringify({ error: { code: 500, message: 'Network request failed' } }, null, 2);
+                if (playStatusPill) {
+                    playStatusPill.className = 'inline-flex items-center gap-1 bg-rose-500/10 border border-rose-500/25 px-2 py-0.5 rounded text-rose-400';
+                    playStatusPill.innerHTML = '<span class="h-1.5 w-1.5 rounded-full bg-rose-500"></span> Failed';
+                }
+            } finally {
+                playSendBtn.disabled = false;
+                if (playSendIcon) playSendIcon.className = 'fa-solid fa-paper-plane mr-1.5';
+                if (playSendText) playSendText.textContent = 'Send Request';
             }
         });
     }
 
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
+    // ----------------------------------------------------
+    // DOCS CODE EXAMPLE TAB SWITCHING (LANDING PAGE)
+    // ----------------------------------------------------
+    const codeTabBtns = document.querySelectorAll('#docs .code-tab-btn');
+    codeTabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const section = this.getAttribute('data-section');
+            const lang = this.getAttribute('data-lang');
             
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth'
+            // Highlight button
+            const siblingBtns = this.parentElement.querySelectorAll('.code-tab-btn');
+            siblingBtns.forEach(sb => {
+                sb.classList.remove('bg-gray-800', 'text-white');
+                sb.classList.add('text-gray-400');
+            });
+            this.classList.add('bg-gray-800', 'text-white');
+            this.classList.remove('text-gray-400');
+
+            // Replace content
+            const targetBlock = document.getElementById(`code-block-${section}`);
+            if(targetBlock && docsTemplates[section] && docsTemplates[section][lang]) {
+                targetBlock.textContent = docsTemplates[section][lang](activeKey);
+            }
+        });
+    });
+
+    // Code copy helper for docs
+    const copyBlockBtns = document.querySelectorAll('#docs .copy-code-block-btn');
+    copyBlockBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const codeBlock = document.getElementById(targetId);
+            if(codeBlock) {
+                navigator.clipboard.writeText(codeBlock.textContent).then(() => {
+                    const originalHtml = this.innerHTML;
+                    this.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i> Copied!';
+                    setTimeout(() => {
+                        this.innerHTML = originalHtml;
+                    }, 2000);
                 });
             }
         });
     });
-});
 
-// Function to copy text to clipboard with visual feedback
-function copyToClipboard(text, elementId) {
-    navigator.clipboard.writeText(text).then(() => {
-        const element = document.getElementById(elementId);
-        if (element) {
-            const originalHtml = element.innerHTML;
-            element.innerHTML = '<i class="fas fa-check"></i> Copied!';
-            setTimeout(() => {
-                element.innerHTML = originalHtml;
-            }, 2000);
-        }
-    }).catch(err => {
-        console.error('Failed to copy: ', err);
-    });
-}
+    // Simple visual click-to-copy utility for onboard keys
+    function setupOnboardCopy(button, input, successHtml) {
+        if (!button || !input) return;
+        const originalHtml = button.innerHTML;
+        button.addEventListener('click', function() {
+            navigator.clipboard.writeText(input.value).then(() => {
+                button.innerHTML = successHtml;
+                setTimeout(() => { button.innerHTML = originalHtml; }, 2000);
+            });
+        });
+    }
+
+    setupOnboardCopy(copyKeyBtn, onboardKeyInput, '<i class="fa-solid fa-check text-emerald-400"></i>');
+    setupOnboardCopy(copyUrlBtn, onboardUrlInput, '<i class="fa-solid fa-check text-emerald-400"></i>');
+
+    if (refreshKeyBtn) {
+        refreshKeyBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            loadOrCreateGuestKey(true);
+        });
+    }
+
+    if (playCopyResponseBtn && playResponseCode) {
+        playCopyResponseBtn.addEventListener('click', function() {
+            navigator.clipboard.writeText(playResponseCode.textContent).then(() => {
+                const originalHtml = playCopyResponseBtn.innerHTML;
+                playCopyResponseBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i> Copied!';
+                setTimeout(() => { playCopyResponseBtn.innerHTML = originalHtml; }, 2000);
+            });
+        });
+    }
+
+    // Trigger onboarding key fetch
+    if (onboardKeyInput || playKeyInput) {
+        loadOrCreateGuestKey();
+    }
+});

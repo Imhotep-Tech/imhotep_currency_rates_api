@@ -1,19 +1,19 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="grid min-h-[70vh] place-content-center bg-white px-4">
-  <div class="text-center">
-    <h1 class="text-7xl sm:text-9xl font-black text-gray-200">{{error_code}}</h1>
+<div class="flex min-h-[70vh] items-center justify-center px-4 py-8">
+  <div class="w-full max-w-md text-center space-y-6">
+    <div class="space-y-2">
+      <h1 class="font-display text-8xl font-extrabold bg-gradient-to-br from-brand-400 to-indigo-500 bg-clip-text text-transparent leading-none">{{error_code}}</h1>
+      <h2 class="font-display text-2xl font-bold text-white tracking-tight">Uh-oh! Page Not Found</h2>
+      <p class="text-sm text-gray-400 max-w-xs mx-auto leading-relaxed">{{ error_description }}</p>
+    </div>
 
-    <p class="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-      Uh-oh!
-    </p>
-
-    <p class="mt-4 text-gray-600">{{ error_description }}</p>
-
-    <a href="/" class="mt-6 inline-block rounded bg-indigo-600 px-5 py-3 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring">
-      Go Back Home
-    </a>
+    <div>
+      <a href="/" class="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-brand-600 to-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:from-brand-500 hover:to-indigo-500 transition-all duration-200">
+        <i class="fa-solid fa-house mr-1.5"></i> Return Home
+      </a>
+    </div>
   </div>
 </div>
 {% endblock %}

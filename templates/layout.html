@@ -1,12 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      // Fallback: if Tailwind isn't available, inject from unpkg CDN or local minimal CSS
+      // Configure Tailwind custom theme
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              display: ['Outfit', 'sans-serif'],
+              mono: ['Fira Code', 'monospace'],
+            },
+            colors: {
+              brand: {
+                50: '#f5f3ff',
+                100: '#ede9fe',
+                200: '#ddd6fe',
+                300: '#c4b5fd',
+                400: '#a78bfa',
+                500: '#8b5cf6',
+                600: '#7c3aed',
+                700: '#6d28d9',
+                800: '#5b21b6',
+                900: '#4c1d95',
+              }
+            }
+          }
+        }
+      }
+      
+      // Fallback: if Tailwind isn't available, inject from unpkg CDN
       window.addEventListener('error', function(e){
         if(e && e.target && e.target.tagName === 'SCRIPT' && e.target.src.includes('cdn.tailwindcss.com')){
           var s = document.createElement('script');
@@ -22,16 +51,16 @@
     <title>Imhotep Exchange Rate API</title>
     <meta name="google-site-verification" content="t0C7WT8MTJ1gP87eh4Y7U9bkqPxRAnm1JxYLnDix6_Y" />
 </head>
-<body class="min-h-screen bg-gray-50 text-gray-900 flex flex-col">
-    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-gray-200">
+<body class="min-h-screen bg-[#0B0F19] text-gray-200 flex flex-col font-sans antialiased selection:bg-brand-500 selection:text-white">
+    <header class="sticky top-0 z-50 bg-[#0F172A]/85 backdrop-blur-md border-b border-gray-800/80">
         {% include 'nav.html' %}
     </header>
 
     <!-- Loading Screen -->
-    <div id="loading-overlay" class="fixed inset-0 hidden items-center justify-center bg-white/70 backdrop-blur-sm">
+    <div id="loading-overlay" class="fixed inset-0 hidden items-center justify-center bg-[#0B0F19]/70 backdrop-blur-md z-50">
         <div class="flex flex-col items-center gap-3">
-            <div class="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"></div>
-            <p class="text-sm text-gray-600">Loading...</p>
+            <div class="h-12 w-12 animate-spin rounded-full border-4 border-gray-800 border-t-brand-500 shadow-md shadow-brand-500/20"></div>
+            <p class="text-sm font-medium text-gray-400">Loading...</p>
         </div>
     </div>
 
@@ -43,7 +72,7 @@
         </div>
     </main>
 
-    <footer class="border-t border-gray-200 bg-white">
+    <footer class="border-t border-gray-800/85 bg-[#0F172A]/60">
         {% include 'footer.html' %}
     </footer>
 

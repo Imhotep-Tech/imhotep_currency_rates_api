@@ -1,53 +1,91 @@
-<nav class="w-full bg-white border-b border-gray-200">
+<nav class="w-full bg-transparent">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="flex h-14 items-center justify-between">
-            <a href="/home" class="flex items-center gap-2">
-                <span class="text-base font-semibold tracking-tight">Imhotep API</span>
+        <div class="flex h-16 items-center justify-between">
+            <a href="/" class="flex items-center gap-2 group">
+                <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-indigo-600 shadow-md group-hover:scale-105 transition-transform duration-200">
+                    <i class="fa-solid fa-money-bill-transfer text-white text-base"></i>
+                </div>
+                <span class="text-lg font-display font-bold tracking-tight text-white group-hover:text-brand-300 transition-colors">Imhotep <span class="text-brand-500">API</span></span>
             </a>
+            
+            <!-- Desktop Menu -->
             <div class="hidden md:flex items-center gap-6">
-                <a href="/home" class="text-sm text-gray-700 hover:text-gray-900">Home</a>
-                <details class="relative group">
-                    <summary class="list-none cursor-pointer text-sm text-gray-700 hover:text-gray-900 flex items-center gap-1">
-                        Settings
-                        <i class="fa-solid fa-chevron-down text-[10px] transition-transform group-open:rotate-180"></i>
-                    </summary>
-                    <ul class="absolute right-0 mt-2 w-48 rounded-md border border-gray-200 bg-white shadow-lg py-1 z-50 hidden group-open:block">
-                        <li>
-                            <a href="/settings/personal_info" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">Personal Info</a>
-                        </li>
-                        <li>
-                            <a href="/settings/security_check" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">Change Password</a>
-                        </li>
-                    </ul>
-                </details>
-                <a href="/logout" class="inline-flex items-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
-                    Logout
-                </a>
+                {% if session.get('logged_in') %}
+                    <a href="/home" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Dashboard</a>
+                    <a href="/version" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Versions</a>
+                    <details class="relative group">
+                        <summary class="list-none cursor-pointer text-sm font-medium text-gray-300 hover:text-white flex items-center gap-1">
+                            Settings
+                            <i class="fa-solid fa-chevron-down text-[10px] transition-transform group-open:rotate-180"></i>
+                        </summary>
+                        <ul class="absolute right-0 mt-2 w-48 rounded-lg border border-gray-800 bg-[#0F172A] shadow-xl py-1 z-50 hidden group-open:block">
+                            <li>
+                                <a href="/settings/personal_info" class="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-gray-800/50 transition-colors">Personal Info</a>
+                            </li>
+                            <li>
+                                <a href="/settings/security_check" class="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-gray-800/50 transition-colors">Change Password</a>
+                            </li>
+                        </ul>
+                    </details>
+                {% else %}
+                    <a href="/before_sign#features" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Features</a>
+                    <a href="/before_sign#playground" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Playground</a>
+                    <a href="/before_sign#docs" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Documentation</a>
+                    <a href="/version" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Versions</a>
+                {% endif %}
             </div>
-            <div class="flex items-center gap-4 md:gap-6">
-                <p class="hidden sm:block text-sm text-gray-600">Name: {{ user_username }}</p>
-                <button id="mobile-menu-button" class="md:hidden inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <span class="sr-only">Open main menu</span>
-                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
+
+            <!-- Auth Buttons & Username -->
+            <div class="hidden md:flex items-center gap-4">
+                {% if session.get('logged_in') %}
+                    <span class="text-sm text-gray-400 font-medium">
+                        <i class="fa-regular fa-user mr-1.5 text-brand-400"></i>{{ user_username }}
+                    </span>
+                    <a href="/logout" class="inline-flex items-center rounded-lg bg-gray-800 border border-gray-700 px-4 py-2 text-sm font-semibold text-gray-200 hover:text-white hover:bg-gray-700 transition-all duration-200">
+                        <i class="fa-solid fa-arrow-right-from-bracket mr-1.5"></i>Logout
+                    </a>
+                {% else %}
+                    <a href="/login" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors">Sign In</a>
+                    <a href="/register" class="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-brand-600 to-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-brand-500/10 hover:shadow-brand-500/20 hover:from-brand-500 hover:to-indigo-500 transition-all duration-200">
+                        Get Free Key
+                    </a>
+                {% endif %}
             </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden inline-flex items-center justify-center rounded-lg p-2 text-gray-400 hover:bg-gray-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-brand-500 transition-colors">
+                <span class="sr-only">Open main menu</span>
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
         </div>
     </div>
 
-    <div id="mobile-menu" class="md:hidden border-t border-gray-200 hidden">
-        <div class="space-y-1 px-4 py-3">
-            <p class="block px-2 py-1 text-sm text-gray-600">Name: {{ user_username }}</p>
-            <a href="/home" class="block rounded-md px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">Home</a>
-            <details class="px-2">
-                <summary class="cursor-pointer rounded-md py-2 text-sm text-gray-700 hover:bg-gray-50">Settings</summary>
-                <ul class="mt-1 ml-3 space-y-1">
-                    <li><a href="/settings/personal_info" class="block rounded-md px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">Personal Info</a></li>
-                    <li><a href="/settings/security_check" class="block rounded-md px-2 py-2 text-sm text-gray-700 hover:bg-gray-50">Change Password</a></li>
-                </ul>
-            </details>
-            <a href="/logout" class="block rounded-md bg-blue-600 px-2 py-2 text-sm font-medium text-white hover:bg-blue-700">Logout</a>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden border-t border-gray-800/80 bg-[#0B0F19] hidden">
+        <div class="space-y-1.5 px-4 py-4">
+            {% if session.get('logged_in') %}
+                <div class="px-2 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider">Logged in as</div>
+                <div class="px-2 py-1 text-sm font-medium text-white mb-2">
+                    <i class="fa-regular fa-user mr-1.5 text-brand-400"></i>{{ user_username }}
+                </div>
+                <a href="/home" class="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800/40">Dashboard</a>
+                <a href="/version" class="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800/40">Versions</a>
+                <div class="border-t border-gray-800/60 my-2"></div>
+                <a href="/settings/personal_info" class="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800/40">Personal Info</a>
+                <a href="/settings/security_check" class="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800/40">Change Password</a>
+                <a href="/logout" class="mt-4 block text-center rounded-lg bg-gray-800 border border-gray-700 px-3 py-2.5 text-base font-semibold text-gray-200 hover:text-white hover:bg-gray-700">Logout</a>
+            {% else %}
+                <a href="/before_sign#features" class="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800/40">Features</a>
+                <a href="/before_sign#playground" class="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800/40">Playground</a>
+                <a href="/before_sign#docs" class="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800/40">Documentation</a>
+                <a href="/version" class="block rounded-lg px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800/40">Versions</a>
+                <div class="grid grid-cols-2 gap-3 mt-4">
+                    <a href="/login" class="flex items-center justify-center rounded-lg border border-gray-700 px-3 py-2 text-sm font-semibold text-gray-300 hover:text-white hover:bg-gray-800/50">Sign In</a>
+                    <a href="/register" class="flex items-center justify-center rounded-lg bg-gradient-to-r from-brand-600 to-indigo-600 px-3 py-2 text-sm font-semibold text-white">Get Key</a>
+                </div>
+            {% endif %}
         </div>
     </div>
 
@@ -64,6 +102,14 @@
                 }
             });
         }
+        
+        // Hide menu when clicking mobile links
+        var mobileLinks = menu ? menu.querySelectorAll('a') : [];
+        mobileLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                if(menu) menu.classList.add('hidden');
+            });
+        });
     })();
     </script>
 </nav>

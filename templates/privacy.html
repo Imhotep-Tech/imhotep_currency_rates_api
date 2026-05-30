@@ -1,63 +1,71 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    <main class="mx-auto w-full max-w-4xl px-4 sm:px-6 lg:px-8 py-8">
-        <h1 class="text-center text-2xl sm:text-3xl font-bold tracking-tight mb-4">Privacy Policy</h1>
-        {% include 'back.html' %}
-        <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200 space-y-6">
-            <section>
-                <h2 class="text-lg font-semibold mb-2">1. Introduction</h2>
-                <p class="text-gray-700">Welcome to the Imhotep Exchange Rate API. This Privacy Policy explains how we collect, use, and protect your information when you use our API. By using the API, you agree to the terms outlined in this policy.</p>
+    <main class="mx-auto w-full max-w-4xl py-8">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="font-display text-3xl font-extrabold text-white">
+                <i class="fa-solid fa-user-shield text-brand-500 mr-2"></i> Privacy Policy
+            </h1>
+            {% include 'back.html' %}
+        </div>
+        
+        <div class="rounded-2xl border border-gray-800 bg-[#0F172A]/70 p-6 sm:p-8 shadow-xl backdrop-blur-md space-y-8 text-sm text-gray-300 leading-relaxed">
+            <section class="space-y-2">
+                <h2 class="font-display text-lg font-bold text-white flex items-center gap-2">
+                    <span class="text-brand-500">1.</span> Introduction
+                </h2>
+                <p>Welcome to the Imhotep Exchange Rate API. This Privacy Policy explains how we collect, use, and protect your information when you use our API. By using the API, you agree to the terms outlined in this policy.</p>
             </section>
 
-            <section>
-                <h2 class="text-lg font-semibold mb-2">2. Information We Collect</h2>
-                <p class="text-gray-700">We may collect the following types of information when you use the Imhotep Exchange Rate API:</p>
-                <ul class="mt-2 list-disc pl-6 text-gray-700 space-y-1">
+            <section class="space-y-2">
+                <h2 class="font-display text-lg font-bold text-white flex items-center gap-2">
+                    <span class="text-brand-500">2.</span> Information We Collect
+                </h2>
+                <p>We may collect the following types of information when you use the Imhotep Exchange Rate API:</p>
+                <ul class="list-disc pl-6 space-y-1 text-gray-400">
                     <li><strong>Usage Data:</strong> Information about how you interact with the API, such as request timestamps, IP addresses, and endpoints accessed.</li>
                     <li><strong>Technical Data:</strong> Information about the device and browser you use to access the API, such as browser type, operating system, and device identifiers.</li>
                 </ul>
             </section>
 
-            <section>
-                <h2 class="text-lg font-semibold mb-2">3. How We Use Your Information</h2>
-                <p class="text-gray-700">We use the information we collect for the following purposes:</p>
-                <ul class="mt-2 list-disc pl-6 text-gray-700 space-y-1">
+            <section class="space-y-2">
+                <h2 class="font-display text-lg font-bold text-white flex items-center gap-2">
+                    <span class="text-brand-500">3.</span> How We Use Your Information
+                </h2>
+                <p>We use the information we collect for the following purposes:</p>
+                <ul class="list-disc pl-6 space-y-1 text-gray-400">
                     <li>To provide, maintain, and improve the API.</li>
                     <li>To monitor and analyze usage patterns to enhance performance and user experience.</li>
                     <li>To detect, prevent, and address technical issues or security vulnerabilities.</li>
                 </ul>
             </section>
 
-            <section>
-                <h2 class="text-lg font-semibold mb-2">4. Data Sharing</h2>
-                <p class="text-gray-700">We do not sell, trade, or otherwise transfer your personal information to third parties. However, we may share aggregated or anonymized data with partners for analytics or research purposes.</p>
+            <section class="space-y-2">
+                <h2 class="font-display text-lg font-bold text-white flex items-center gap-2">
+                    <span class="text-brand-500">4.</span> Data Sharing
+                </h2>
+                <p>We do not sell, trade, or otherwise transfer your personal information to third parties. However, we may share aggregated or anonymized data with partners for analytics or research purposes.</p>
             </section>
 
-            <section>
-                <h2 class="text-lg font-semibold mb-2">5. Data Security</h2>
-                <p class="text-gray-700">We take reasonable measures to protect your information from unauthorized access, alteration, or destruction. However, no method of transmission over the internet or electronic storage is 100% secure, and we cannot guarantee absolute security.</p>
+            <section class="space-y-2">
+                <h2 class="font-display text-lg font-bold text-white flex items-center gap-2">
+                    <span class="text-brand-500">5.</span> Data Security
+                </h2>
+                <p>We take reasonable measures to protect your information from unauthorized access, alteration, or destruction. However, no method of transmission over the internet or electronic storage is 100% secure, and we cannot guarantee absolute security.</p>
             </section>
 
-            <section>
-                <h2 class="text-lg font-semibold mb-2">6. Your Rights</h2>
-                <p class="text-gray-700">You have the right to:</p>
-                <ul class="mt-2 list-disc pl-6 text-gray-700 space-y-1">
-                    <li>Access the personal information we hold about you.</li>
-                    <li>Request correction or deletion of your personal information.</li>
-                    <li>Object to the processing of your personal information.</li>
-                </ul>
-                <p class="text-gray-700">To exercise these rights, please contact us at <a href="mailto:imhoteptech@outlook.com" class="text-blue-700 hover:text-blue-800">imhoteptech@outlook.com</a>.</p>
+            <section class="space-y-2">
+                <h2 class="font-display text-lg font-bold text-white flex items-center gap-2">
+                    <span class="text-brand-500">6.</span> Your Rights
+                </h2>
+                <p>You have the right to access, update, or request the deletion of the personal information we hold about you. To exercise these rights, please contact us at <a href="mailto:imhoteptech@outlook.com" class="text-brand-400 hover:text-brand-300 transition-colors font-medium">imhoteptech@outlook.com</a>.</p>
             </section>
 
-            <section>
-                <h2 class="text-lg font-semibold mb-2">7. Changes to This Policy</h2>
-                <p class="text-gray-700">We may update this Privacy Policy from time to time. Any changes will be effective immediately upon posting on this page. Your continued use of the API after any changes constitutes your acceptance of the updated policy.</p>
-            </section>
-
-            <section>
-                <h2 class="text-lg font-semibold mb-2">8. Contact Us</h2>
-                <p class="text-gray-700">If you have any questions about this Privacy Policy, please contact us at <a href="mailto:imhoteptech@outlook.com" class="text-blue-700 hover:text-blue-800">imhoteptech@outlook.com</a>.</p>
+            <section class="space-y-2">
+                <h2 class="font-display text-lg font-bold text-white flex items-center gap-2">
+                    <span class="text-brand-500">7.</span> Changes to This Policy
+                </h2>
+                <p>We may update this Privacy Policy from time to time. Any changes will be effective immediately upon posting on this page. Your continued use of the API after any changes constitutes your acceptance of the updated policy.</p>
             </section>
         </div>
     </main>

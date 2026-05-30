@@ -1,13 +1,16 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="mx-auto w-full max-w-xl px-4 sm:px-6 lg:px-8 py-12 text-center">
-    <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
-        <h2 class="text-xl font-semibold mb-2">Something went wrong</h2>
-        <p class="text-sm text-gray-600 mb-4">Attempting to recover this page…</p>
-        <div class="flex items-center justify-center gap-2 text-blue-700">
-            <div class="h-5 w-5 animate-spin rounded-full border-2 border-blue-200 border-t-blue-700"></div>
-            <span class="text-sm">Reloading…</span>
+<div class="mx-auto w-full max-w-md px-4 py-16 text-center">
+    <div class="rounded-2xl border border-gray-805 bg-[#0F172A]/70 p-8 shadow-xl backdrop-blur-md space-y-4">
+        <div class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400">
+            <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+        </div>
+        <h2 class="font-display text-xl font-bold text-white">Something went wrong</h2>
+        <p class="text-sm text-gray-400">Attempting to automatically recover this session…</p>
+        <div class="flex items-center justify-center gap-2 text-brand-400 pt-2">
+            <div class="h-5 w-5 animate-spin rounded-full border-2 border-brand-900 border-t-brand-400"></div>
+            <span class="text-xs font-semibold">Reloading page…</span>
         </div>
     </div>
 </div>
