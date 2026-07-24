@@ -32,7 +32,7 @@ Pygments==2.19.1
 python-dotenv==1.1.0
 requests==2.33.0
 rich==13.9.4
-setuptools==78.1.1
+setuptools==83.0.0
 SQLAlchemy==2.0.41
 sqlparse==0.5.4
 termcolor==3.1.0
